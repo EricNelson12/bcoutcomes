@@ -76,5 +76,18 @@ class UserController extends BaseController {
 	    }
     }
 
+    public function admin(){
+
+        if(Auth::user()->isSysAdmin())
+        {
+            //$users = User::all();
+            //return View::make('users.admin', array('users' => $users));
+            return View::make('users.admin');
+        }
+        else{
+            return Redirect::to('');
+        }
+    }
+
 
 }

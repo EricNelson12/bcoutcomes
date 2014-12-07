@@ -17,6 +17,24 @@ Route::post('/login', array('as' => 'login', 'uses' => 'UserController@handleLog
 Route::get('/profile', array('as' => 'profile', 'uses' => 'UserController@profile'));
 Route::get('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'));
 Route::resource('user', 'UserController'); 
+Route::get('/admin', array('as' => 'admin', 'uses' => 'UserController@admin'));
+
+Route::get('password/reset', array(
+  'uses' => 'PasswordController@remind',
+  'as' => 'password.remind'
+));
+Route::post('password/reset', array(
+  'uses' => 'PasswordController@request',
+  'as' => 'password.request'
+));
+Route::get('password/reset/{token}', array(
+  'uses' => 'PasswordController@reset',
+  'as' => 'password.reset'
+));
+Route::post('password/reset/{token}', array(
+  'uses' => 'PasswordController@update',
+  'as' => 'password.update'
+));
 
 
 

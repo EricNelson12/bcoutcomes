@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+	'host' => 'smtp.gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => null, 'name' => null),
+	'from' => array('address' => 'szarmestest@gmail.com', 'name' => 'Test'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => null,
+	'username' => 'szarmestest',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => null,
+	'password' => 'charger808',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -107,6 +107,7 @@ return array(
 	*/
 
 	'sendmail' => '/usr/sbin/sendmail -bs',
+	//'sendmail' => '\\C:\\xampp\\sendmail\\sendmail.exe\\ -t'
 
 	/*
 	|--------------------------------------------------------------------------

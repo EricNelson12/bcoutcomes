@@ -1,0 +1,2 @@
+@extends('default')
+@section('body')
