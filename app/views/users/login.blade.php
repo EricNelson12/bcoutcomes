@@ -3,8 +3,8 @@
 
 
 
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
+<div class="row" style="padding-bottom:200px;background-image: url(earth1.jpg);background-repeat: no-repeat; background-position: center; ">
+    <div class="col-md-4 col-md-offset-4" >
         <h2>Login</h2>
         {{ Form::open(array('url' => 'login', 'method' => 'post')) }}
         @foreach ($errors->all() as $message)
