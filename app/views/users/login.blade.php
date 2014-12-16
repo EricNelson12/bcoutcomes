@@ -19,10 +19,19 @@
             {{Form::label('password','Password')}}
             {{Form::password('password',array('class' => 'form-control'))}}
         </div>
+
+        <div class="form-group">
+            {{Form::label('remember','Remember Me?')}}
+            {{Form::checkbox('remember','false')}}
+
+             <a href="password/reset">Forgot Password?</a>
+        </div>
       
         {{Form::submit('Login', array('class' => 'btn btn-primary'))}}
         {{ Form::close() }}
+
     </div>
+
 </div>
 
 @stop

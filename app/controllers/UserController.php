@@ -18,12 +18,13 @@ class UserController extends BaseController {
                 'password' => 'required',
             ]
         );
+        $remember = Input::get('remember');
 
         if($validator->fails()){
             return Redirect::route('login')->withErrors($validator)->withInput();
         }
 
-        if(Auth::attempt(['username' => $data['username'], 'password' => $data['password']])){
+        if(Auth::attempt(['username' => $data['username'], 'password' => $data['password']], $remember)){
             return Redirect::to('/');
         }
         $errors = 'Login Failed';
