@@ -1,134 +1,133 @@
 <!Doctype HTML>
 
 <head>
-  	
- 	{{ HTML::script('assets/jquery-1.7.1.min.js') }}
-	{{ HTML::script('assets/jquery.hashchange.min.js') }}
-	{{ HTML::script('assets/jquery.easytabs.min.js') }}
-	{{ HTML::style('assets/style.css') }}
-	
+    
+  {{ HTML::script('assets/jquery-1.7.1.min.js') }}
+  {{ HTML::script('assets/jquery.hashchange.min.js') }}
+  {{ HTML::script('assets/jquery.easytabs.min.js') }}
+  {{ HTML::style('assets/style.css') }}
+  
 
-  	<script type="text/javascript">
+    <script type="text/javascript">
       
-		function collision($div1, $div2) {
+    function collision($div1, $div2) {
 
-			var x1 = $div1.offset().left;
-			var y1 = $div1.offset().top;
-			var h1 = $div1.outerHeight(true);
-			var w1 = $div1.outerWidth(true);
+      var x1 = $div1.offset().left;
+      var y1 = $div1.offset().top;
+      var h1 = $div1.outerHeight(true);
+      var w1 = $div1.outerWidth(true);
 
-			var b1 = y1 + h1;
-			var r1 = x1 + w1;
-			var x2 = $div2.offset().left;
-			var y2 = $div2.offset().top;
-			var h2 = $div2.outerHeight(true);
-			var w2 = $div2.outerWidth(true);
-			var b2 = y2 + h2;
-			var r2 = x2 + w2;
-
-
-			if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
-				return true;
-		}
-
-	     
-
-	      //keep track of how many nodes are in the tree
-	      var nodecount= 0;
-
-	  	function create_branch(){
-	        if(nodecount>0){
+      var b1 = y1 + h1;
+      var r1 = x1 + w1;
+      var x2 = $div2.offset().left;
+      var y2 = $div2.offset().top;
+      var h2 = $div2.outerHeight(true);
+      var w2 = $div2.outerWidth(true);
+      var b2 = y2 + h2;
+      var r2 = x2 + w2;
 
 
-	          var iDiv = document.createElement('div');
-	          iDiv.id = 'tree_branch'+nodecount;
-	          iDiv.className = 'tree_branch';
-	          document.getElementById('cohort_tree').appendChild(iDiv);
-	        }
-	      }
+      if (b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2) return false;
+        return true;
+    }
 
-		function add_node(div){
-			var new_id = div.id+"-clone";
+       
 
-			//check so that it only clones once
-			if (!document.getElementById(new_id)) {
+        //keep track of how many nodes are in the tree
+        var nodecount= 0;
 
-			  //create a tree "branch"
-			  create_branch();
-
-			  $(div).clone().attr('id', new_id).appendTo('#cohort_tree');
-			  nodecount++;
-			  
-			  if(document.getElementById(new_id)) {
-
-			    //get the new cloned element
-			    var x = document.getElementById(new_id);
-
-			    //add functions to it
-			    
-			  }
-
-			}
-
-		}
-
-	    function show_tooltip(val){
-	      var docHeight = $(document).height(); //grab the height of the page
-	      var scrollTop = $(window).scrollTop(); //grab the px value from the top of the page to where you're scrolling
-	      $('.overlay-bg').show().css({'height' : docHeight}); //display your popup background and set height to the page height
-	      $('.popuptooltip'+val).show().css({'top': scrollTop+20+'px'}); //show the appropriate popup and set the content 20px from the window top
-	    }
+      function create_branch(){
+          if(nodecount>0){
 
 
-	    $(document).ready( function() {
-	      $('#tab-container').easytabs({collapsible:true,collapsedByDefault:true});
-	      $('#tab-container2').easytabs({collapsible:false,collapsedByDefault:false});
-	      
+            var iDiv = document.createElement('div');
+            iDiv.id = 'tree_branch'+nodecount;
+            iDiv.className = 'tree_branch';
+            document.getElementById('cohort_tree').appendChild(iDiv);
+          }
+        }
 
-	      $('.attr').click(function(event){
-	        event.preventDefault(); // disable normal link function so that it doesn't refresh the page
-	        var docHeight = $(document).height(); //grab the height of the page
-	        var scrollTop = $(window).scrollTop(); //grab the px value from the top of the page to where you're scrolling
-	        var selectedPopup = $(this).data('showpopup'); //get the corresponding popup to show
-	         
-	        $('.overlay-bg').show().css({'height' : docHeight}); //display your popup background and set height to the page height
-	        $('.popup'+selectedPopup).show().css({'top': scrollTop+20+'px'}); //show the appropriate popup and set the content 20px from the window top
-	        add_node(this);
-	    });
-	   
-	    // hide popup when user clicks on close button or if user clicks anywhere outside the container
-	    $('.close-btn, .overlay-bg').click(function(){
-	        $('.overlay-bg, .overlay-content').hide(); // hide the overlay
-	    });
-	     
-	    });
-  	</script>
-  	<style>
+    function add_node(div){
+      var new_id = div.id+"-clone";
 
-		body {
-		  font: 10px sans-serif;
-		}
+      //check so that it only clones once
+      if (!document.getElementById(new_id)) {
 
-		.axis path,
-		.axis line {
-		  fill: none;
-		  stroke: #000;
-		  shape-rendering: crispEdges;
-		}
+        //create a tree "branch"
+        create_branch();
 
-		.x.axis path {
-		  display: none;
-		}
+        $(div).clone().attr('id', new_id).appendTo('#cohort_tree');
+        nodecount++;
+        
+        if(document.getElementById(new_id)) {
 
-		.line {
-		  fill: none;
-		  stroke: steelblue;
-		  stroke-width: 1.5px;
-		}
+          //get the new cloned element
+          var x = document.getElementById(new_id);
 
-		</style>
+          //add functions to it
+          
+        }
 
-  	<title>Breast Cancer Outcomes</title>
+      }
+
+    }
+
+      function show_tooltip(val){
+        var docHeight = $(document).height(); //grab the height of the page
+        var scrollTop = $(window).scrollTop(); //grab the px value from the top of the page to where you're scrolling
+        $('.overlay-bg').show().css({'height' : docHeight}); //display your popup background and set height to the page height
+        $('.popuptooltip'+val).show().css({'top': scrollTop+20+'px'}); //show the appropriate popup and set the content 20px from the window top
+      }
+
+
+      $(document).ready( function() {
+       
+        
+
+        $('.attr').click(function(event){
+          event.preventDefault(); // disable normal link function so that it doesn't refresh the page
+          var docHeight = $(document).height(); //grab the height of the page
+          var scrollTop = $(window).scrollTop(); //grab the px value from the top of the page to where you're scrolling
+          var selectedPopup = $(this).data('showpopup'); //get the corresponding popup to show
+           
+          $('.overlay-bg').show().css({'height' : docHeight}); //display your popup background and set height to the page height
+          $('.popup'+selectedPopup).show().css({'top': scrollTop+20+'px'}); //show the appropriate popup and set the content 20px from the window top
+          add_node(this);
+      });
+     
+      // hide popup when user clicks on close button or if user clicks anywhere outside the container
+      $('.close-btn, .overlay-bg').click(function(){
+          $('.overlay-bg, .overlay-content').hide(); // hide the overlay
+      });
+       
+      });
+    </script>
+    <style>
+
+    body {
+      font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .x.axis path {
+      display: none;
+    }
+
+    .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
+
+    </style>
+
+    <title>Breast Cancer Outcomes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{HTML::style('http://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')}}
     <style>
@@ -186,20 +185,22 @@
 <!--  
   Begin Attribute Collection tabbed panel, an implementation of the JQuery Easy Tabs plugin (open source)
 -->  
+
+<!-- start of visualizations-->
   <div id = "cohort_builder">
-    <div id="tab-container" class='tab-container'>
-     <ul class='etabs'>
-      <li class='tab' id='alltab'> <a href="#All">All</a></li>
-      <li class='tab' id='surgerytab'><a href="#Surgical">Surgical Oncology</a></li>
-      <li class='tab' id='radiationtab'><a href="#Radiation">Radiation Oncology</a></li>
-      <li class='tab' id='medicaltab'><a href="#Medical">Medical Oncology</a></li>
+    <div id="tabs" class='tabbable'>
+     <ul class='nav nav-tabs'>
+      <li class='active' id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
+      <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
+      <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
+      <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
        
      </ul>
 
     <img src="images/help.png" alt="alternative text" title="The Cohort Tree shows attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Tree will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(1);"/>
-     <div class='panel-container'>
+     <div class='tab-content'>
 
-      <div id="All">
+      <div class="tab-pane active" id="All">
         
         <div id ="All-all">
           <div id="age"class = "attr" href="#" data-showpopup="1">Age</div>
@@ -227,7 +228,7 @@
 
       </div>
 
-      <div id="Surgical" collapsible=true>
+      <div class="tab-pane"  id="Surgical" collapsible=true>
         <div id ="All-all">
           <div id="age"class = "attr">Age</div>
           <div id="site"class = "attr">Site</div>
@@ -243,7 +244,7 @@
         </div>
       </div>
 
-      <div id="Radiation">
+      <div class="tab-pane" id="Radiation">
          <div id ="All-all">
           <div id="age"class = "attr">Age</div>
           <div id="site"class = "attr">Site</div>
@@ -260,7 +261,7 @@
         
       </div>
 
-      <div id="Medical">
+      <div class="tab-pane" id="Medical">
         <div id ="All-all">
           <div id="age"class = "attr">Age</div>
           <div id="site"class = "attr">Site</div>
@@ -345,90 +346,43 @@
     <button class="close-btn">Close</button>
 </div>
 
-<div id = "visualization">
-    <div id="tab-container2" class='tab-container'>
-     <ul class='etabs'>
-      <li class='tab' id='survivaltab'> <a href="#survival">Survival</a></li>
-      <li class='tab' id='recurrencetab'><a href="#recurrence">Recurrence</a></li>
-     </ul>
-
-   
-     <div class='panel-container'>
-
-      <div id="survival">
-      </div>
-      <div id = "recurrence">
-      </div>
-       
-
-     </div>
+<!-- start of visualizations-->
+<div class="tabbable" >
+    <ul class="nav nav-tabs">
+        <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival Curves</a></li>
+        <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence Curves</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="a_tab">
+            <h1>Survival Curves</h1>
+            <acontent></acontent>
+        </div>
+        <div class="tab-pane" id="b_tab">
+            <h1>Recurrence Curves</h1>
+            <bcontent></bcontent>
+        </div>
     </div>
-<!-- Start of visualzation-->
+</div>
 
 <script src="http://d3js.org/d3.v3.js"></script>
+
+
 <script>
+    $.ajaxSetup ({
+        // Disable caching of AJAX responses
+        // Used when debugging
+        cache: false
+    });
 
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-var parseDate = d3.time.format("%d-%b-%y").parse;
-
-var x = d3.time.scale()
-    .range([0, width]);
-
-var y = d3.scale.linear()
-    .range([height, 0]);
-
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
-
-var line = d3.svg.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.close); });
-
-//Append visualzation
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-d3.tsv("data.tsv", function(error, data) {
-  data.forEach(function(d) {
-    d.date = parseDate(d.date);
-    d.close = +d.close;
-  });
-
-  x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain(d3.extent(data, function(d) { return d.close; }));
-
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Price ($)");
-
-  svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line);
-});
-
+    $.getScript("a.js");
+    $(".atab").click(function() {
+        $.getScript("a.js");
+    })
+</script>
+<script>
+    $(".btab").click(function() {
+        $.getScript("b.js");
+    })
 </script>
 
 

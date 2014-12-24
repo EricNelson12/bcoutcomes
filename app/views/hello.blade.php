@@ -2,9 +2,19 @@
 
 <head>
   	
- 	{{ HTML::script('assets/jquery-1.7.1.min.js') }}
-	{{ HTML::script('assets/jquery.hashchange.min.js') }}
-	{{ HTML::script('assets/jquery.easytabs.min.js') }}
+ 	<script src="jquery/jquery-1.8.3.js"></script>
+  <script src="jquery/ui/jquery.ui.core.js"></script>
+  <script src="jquery/ui/jquery.ui.widget.js"></script>
+  <script src="jquery/ui/jquery.ui.tabs.js"></script>
+  <link rel="stylesheet" href="jquery/demos.css">
+  <script>
+  $(function() {
+    $( "#tabs" ).tabs({
+      collapsible: true
+    });
+  });
+  </script>
+	
 	{{ HTML::style('assets/style.css') }}
 	
 
@@ -81,8 +91,7 @@
 
 
 	    $(document).ready( function() {
-	      $('#tab-container').easytabs({collapsible:true,collapsedByDefault:true});
-	      $('#tab-container2').easytabs({collapsible:false,collapsedByDefault:false});
+	     
 	      
 
 	      $('.attr').click(function(event){
@@ -186,20 +195,22 @@
 <!--  
   Begin Attribute Collection tabbed panel, an implementation of the JQuery Easy Tabs plugin (open source)
 -->  
+
+<!-- start of visualizations-->
   <div id = "cohort_builder">
-    <div id="tab-container" class='tab-container'>
-     <ul class='etabs'>
-      <li class='tab' id='alltab'> <a href="#All">All</a></li>
-      <li class='tab' id='surgerytab'><a href="#Surgical">Surgical Oncology</a></li>
-      <li class='tab' id='radiationtab'><a href="#Radiation">Radiation Oncology</a></li>
-      <li class='tab' id='medicaltab'><a href="#Medical">Medical Oncology</a></li>
+    <div id="tabs" class='tabbable'>
+     <ul class='nav nav-tabs'>
+      <li class='active' id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
+      <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
+      <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
+      <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
        
      </ul>
 
     <img src="images/help.png" alt="alternative text" title="The Cohort Tree shows attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Tree will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(1);"/>
-     <div class='panel-container'>
+     <div class='tab-content'>
 
-      <div id="All">
+      <div class="tab-pane active" id="All">
         
         <div id ="All-all">
           <div id="age"class = "attr" href="#" data-showpopup="1">Age</div>
@@ -227,7 +238,7 @@
 
       </div>
 
-      <div id="Surgical" collapsible=true>
+      <div class="tab-pane"  id="Surgical" collapsible=true>
         <div id ="All-all">
           <div id="age"class = "attr">Age</div>
           <div id="site"class = "attr">Site</div>
@@ -243,7 +254,7 @@
         </div>
       </div>
 
-      <div id="Radiation">
+      <div class="tab-pane" id="Radiation">
          <div id ="All-all">
           <div id="age"class = "attr">Age</div>
           <div id="site"class = "attr">Site</div>
@@ -260,7 +271,7 @@
         
       </div>
 
-      <div id="Medical">
+      <div class="tab-pane" id="Medical">
         <div id ="All-all">
           <div id="age"class = "attr">Age</div>
           <div id="site"class = "attr">Site</div>
