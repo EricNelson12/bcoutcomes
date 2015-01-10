@@ -347,7 +347,7 @@
 </div>
 
 <!-- start of visualizations-->
-<div class="tabbable" >
+<div class="tabbable" id ="visualization" >
     <ul class="nav nav-tabs">
         <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival Curves</a></li>
         <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence Curves</a></li>

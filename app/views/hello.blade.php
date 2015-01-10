@@ -58,27 +58,19 @@
 	      }
 
 		function add_node(div){
-			var new_id = div.id+"-clone";
+      if(div.id.indexOf("-clone") == -1){
+  			var new_id = div.id+"-clone";
 
-			//check so that it only clones once
-			if (!document.getElementById(new_id)) {
+  			//check so that it only clones once
+  			if (!document.getElementById(new_id)) {
 
-			  //create a tree "branch"
-			  create_branch();
-
-			  $(div).clone().attr('id', new_id).appendTo('#cohort_tree');
-			  nodecount++;
-			  
-			  if(document.getElementById(new_id)) {
-
-			    //get the new cloned element
-			    var x = document.getElementById(new_id);
-
-			    //add functions to it
-			    
-			  }
-
-			}
+  			  //create a tree "branch"
+  			  create_branch();
+          //.clone( [withDataAndEvents] [, deepWithDataAndEvents] )
+  			  $(div).clone(true).attr('id', new_id).appendTo('#cohort_tree');
+  			  nodecount++;
+  			}
+      }
 
 		}
 
@@ -200,11 +192,28 @@
   <div id = "cohort_builder">
     <div id="tabs" class='tabbable'>
      <ul class='nav nav-tabs'>
-      <li class='active' id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
+      <!-- This will choose the correct attribute tree based on user oncology -->
+      @if($role==1)
+      <li id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
+      <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
+      <li class = 'active' id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
+      <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
+      @elseif($role==2)
+      <li id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
+      <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
+      <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
+      <li class = 'active' id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
+      @elseif($role==3)
+      <li id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
+      <li class = 'active' id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
+      <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
+      <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
+      @else
+      <li class = 'active' id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
       <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
       <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
       <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
-       
+      @endif
      </ul>
 
     <img src="images/help.png" alt="alternative text" title="The Cohort Tree shows attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Tree will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(1);"/>
@@ -297,11 +306,11 @@
   <!-- 
     Begin Cohort Builder Tree
   -->
-    <p style="display:inline-block;">Cohort Filters</p>
+   
+    <div id="cohort_tree">
+      <p style="display:inline-block;">Cohort Filters</p>
     <img src="images/help.png" alt="alternative text" title="The Cohort Tree shows attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Tree will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(2);"/>
 
-    <div id="cohort_tree">
-     
     </div>
 
   </div>
@@ -357,7 +366,7 @@
 </div>
 
 <!-- start of visualizations-->
-<div class="tabbable" >
+<div class="tabbable" id="visualization" >
     <ul class="nav nav-tabs">
         <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival Curves</a></li>
         <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence Curves</a></li>
@@ -394,8 +403,6 @@
         $.getScript("b.js");
     })
 </script>
-
-
 
 </body>
 </html>
