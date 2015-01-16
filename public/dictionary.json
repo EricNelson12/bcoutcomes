@@ -1,0 +1,554 @@
+{
+	"Age":
+	{
+		"display": "Age",
+		"elements":
+		[
+			{
+				"age_at_diagnosis":
+				{
+					"display": "Age",
+					"type": "int",
+					"input": "range",
+					"defaultmin": 1,
+					"defaultmax": 104
+				}
+			}
+		]
+	},
+
+	"Diagnosis_Date":
+	{
+		"display": "Diagnosis Date",
+		"elements":
+		[
+			{
+				"br_dx_date":
+				{
+					"display": "Diagnosis Date",
+					"type": "year",
+					"input": "range",
+					"defaultmin": 2001,
+					"defaultmax": 2005
+				}
+			}
+		]
+	},
+
+	"SRM_Date":
+	{
+		"display": "Recurrence",
+		"elements":
+		[
+			{
+				"toggle_min_srm":
+				{
+					"display": "Had Recurrance",
+					"type": "toggle",
+					"input": "toggle"
+				}
+			},
+
+			{
+				"min_srm":
+				{
+					"display": "Recurrance Date",
+					"type": "year",
+					"input": "range",
+					"defaultmin": 2001,
+					"defaultmax": 2012
+				}
+			}
+		]
+	},
+
+	"Meno_Status":
+	{
+		"display": "Menopause",
+		"elements":
+		[
+			{
+				"meno_status":
+				{
+					"display": "Menopause",
+					"type": "int",
+					"input": "select",
+					"values":
+					{
+						"0": "Unknown",
+						"1": "Pre-Menopause",
+						"3": "Post-Menopause",
+						"4": "Pregnant"
+					}
+				}
+			}
+		]
+	},
+
+	"Site":
+	{
+		"display": "Site",
+		"elements":
+		[
+			{
+				"site":
+				{
+					"display": "Site",
+					"type": "string",
+					"input": "select",
+					"values":
+					{
+						"C500": "Nipple",
+						"C501": "Breast: Central Portion",
+						"C502": "Breast: Upper-Inner Quadrant",
+						"C503": "Breast: Lower-Inner Quadrant",
+						"C504": "Breast: Upper-Outer Quadrant",
+						"C505": "Breast: Lower-Outer Quadrant",
+						"C506": "Breast: Axillary Tail",
+						"C508": "Breast: Overlapping Lesion",
+						"C509": "Breast: NOS"
+					}
+				}
+			}
+		]
+	},
+
+	"Grade":
+	{
+		"display": "Grade",
+		"elements":
+		[
+			{
+				"grade":
+				{
+					"display": "Grade",
+					"type": "int",
+					"input": "select",
+					"values":
+					{
+						"0": "Missing",
+						"1": "Grade I: Well Differentiated",
+						"2": "Grade II: Moderately Differentiated",
+						"3": "Grade III: Poorly Differentiated",
+						"4": "Grade IV: Undifferentiated/Anaplastic",
+						"9": "Cell type not determined/not stated"
+					}
+				}
+			}
+		]
+	},
+
+	"TNM_Staging":
+	{
+		"display": "TNM Staging",
+		"elements":
+		[
+			{
+				"tnm_t":
+				{
+					"display": "T Staging",
+					"type": "string",
+					"input": "select",
+					"values":
+					{
+						"": "Missing",
+						"X": "Tx: primary tumour cannot be assessed",
+						"0": "T0: No evidence of primary",
+						"1": "T1: <= 2cm",
+						"1A": "T1a: >0.1cm <= 0.5cm",
+						"1B": "T1b: >0.5cm <= 1cm",
+						"1C": "T1c: >1cm <= 2cm",
+						"1M": "T1m: microinvasion <= 0.1cm",
+						"2": "T2: >2cm <= 5cm",
+						"3": "T3: >5cm",
+						"4": "T4: any size + chest or skin extension",
+						"4A": "T4a: chest wall extension",
+						"4B": "T4b: skin extension",
+						"4C": "T4c: both T4a and T4b",
+						"4D": "T4d: inflammatory carcinoma",
+						"IS": "Tis: cacrinoma in situ"
+					}
+
+				}
+			},
+
+			{
+				"tnm_n":
+				{
+					"display": "N Staging",
+					"type": "string",
+					"input": "select",
+					"values":
+					{
+						"": "Missing",
+						"X": "Nx",
+						"0": "N0",
+						"0NI": "N0ni",
+						"0PI": "N0pi",
+						"1": "N1",
+						"1A": "N1a",
+						"1B": "N1b",
+						"1B1": "N1b1",
+						"1B2": "N1b2",
+						"1B3": "N1b3",
+						"1B4": "N1b4",
+						"1C": "N1c",
+						"1M": "N1m",
+						"2": "N2",
+						"2A": "N2a",
+						"2B": "N2b",
+						"3": "N3",
+						"3A": "N3a",
+						"3B": "N3b",
+						"3C": "N3c",
+						"4": "N4",
+						"4A": "N4a",
+						"4B": "N4b",
+						"4C": "N4c",
+						"4D": "N4d",
+						"IS": "Nis"
+					}
+
+				}
+			},
+
+			{
+				"tnm_m":
+				{
+					"display": "M Staging",
+					"type": "string",
+					"input": "select",
+					"values":
+					{
+						"": "Missing",
+						"X": "Mx",
+						"0": "M0",
+						"1": "M1",
+						"1A": "M1a",
+						"1B": "M1b",
+						"1C": "M1c",
+						"1M": "M1m",
+						"2": "M2",
+						"3": "M3",
+						"4": "M4",
+						"4A": "M4a",
+						"4B": "M4b",
+						"4C": "M4c",
+						"4D": "M4d",
+						"IS": "Mis"
+					}
+
+				}
+			}
+		]
+	},
+
+	"Hist":
+	{
+		"display": "Histology",
+		"elements":
+		[
+			{
+				"hist1":
+				{
+					"display": "Histology",
+					"type": "int",
+					"input": "select",
+					"values":
+					{
+						"80003": "Neoplasm, malignant",
+						"80013": "Tumor cells, malignant",
+						"80033": "Malignant tumor, giant cell type",
+						"80102": "Carcinoma in situ, NOS",
+						"80103": "Carcinoma, NOS",
+						"80203": "Carcinoma, undifferentiated, NOS",
+						"80323": "Spindle cell carcinoma",
+						"80333": "Pseudosarcomatous carcinoma",
+						"80463": "Non-small cell carcinoma",
+						"80502": "Papillary carcinoma in situ",
+						"80503": "Papillary carcinoma, NOS",
+						"80703": "Squamous cell carcinoma, NOS",
+						"80713": "Squamous cell carcinoma, keratinizing, NOS",
+						"81403": "Adenocarcinoma, NOS",
+						"82003": "Adenoid cystic carcinoma",
+						"82012": "Cribiform carcinoma in situ",
+						"82013": "Cribriform carcinoma",
+						"82113": "Tubular adenocarcinoma",
+						"82302": "Ductal carcinoma in situ, solid type",
+						"82603": "Papillary adenocarcinoma, NOS",
+						"83103": "Clear cell adenocarcinoma, NOS",
+						"84012": "Apocrine cystadenoma in situ",
+						"84013": "Apocrine adenocarcinoma",
+						"84802": "Mucinous adenocarcinoma in situ",
+						"84803": "Mucinous adenocarcinoma",
+						"84813": "Mucin-producing adenocarcinoma",
+						"84903": "Signet ring cell carcinoma",
+						"85002": "Intraductal carcinoma, non-infiltrating, NOS",
+						"85003": "Infiltrating duct carcinoma, NOS",
+						"85012": "Comedocarcinoma, non-infiltrating",
+						"85013": "Comedocarcinoma, NOS",
+						"85023": "Secretory carcinoma of breast",
+						"85032": "Non-infiltrating intraductal papillary adenocarcinoma",
+						"85033": "Intraductal papillary adenocarcinoma with..",
+						"85042": "Non-infiltrating intracystic carcinoma",
+						"85043": "Intracystic carcinoma. NOS",
+						"85072": "Intraductal micropapillary carcinoma",
+						"85073": "Intraductal micropapillary invasive carcinoma",
+						"85103": "Medullary carcinoma, NOS",
+						"85133": "Atypical medullary carcinoma",
+						"85202": "Lobular carcinoma in situ, NOS",
+						"85203": "Lobular carcinoma, NOS",
+						"85212": "Ductular carcinoma, in situ",
+						"85213": "Infiltrating ductular carcinoma",
+						"85222": "Intraductal carcinoma and lobular carcinoma in situ",
+						"85223": "Infiltrating duct and lobular carcinoma",
+						"85232": "Intraductal carcinoma mixed with other types of cancer",
+						"85233": "Infiltrating duct mixed with other types of carcinonma",
+						"85243": "Infiltrating lobular mixed with other types of carcinoma",
+						"85303": "Inflammatory carcinoma",
+						"85403": "Paget disease, mammary",
+						"85413": "Paget disease and infiltrating duct ca of breast",
+						"85433": "Pagets disease and intraductal ca of breast",
+						"85603": "Adenosquamous carcinoma",
+						"85753": "Metaplastic carcinoma, NOS",
+						"89403": "Mixed tumor, malignant, NOS",
+						"89413": "Carcinoma in pleomorphic adenoma"
+					}
+				}
+			}
+		]
+	},
+
+	"Behaviour":
+	{
+		"display": "Behaviour",
+		"elements":
+		[
+			{
+				"behavior":
+				{
+					"display": "Behaviour",
+					"type": "int",
+					"input": "select",
+					"values":
+					{
+						"2": "In situ",
+						"3": "Malignant"
+					}
+				}
+			}
+		]
+	},
+
+	"Nodes":
+	{
+		"display": "Nodes",
+		"elements":
+		[
+			{
+				"br_num_pos_nod_init_dx_p00005":
+				{
+					"display": "Nodes",
+					"type": "aggregate",
+					"input": "select",
+					"values":
+					{
+						"0": 
+						{
+							"display": "0",
+							"min": 0,
+							"max": 0
+						},
+						"1":
+						{
+							"display": "1-3",
+							"min": 1,
+							"max": 3
+						},
+						"2":
+						{
+							"display": "4-6",
+							"min": 4,
+							"max": 6
+						},
+						"3":
+						{
+							"display": "7-10",
+							"min": 7,
+							"max": 10
+						},
+						"4":
+						{
+							"display": "11-20",
+							"min": 11,
+							"max": 20
+						},
+						"5":
+						{
+							"display": "21-50",
+							"min": 21,
+							"max": 50
+						},
+						"6":
+						{
+							"display": "77",
+							"min": 77,
+							"max": 77
+						},
+						"7":
+						{
+							"display": "88",
+							"min": 88,
+							"max": 88
+						},
+						"8":
+						{
+							"display": "99",
+							"min": 99,
+							"max": 99
+						}
+					}
+				}
+			}
+		]
+	},
+
+	"Immuno_Stains":
+	{
+		"display": "Estrogen Receptor",
+		"elements":
+		[
+			{
+				"br_immuno_stains_p00005":
+				{
+					"display": "Estrogen Receptor",
+					"type": "string",
+					"input": "select",
+					"values":
+					{
+						"": "Missing",
+						"OHIG": "Other, High, Strongly Positive",
+						"OMOD": "Other, Moderate, Positive",
+						"OZER": "Other, Negative, Zero",
+						"OLOW": "Other, Low, Weakly Positive"
+					}
+				}
+			}
+		]
+	},
+
+	"PGR":
+	{
+		"display": "Progesterone Receptor",
+		"elements":
+		[
+			{
+				"br_pgr_p00005":
+				{
+					"display": "Progesterone Receptor",
+					"type": "string",
+					"input": "select",
+					"values":
+					{
+						"": "Missing",
+						"XXXX": "Unknown",
+						"OHIG": "High, Strongly Positive",
+						"OZER": "Negative, Zero",
+						"OMOD": "Moderate, Positive",
+						"OLOW": "Low, Weakly Positive",
+						"OXXX": "NSQ: Completed but insufficient"
+					}
+				}
+			}
+		]
+	},
+
+	"Her2":
+	{
+		"display": "Her2",
+		"elements":
+		[
+			{
+				"br_her2_ihc_result_p00005":
+				{
+					"display": "Her2",
+					"type": "int",
+					"input": "select",
+					"values":
+					{
+						"0": "Negative/Missing",
+						"1": "Weak staining",
+						"2": "Moderate staining",
+						"3": "Strong staining",
+						"4": "Positive; not quantified",
+						"8": "Not done/not applicable",
+						"9": "Done, result unknown"
+					}
+				}
+			}
+		]
+	},
+
+	"Surgery":
+	{
+		"display": "Surgery",
+		"elements":
+		[
+			{
+				"bcca_surg":
+				{
+					"display": "Surgery",
+					"type": "string",
+					"input": "select",
+					"values":
+					{
+						"Y": "Yes",
+						"N": "No"
+					}
+				}
+			}
+		]
+	},
+
+	"Radiation":
+	{
+		"display": "Radiation",
+		"elements":
+		[
+			{
+				"bcca_rad":
+				{
+					"display": "Radiation",
+					"type": "string",
+					"input": "select",
+					"values":
+					{
+						"Y": "Yes",
+						"N": "No"
+					}
+				}
+			}
+		]
+	},
+
+	"Chemo":
+	{
+		"display": "Chemo",
+		"elements":
+		[
+			{
+				"chemo_tx":
+				{
+					"display": "Chemo",
+					"type": "string",
+					"input": "select",
+					"values":
+					{
+						"yes": "Yes",
+						"no": "No"
+					}
+				}
+			}
+		]
+	}
+}

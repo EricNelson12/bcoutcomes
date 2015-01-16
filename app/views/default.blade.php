@@ -3,6 +3,7 @@
 <head>
     <title>Breast Cancer Outcomes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     {{HTML::style('http://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')}}
     <style>
         body{

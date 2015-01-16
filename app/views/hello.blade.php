@@ -19,6 +19,8 @@
 	
 
   	<script type="text/javascript">
+
+    //to do = handle cloning branches, removing nodes with branches, removing clones
       
 		function collision($div1, $div2) {
 
@@ -44,7 +46,8 @@
 	     
 
 	      //keep track of how many nodes are in the tree
-	      var nodecount= 0;
+	    var nodecount= 0;
+      var attr_duplicated = false;
 
 	  	function create_branch(){
 	        if(nodecount>0){
@@ -70,7 +73,9 @@
   			  $(div).clone(true).attr('id', new_id).appendTo('#cohort_tree');
   			  nodecount++;
   			}
-      }
+    }
+
+   
 
 		}
 
@@ -80,28 +85,91 @@
 	      $('.overlay-bg').show().css({'height' : docHeight}); //display your popup background and set height to the page height
 	      $('.popuptooltip'+val).show().css({'top': scrollTop+20+'px'}); //show the appropriate popup and set the content 20px from the window top
 	    }
+      function handle_duplicate(div){
+        //if nothing is duplicated, duplicate and hide all duplicate buttons
+        if(attr_duplicated==false){
+          attr_duplicated=true;
+          var duplicate_btns = document.getElementsByClassName('duplicate-btn'), i;
 
+          for (var i = 0; i < duplicate_btns.length; i ++) {
+              duplicate_btns[i].style.display = 'none';
+          }
+        }
+        //if something has been duplicated, remove duplicated node and make duplicate buttons available
+        else{
+          attr_duplicated=false;
+          //document.getElementsByClassName('duplicate-btn')[0].style.visibility='visible';
+          var duplicate_btns = document.getElementsByClassName('duplicate-btn'), i;
+
+          for (var i = 0; i < duplicate_btns.length; i ++) {
+              duplicate_btns[i].style.display = 'inline';
+          }
+        }
+      }
 
 	    $(document).ready( function() {
 	     
 	      
 
-	      $('.attr').click(function(event){
-	        event.preventDefault(); // disable normal link function so that it doesn't refresh the page
-	        var docHeight = $(document).height(); //grab the height of the page
-	        var scrollTop = $(window).scrollTop(); //grab the px value from the top of the page to where you're scrolling
-	        var selectedPopup = $(this).data('showpopup'); //get the corresponding popup to show
-	         
-	        $('.overlay-bg').show().css({'height' : docHeight}); //display your popup background and set height to the page height
-	        $('.popup'+selectedPopup).show().css({'top': scrollTop+20+'px'}); //show the appropriate popup and set the content 20px from the window top
-	        add_node(this);
-	    });
-	   
-	    // hide popup when user clicks on close button or if user clicks anywhere outside the container
-	    $('.close-btn, .overlay-bg').click(function(){
-	        $('.overlay-bg, .overlay-content').hide(); // hide the overlay
-	    });
-	     
+        //no rightclick context menu for attributes
+        $('.attr,.attrsurgery,.attrradiation,.attrmedical').bind('contextmenu', function(e){
+            return false;
+        }); 
+        //handle left (1) and right clicks (3)
+        $('.attr,.attrsurgery,.attrradiation,.attrmedical').mousedown(function(event) {
+          switch (event.which) {
+            case 1:
+              event.preventDefault(); // disable normal link function so that it doesn't refresh the page
+              var docHeight = $(document).height(); //grab the height of the page
+              var scrollTop = $(window).scrollTop(); //grab the px value from the top of the page to where you're scrolling
+              var selectedPopup = $(this).data('showpopup'); //get the corresponding popup to show
+               
+              $('.overlay-bg').show().css({'height' : docHeight}); //display your popup background and set height to the page height
+              $('.popup'+selectedPopup).show().css({'top': scrollTop+20+'px'}); //show the appropriate popup and set the content 20px from the window top
+              add_node(this); //add cloned node to cohort builder
+                break;
+            case 2:
+                //alert('Middle Mouse button pressed.');
+                break;
+            case 3:
+                //remove it only if it is a cloned attribute (in the cohort builder)
+                if(this.id.indexOf("-clone") != -1)
+                {
+                  alert(this.nodecount);
+                  this.remove();
+                  nodecount--;
+                }
+                break;
+            default:
+                alert('You have a strange Mouse!');
+            }
+        });
+  	   
+  	    // hide popup when user clicks on close button or if user clicks anywhere outside the container
+  	    $('.close-btn, .overlay-bg').click(function(){
+  	        $('.overlay-bg, .overlay-content').hide(); // hide the overlay
+  	    });
+
+        //handle when the duplicate button is pressed
+        $('.duplicate-btn').click(function(){
+            handle_duplicate(this);
+        });
+        
+        //select the appropriate attr group based on user type role1=radiation role2 = med and role3 = surg
+        var role = <?php echo json_encode($role); ?>;
+        if(role==1)
+        {
+           document.getElementById('ui-id-3').click();
+        }
+        else if(role==2)
+        {
+           document.getElementById('ui-id-4').click();
+        }
+        else if (role==3)
+        {
+          document.getElementById('ui-id-2').click();
+        }
+
 	    });
   	</script>
   	<style>
@@ -193,27 +261,15 @@
     <div id="tabs" class='tabbable'>
      <ul class='nav nav-tabs'>
       <!-- This will choose the correct attribute tree based on user oncology -->
-      @if($role==1)
-      <li id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
-      <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
-      <li class = 'active' id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
-      <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
-      @elseif($role==2)
-      <li id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
-      <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
-      <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
-      <li class = 'active' id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
-      @elseif($role==3)
-      <li id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
-      <li class = 'active' id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
-      <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
-      <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
-      @else
+      
+     
+     
       <li class = 'active' id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
       <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
       <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
       <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
-      @endif
+
+
      </ul>
 
     <img src="images/help.png" alt="alternative text" title="The Cohort Tree shows attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Tree will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(1);"/>
@@ -222,82 +278,82 @@
       <div class="tab-pane active" id="All">
         
         <div id ="All-all">
-          <div id="age"class = "attr" href="#" data-showpopup="1">Age</div>
-          <div id="site"class = "attr" href="#" data-showpopup="2">Site</div>
-          <div id="diagnosis_date"class = "attr">Diagnosis Date</div>
-          <div id="grade"class = "attr">Grade</div>
-          <div id="behaviour"class = "attr">Behaviour</div>
+          <div id="age"class = "attr" href="#" data-showpopup="Age">Age</div>
+          <div id="site"class = "attr" href="#" data-showpopup="Site">Site</div>
+          <div id="diagnosis_date"class = "attr" href="#" data-showpopup="Diagnosis_Date">Diagnosis Date</div>
+          <div id="grade"class = "attr"href="#" data-showpopup="Grade">Grade</div>
+          <div id="behaviour"class = "attr"href="#" data-showpopup="Behaviour">Behaviour</div>
         </div>
         <div id = "All-surgery">
-          <div id="recurrence"class = "attrsurgery">Recurrence</div>
-          <div id="tstaging"class = "attrsurgery">T Staging</div>
-          <div id="mstaging"class = "attrsurgery">M Staging </div>
-          <div id="nstaging"class = "attrsurgery">N Staging</div>
+          <div id="recurrence"class = "attrsurgery" href="#" data-showpopup="SRM_Date">Recurrence</div>
+          <div id="tstaging"class = "attrsurgery" href="#" data-showpopup="TNM_Staging">TNM Staging</div>
         </div>
         <div id = "All-radiation">
-          <div id="nodes"class = "attrradiation">Nodes</div>
-          <div id="histology"class = "attrradiation">Histology</div>
-          <div id="progesterone_receptor"class = "attrradiation">Progesterone Receptor</div>
+          <div id="nodes"class = "attrradiation"  href="#" data-showpopup="Nodes">Nodes</div>
+          <div id="histology"class = "attrradiation"  href="#" data-showpopup="Hist">Histology</div>
+          <div id="progesterone_receptor"class = "attrradiation"  href="#" data-showpopup="PGR">Progesterone Receptor</div>
         </div>
         <div id = "All-medical">
-          <div id="menopause"class = "attrmedical">Menopause</div>
-          <div id="estrogen_receptor"class = "attrmedical">Estrogen Receptor</div>
-          <div id="her2"class = "attrmedical">Her2</div>
+          <div id="menopause"class = "attrmedical" href="#" data-showpopup="Meno_Status">Menopause</div>
+          <div id="estrogen_receptor"class = "attrmedical"  href="#" data-showpopup="Immuno_Stains">Estrogen Receptor</div>
+          <div id="her2"class = "attrmedical"  href="#" data-showpopup="Her2">Her2</div>
+          <div id="chemo"class = "attrmedical"  href="#" data-showpopup="Chemo">Chemo</div>
         </div>
 
       </div>
 
       <div class="tab-pane"  id="Surgical" collapsible=true>
         <div id ="All-all">
-          <div id="age"class = "attr">Age</div>
-          <div id="site"class = "attr">Site</div>
-          <div id="diagnosis_date"class = "attr">Diagnosis Date</div>
-          <div id="grade"class = "attr">Grade</div>
-          <div id="behaviour"class = "attr">Behaviour</div>
+          <div id="age"class = "attr" href="#" data-showpopup="Age">Age</div>
+          <div id="site"class = "attr" href="#" data-showpopup="Site">Site</div>
+          <div id="diagnosis_date"class = "attr" href="#" data-showpopup="Diagnosis_Date">Diagnosis Date</div>
+          <div id="grade"class = "attr"href="#" data-showpopup="Grade">Grade</div>
+          <div id="behaviour"class = "attr"href="#" data-showpopup="Behaviour">Behaviour</div>
         </div>
         <div id = "All-surgery">
-          <div id="recurrence"class = "attrsurgery">Recurrence</div>
-          <div id="tstaging"class = "attrsurgery">T Staging</div>
-          <div id="mstaging"class = "attrsurgery">M Staging </div>
-          <div id="nstaging"class = "attrsurgery">N Staging</div>
+          <div id="recurrence"class = "attrsurgery" href="#" data-showpopup="SRM_Date">Recurrence</div>
+          <div id="tstaging"class = "attrsurgery" href="#" data-showpopup="TNM_Staging">TNM Staging</div>
         </div>
       </div>
 
       <div class="tab-pane" id="Radiation">
          <div id ="All-all">
-          <div id="age"class = "attr">Age</div>
-          <div id="site"class = "attr">Site</div>
-          <div id="diagnosis_date"class = "attr">Diagnosis Date</div>
-          <div id="grade"class = "attr">Grade</div>
-          <div id="behaviour"class = "attr">Behaviour</div>
+          <div id="age"class = "attr" href="#" data-showpopup="Age">Age</div>
+          <div id="site"class = "attr" href="#" data-showpopup="Site">Site</div>
+          <div id="diagnosis_date"class = "attr" href="#" data-showpopup="Diagnosis_Date">Diagnosis Date</div>
+          <div id="grade"class = "attr"href="#" data-showpopup="Grade">Grade</div>
+          <div id="behaviour"class = "attr"href="#" data-showpopup="Behaviour">Behaviour</div>
         </div>
        
         <div id = "All-radiation">
-          <div id="nodes"class = "attrradiation">Nodes</div>
-          <div id="histology"class = "attrradiation">Histology</div>
-          <div id="progesterone_receptor"class = "attrradiation">Progesterone Receptor</div>
+          <div id="nodes"class = "attrradiation"  href="#" data-showpopup="Nodes">Nodes</div>
+          <div id="histology"class = "attrradiation"  href="#" data-showpopup="Hist">Histology</div>
+          <div id="progesterone_receptor"class = "attrradiation"  href="#" data-showpopup="PGR">Progesterone Receptor</div>
         </div>
         
       </div>
 
       <div class="tab-pane" id="Medical">
-        <div id ="All-all">
-          <div id="age"class = "attr">Age</div>
-          <div id="site"class = "attr">Site</div>
-          <div id="diagnosis_date"class = "attr">Diagnosis Date</div>
-          <div id="grade"class = "attr">Grade</div>
-          <div id="behaviour"class = "attr">Behaviour</div>
+         <div id ="All-all">
+          <div id="age"class = "attr" href="#" data-showpopup="Age">Age</div>
+          <div id="site"class = "attr" href="#" data-showpopup="Site">Site</div>
+          <div id="diagnosis_date"class = "attr" href="#" data-showpopup="Diagnosis_Date">Diagnosis Date</div>
+          <div id="grade"class = "attr"href="#" data-showpopup="Grade">Grade</div>
+          <div id="behaviour"class = "attr"href="#" data-showpopup="Behaviour">Behaviour</div>
         </div>
         <div id = "All-medical">
-          <div id="menopause"class = "attrmedical">Menopause</div>
-          <div id="estrogen_receptor"class = "attrmedical">Estrogen Receptor</div>
-          <div id="her2"class = "attrmedical">Her2</div>
+          <div id="menopause"class = "attrmedical" href="#" data-showpopup="Meno_Status">Menopause</div>
+          <div id="estrogen_receptor"class = "attrmedical"  href="#" data-showpopup="Immuno_Stains">Estrogen Receptor</div>
+          <div id="her2"class = "attrmedical"  href="#" data-showpopup="Her2">Her2</div>
+          <div id="chemo"class = "attrmedical"  href="#" data-showpopup="Chemo">Chemo</div>
         </div>
       </div>
      
 
      </div>
     </div>
+
+   
 
   <!-- 
     End Attribute Collection tabbed panel
@@ -340,30 +396,80 @@
     <button class="close-btn">Close</button>
 </div>
 
-<div class="overlay-content popup1">
-    <p class = "popuptitle">Set Age Range</p>
-    <p class = "inputtag">Min Age</p>
-    <input type="number" name = "min_age" value = "0"></input>
+<?php
 
-    <p class = "inputtag">Max Age</p>
-    <input type="number" name = "max_age" value = "110"></input>
-    <button class="close-btn">Close</button>
-</div>
 
-<div class="overlay-content popup2">
-    <p class = "popuptitle">Choose Site</p>
-    <p class = "inputtag">Site</p>
+//Modified from code provided by Stephen Smithbower
+function genInputElements()
+{
+  $dictionary = json_decode(file_get_contents("dictionary.json"));
+  
+  $count = 1;
+  //Generate inputs.
+  foreach ($dictionary as $group => $subgroup)
+  {
+    echo '<div id="overlay-'.$group.'" class= "overlay-content popup'.$group.'">';
+      //echo '<p class = "popuptitle">Set '.$subgroup->display.' Value(s)</p>';
 
-    <!-- pull this from db -->
-    <select>
-      <option value="volvo">Volvo</option>
-      <option value="saab">Saab</option>
-      <option value="mercedes">Mercedes</option>
-      <option value="audi">Audi</option>
-    </select>
+      foreach ($subgroup->elements as $element)
+      {
+        foreach ($element as $subelement => $spec)
+        {
+          $subCheckName ='gsublabel-'.$subelement.'-display';
+          echo '<label id="-gsublabel-'.$subelement.'" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px;'.
+          ($subgroup->display != "none" ? " margin-left:15px;" : "").'">'.$spec->display.'</label><br>';
 
-    <button class="close-btn">Close</button>
-</div>
+          switch ($spec->input)
+          {
+            case 'range':
+              echo '<label>Min</label>';
+              echo '<input class="form-control" name="-'.$subelement.'-min" placeholder="min" style="width:60px;" value="'.
+                $spec->defaultmin.'">';
+              echo '<label>Max</label>';
+              echo '<input class="form-control" name="-'.$subelement.'-max" placeholder="max" style="width:60px;" value="'.
+               $spec->defaultmax.'">';
+              echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
+              break;
+
+            case 'select':
+              echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                'onclick="$(\'.-'.$subelement.'\').each(function(){this.checked=true;});"'
+                  .'>Select All</a>';
+              echo '<a href="#" class="btn btn-danger btn-xs" '.
+                  'onclick="$(\'.-'.$subelement.'\').each(function(){this.checked=false;});"'
+                  .'>Select None</a>';
+              echo '<div style="margin-bottom:10px;"></div>';
+              echo '<div class="scrollcombo">';
+                foreach ($spec->values as $dbVal=>$value)
+                {
+                  $id = $subelement.'-'.$dbVal;
+                  echo '<input type="checkbox" class="-'.$subelement.'" name="-'.$id.'"'.'/>'.
+                          ($spec->type == "aggregate" ? $value->display : $value)."<br>";
+                }
+              echo '</div>';
+              break;
+
+            case 'toggle':
+              echo '<input type="checkbox" name="-'.$subelement.
+                '"> Included</br>';
+              break;
+          }
+        }
+      }
+
+      echo '<button class="close-btn" style = "margin-top:10px;margin-right:10px;">Close</button>';
+      echo '<button id ="'.$group.'-duplicate" class="duplicate-btn" style = "margin-top:10px;margin-right:10px;">Duplicate</button>';
+      
+    echo '</div>';
+    $count++;
+  }
+}
+
+genInputElements();
+
+?>
+
+<!-- end of popup windows -->
 
 <!-- start of visualizations-->
 <div class="tabbable" id="visualization" >
