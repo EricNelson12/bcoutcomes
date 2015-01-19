@@ -115,8 +115,7 @@
 }
 
 .tree_branch{
-    padding-top: 6px;
-    padding-bottom: 6px;
+    
     width:20px;
     height:2px;
     background-color: black;
@@ -140,6 +139,7 @@
         display: none;
         background: #fff;
         padding: 1%;
+        max-height: 90%;
         width: 40%;
         position: absolute;
         top: 15%;
@@ -149,6 +149,7 @@
         z-index: 10001;
         border-radius: 4px;
         box-shadow: 0 0 5px rgba(0,0,0,0.9);
+        overflow: scroll;
     }
  
     .close-btn {
@@ -188,6 +189,21 @@ p.popuptitle{
 p.inputtag{
     display: inline-block;
 }
+
+.duplicate-btn, .un-duplicate-btn {
+        cursor: pointer;
+        border: 1px solid #333;
+        padding: 2% 5%;
+        background: #a9e7f9; /* fallback */
+        background: -moz-linear-gradient(top,  #a9e7f9 0%, #77d3ef 4%, #05abe0 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a9e7f9), color-stop(4%,#77d3ef), color-stop(100%,#05abe0));
+        background: -webkit-linear-gradient(top,  #a9e7f9 0%,#77d3ef 4%,#05abe0 100%);
+        background: -o-linear-gradient(top,  #a9e7f9 0%,#77d3ef 4%,#05abe0 100%);
+        background: -ms-linear-gradient(top,  #a9e7f9 0%,#77d3ef 4%,#05abe0 100%);
+        background: linear-gradient(to bottom,  #a9e7f9 0%,#77d3ef 4%,#05abe0 100%);
+        border-radius: 4px;
+        box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
 
 
 

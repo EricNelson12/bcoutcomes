@@ -45,21 +45,22 @@
 
 	     
 
-	      //keep track of how many nodes are in the tree
-	    var nodecount= 0;
-      var attr_duplicated = false;
+    //keep track of how many nodes are in the tree
+    var nodecount= 0;
+    //keep track to see if an attr has been duplicated
+    var duplicated_id = "none";
 
-	  	function create_branch(){
-	        if(nodecount>0){
+  	function create_branch(){
+      if(nodecount>0){
 
 
-	          var iDiv = document.createElement('div');
-	          iDiv.id = 'tree_branch'+nodecount;
-	          iDiv.className = 'tree_branch';
-	          document.getElementById('cohort_tree').appendChild(iDiv);
-	        }
-	      }
-
+        var iDiv = document.createElement('div');
+        iDiv.id = 'tree_branch'+nodecount;
+        iDiv.className = 'tree_branch';
+        document.getElementById('cohort_tree').appendChild(iDiv);
+      }
+    }
+    //add node to cohort tree
 		function add_node(div){
       if(div.id.indexOf("-clone") == -1){
   			var new_id = div.id+"-clone";
@@ -71,12 +72,14 @@
   			  create_branch();
           //.clone( [withDataAndEvents] [, deepWithDataAndEvents] )
   			  $(div).clone(true).attr('id', new_id).appendTo('#cohort_tree');
+
+          //store the nodecount for removing branches
+          $('#'+new_id).data('nodecount', nodecount);
+          //increment nodecount
   			  nodecount++;
+          
   			}
-    }
-
-   
-
+      }
 		}
 
 	    function show_tooltip(val){
@@ -85,34 +88,74 @@
 	      $('.overlay-bg').show().css({'height' : docHeight}); //display your popup background and set height to the page height
 	      $('.popuptooltip'+val).show().css({'top': scrollTop+20+'px'}); //show the appropriate popup and set the content 20px from the window top
 	    }
+      
+
+      //TODO ADD VISUAL INDICATION THAT NODE HAS BEEN DUPLICATED
       function handle_duplicate(div){
         //if nothing is duplicated, duplicate and hide all duplicate buttons
-        if(attr_duplicated==false){
-          attr_duplicated=true;
+        if(duplicated_id=="none"){
+          duplicated_id=div.id;
+
+          //hide the duplicate buttons
           var duplicate_btns = document.getElementsByClassName('duplicate-btn'), i;
 
           for (var i = 0; i < duplicate_btns.length; i ++) {
               duplicate_btns[i].style.display = 'none';
           }
+          
+          //duplicate the attribute in the tree and create a new value input window
+          var popup_id = div.id.substring(0,div.id.indexOf('-duplicate'));
+          $('#overlay-'+popup_id+'content-cohort2').show();
+
+         
         }
         //if something has been duplicated, remove duplicated node and make duplicate buttons available
         else{
-          attr_duplicated=false;
+          duplicated_id="none";
           //document.getElementsByClassName('duplicate-btn')[0].style.visibility='visible';
           var duplicate_btns = document.getElementsByClassName('duplicate-btn'), i;
+          
 
           for (var i = 0; i < duplicate_btns.length; i ++) {
               duplicate_btns[i].style.display = 'inline';
           }
+
+          var popup_id = div.id.substring(0,div.id.indexOf('-duplicate'));
+         
+          $('#overlay-'+popup_id+'content-cohort2').hide();
+
         }
       }
+
+      function check_duplicate_on_removal(div){
+        var removed_div = div.id.substring(0,div.id.indexOf("-clone")).toLowerCase();
+        var duplicated_div = duplicated_id.substring(0,duplicated_id.indexOf("-duplicate")).toLowerCase();
+        
+        if(removed_div==duplicated_div)
+        {
+          
+          //document.getElementsByClassName('duplicate-btn')[0].style.visibility='visible';
+          var duplicate_btns = document.getElementsByClassName('duplicate-btn'), i;
+          
+
+          for (var i = 0; i < duplicate_btns.length; i ++) {
+              duplicate_btns[i].style.display = 'inline';
+          }
+
+          var popup_id = duplicated_id.substring(0,duplicated_id.indexOf('-duplicate'));
+         
+          $('#overlay-'+popup_id+'content-cohort2').hide();
+          duplicated_id="none";
+        }
+      }
+      
 
 	    $(document).ready( function() {
 	     
 	      
 
         //no rightclick context menu for attributes
-        $('.attr,.attrsurgery,.attrradiation,.attrmedical').bind('contextmenu', function(e){
+        $('.attr,.attrsurgery,.attrradiation,.attrmedical,#cohort_tree').bind('contextmenu', function(e){
             return false;
         }); 
         //handle left (1) and right clicks (3)
@@ -135,7 +178,11 @@
                 //remove it only if it is a cloned attribute (in the cohort builder)
                 if(this.id.indexOf("-clone") != -1)
                 {
-                  alert(this.nodecount);
+                  //remove the corresponding tree branch
+                  var branch_num = $('#'+this.id).data('nodecount');
+                  $('#tree_branch'+branch_num).remove();
+                  check_duplicate_on_removal(this);
+                  //remove the node, decrement the nodecount
                   this.remove();
                   nodecount--;
                 }
@@ -151,9 +198,10 @@
   	    });
 
         //handle when the duplicate button is pressed
-        $('.duplicate-btn').click(function(){
+        $('.duplicate-btn, .un-duplicate-btn').click(function(){
             handle_duplicate(this);
         });
+
         
         //select the appropriate attr group based on user type role1=radiation role2 = med and role3 = surg
         var role = <?php echo json_encode($role); ?>;
@@ -411,6 +459,7 @@ function genInputElements()
     echo '<div id="overlay-'.$group.'" class= "overlay-content popup'.$group.'">';
       //echo '<p class = "popuptitle">Set '.$subgroup->display.' Value(s)</p>';
 
+    echo '<div id="overlay-'.$group.'content">';
       foreach ($subgroup->elements as $element)
       {
         foreach ($element as $subelement => $spec)
@@ -456,7 +505,58 @@ function genInputElements()
           }
         }
       }
+      echo '</div>';
 
+      //re-create as hidden for 2nd cohort
+      echo '<div id="overlay-'.$group.'content-cohort2" style="display:none;">';
+      foreach ($subgroup->elements as $element)
+      {
+        foreach ($element as $subelement => $spec)
+        {
+          $subCheckName ='gsublabel-'.$subelement.'-display';
+          echo '<label id="-gsublabel-'.$subelement.'" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px;'.
+          ($subgroup->display != "none" ? " margin-left:15px;" : "").'">'.$spec->display.' Comparison</label><br>';
+         
+          switch ($spec->input)
+          {
+            case 'range':
+              echo '<label>Min</label>';
+              echo '<input class="form-control" name="comparative-'.$subelement.'-min" placeholder="min" style="width:60px;" value="'.
+                $spec->defaultmin.'">';
+              echo '<label>Max</label>';
+              echo '<input class="form-control" name="comparative-'.$subelement.'-max" placeholder="max" style="width:60px;" value="'.
+               $spec->defaultmax.'">';
+              echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
+              break;
+
+            case 'select':
+              echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                'onclick="$(\'.-'.$subelement.'\').each(function(){this.checked=true;});"'
+                  .'>Select All</a>';
+              echo '<a href="#" class="btn btn-danger btn-xs" '.
+                  'onclick="$(\'.-'.$subelement.'\').each(function(){this.checked=false;});"'
+                  .'>Select None</a>';
+              echo '<div style="margin-bottom:10px;"></div>';
+              echo '<div class="scrollcombo">';
+                foreach ($spec->values as $dbVal=>$value)
+                {
+                  $id = $subelement.'-'.$dbVal;
+                  echo '<input type="checkbox" class="-'.$subelement.'" name="comparative-'.$id.'"'.'/>'.
+                          ($spec->type == "aggregate" ? $value->display : $value)."<br>";
+                }
+              echo '</div>';
+              break;
+
+            case 'toggle':
+              echo '<input type="checkbox" name="comparative-'.$subelement.
+                '"> Included</br>';
+              break;
+          }
+        }
+      }
+      echo '<button id ="'.$group.'-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</button>';
+
+      echo '</div>';
       echo '<button class="close-btn" style = "margin-top:10px;margin-right:10px;">Close</button>';
       echo '<button id ="'.$group.'-duplicate" class="duplicate-btn" style = "margin-top:10px;margin-right:10px;">Duplicate</button>';
       
