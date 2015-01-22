@@ -54,7 +54,7 @@ d3.tsv("data.tsv", function(error, data) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Price B ($)");
+      .text("Recurrences (%)");
 
 
   svg.append("path")

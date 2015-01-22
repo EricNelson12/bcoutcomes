@@ -1,6 +1,6 @@
 !(function (d3) {
 
-$("acontent").empty();
+$("ccontent").empty();
 
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
@@ -26,7 +26,7 @@ var line = d3.svg.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.val); });
 
-var svg = d3.select("acontent").append("svg")
+var svg = d3.select("ccontent").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -54,7 +54,7 @@ d3.tsv("data.tsv", function(error, data) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Survivors (%)");
+      .text("Patients Treated (%)");
 
 
   svg.append("path")

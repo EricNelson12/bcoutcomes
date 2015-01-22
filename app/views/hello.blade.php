@@ -107,6 +107,12 @@
           var popup_id = div.id.substring(0,div.id.indexOf('-duplicate'));
           $('#overlay-'+popup_id+'content-cohort2').show();
 
+          //find the node in the cohort tree and indicate it's been duplicated
+          $('.attr,.attrsurgery,.attrradiation,.attrmedical').each(function(){
+            if($(this).data("showpopup")==popup_id&&this.id.indexOf("clone")!=-1){
+              
+            }
+          });
          
         }
         //if something has been duplicated, remove duplicated node and make duplicate buttons available
@@ -125,6 +131,17 @@
           $('#overlay-'+popup_id+'content-cohort2').hide();
 
         }
+      }
+
+      function reset_attribute_values(div){
+        //to do (possibly unneccessary)
+        var showpopup = $(div).data("showpopup").toLowerCase();
+        
+        //this can be made to work (rename all inputs to include showpopup in name and give them default values)
+        $("input[name*='"+showpopup+"']" ).each(function(){
+            this.value=this.defaultvalue; alert(this);
+          });
+        
       }
 
       function check_duplicate_on_removal(div){
@@ -181,7 +198,11 @@
                   //remove the corresponding tree branch
                   var branch_num = $('#'+this.id).data('nodecount');
                   $('#tree_branch'+branch_num).remove();
+
+                  //handle if a duplicated node is removed
                   check_duplicate_on_removal(this);
+                  //reset values for the removed attribute (not neccessary)
+                  //reset_attribute_values(this);
                   //remove the node, decrement the nodecount
                   this.remove();
                   nodecount--;
@@ -320,7 +341,7 @@
 
      </ul>
 
-    <img src="images/help.png" alt="alternative text" title="The Cohort Tree shows attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Tree will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(1);"/>
+    <img src="images/help.png" alt="alternative text" title="The Cohort Filters show attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Filters will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(1);"/>
      <div class='tab-content'>
 
       <div class="tab-pane active" id="All">
@@ -413,7 +434,7 @@
    
     <div id="cohort_tree">
       <p style="display:inline-block;">Cohort Filters</p>
-    <img src="images/help.png" alt="alternative text" title="The Cohort Tree shows attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Tree will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(2);"/>
+    <img src="images/help.png" alt="alternative text" title="The Cohort Filters show attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Filters will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(2);"/>
 
     </div>
 
@@ -459,7 +480,9 @@ function genInputElements()
     echo '<div id="overlay-'.$group.'" class= "overlay-content popup'.$group.'">';
       //echo '<p class = "popuptitle">Set '.$subgroup->display.' Value(s)</p>';
 
-    echo '<div id="overlay-'.$group.'content">';
+
+
+    echo '<div id="overlay-'.$group.'content" style="float:left;padding-right:10px;">';
       foreach ($subgroup->elements as $element)
       {
         foreach ($element as $subelement => $spec)
@@ -482,17 +505,17 @@ function genInputElements()
 
             case 'select':
               echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
-                'onclick="$(\'.-'.$subelement.'\').each(function(){this.checked=true;});"'
+                'onclick="$(\'.-'.$subelement.'1\').each(function(){this.checked=true;});"'
                   .'>Select All</a>';
               echo '<a href="#" class="btn btn-danger btn-xs" '.
-                  'onclick="$(\'.-'.$subelement.'\').each(function(){this.checked=false;});"'
+                  'onclick="$(\'.-'.$subelement.'1\').each(function(){this.checked=false;});"'
                   .'>Select None</a>';
               echo '<div style="margin-bottom:10px;"></div>';
               echo '<div class="scrollcombo">';
                 foreach ($spec->values as $dbVal=>$value)
                 {
                   $id = $subelement.'-'.$dbVal;
-                  echo '<input type="checkbox" class="-'.$subelement.'" name="-'.$id.'"'.'/>'.
+                  echo '<input type="checkbox" class="-'.$subelement.'1" name="-'.$id.'"'.'/>'.
                           ($spec->type == "aggregate" ? $value->display : $value)."<br>";
                 }
               echo '</div>';
@@ -515,7 +538,7 @@ function genInputElements()
         {
           $subCheckName ='gsublabel-'.$subelement.'-display';
           echo '<label id="-gsublabel-'.$subelement.'" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px;'.
-          ($subgroup->display != "none" ? " margin-left:15px;" : "").'">'.$spec->display.' Comparison</label><br>';
+          ($subgroup->display != "none" ? " margin-left:15px;" : "").'">..Comparison</label><br>';
          
           switch ($spec->input)
           {
@@ -531,17 +554,17 @@ function genInputElements()
 
             case 'select':
               echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
-                'onclick="$(\'.-'.$subelement.'\').each(function(){this.checked=true;});"'
+                'onclick="$(\'.-'.$subelement.'2\').each(function(){this.checked=true;});"'
                   .'>Select All</a>';
               echo '<a href="#" class="btn btn-danger btn-xs" '.
-                  'onclick="$(\'.-'.$subelement.'\').each(function(){this.checked=false;});"'
+                  'onclick="$(\'.-'.$subelement.'2\').each(function(){this.checked=false;});"'
                   .'>Select None</a>';
               echo '<div style="margin-bottom:10px;"></div>';
               echo '<div class="scrollcombo">';
                 foreach ($spec->values as $dbVal=>$value)
                 {
                   $id = $subelement.'-'.$dbVal;
-                  echo '<input type="checkbox" class="-'.$subelement.'" name="comparative-'.$id.'"'.'/>'.
+                  echo '<input type="checkbox" class="-'.$subelement.'2" name="comparative-'.$id.'"'.'/>'.
                           ($spec->type == "aggregate" ? $value->display : $value)."<br>";
                 }
               echo '</div>';
@@ -557,9 +580,10 @@ function genInputElements()
       echo '<button id ="'.$group.'-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</button>';
 
       echo '</div>';
+      echo '<div style = "clear:both;">'; //div for buttons
       echo '<button class="close-btn" style = "margin-top:10px;margin-right:10px;">Close</button>';
       echo '<button id ="'.$group.'-duplicate" class="duplicate-btn" style = "margin-top:10px;margin-right:10px;">Duplicate</button>';
-      
+      echo '</div>'; //div for buttons
     echo '</div>';
     $count++;
   }
@@ -576,6 +600,8 @@ genInputElements();
     <ul class="nav nav-tabs">
         <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival Curves</a></li>
         <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence Curves</a></li>
+        <li><a class="ctab" href="#c_tab" data-toggle="tab">Time to Treatment</a></li>
+        <li><a class="dtab" href="#d_tab" data-toggle="tab">Treatment Cost Estimation</a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="a_tab">
@@ -585,6 +611,14 @@ genInputElements();
         <div class="tab-pane" id="b_tab">
             <h1>Recurrence Curves</h1>
             <bcontent></bcontent>
+        </div>
+        <div class="tab-pane" id="c_tab">
+            <h1>Time to Treatment</h1>
+            <ccontent></ccontent>
+        </div>
+         <div class="tab-pane" id="d_tab">
+            <h1>Treatment Cost Estimation</h1>
+            <dcontent></dcontent>
         </div>
     </div>
 </div>
@@ -609,6 +643,17 @@ genInputElements();
         $.getScript("b.js");
     })
 </script>
+<script>
+    $(".ctab").click(function() {
+        $.getScript("c.js");
+    })
+</script>
+<script>
+    $(".dtab").click(function() {
+        $.getScript("d.js");
+    })
+</script>
+
 
 </body>
 </html>

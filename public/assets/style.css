@@ -140,11 +140,11 @@
         background: #fff;
         padding: 1%;
         max-height: 90%;
-        width: 40%;
+        width: 50%;
         position: absolute;
         top: 15%;
         left: 50%;
-        margin: 0 0 0 -20%; /* add negative left margin for half the width to center the div */
+        margin: 0 0 0 -25%; /* add negative left margin for half the width to center the div */
         cursor: default;
         z-index: 10001;
         border-radius: 4px;
