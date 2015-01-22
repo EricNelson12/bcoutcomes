@@ -110,7 +110,11 @@
           //find the node in the cohort tree and indicate it's been duplicated
           $('.attr,.attrsurgery,.attrradiation,.attrmedical').each(function(){
             if($(this).data("showpopup")==popup_id&&this.id.indexOf("clone")!=-1){
-              
+                var iDiv = document.createElement('div');
+                iDiv.id = 'star';
+                iDiv.className = 'star';
+                this.appendChild(iDiv);
+
             }
           });
          
@@ -129,6 +133,12 @@
           var popup_id = div.id.substring(0,div.id.indexOf('-duplicate'));
          
           $('#overlay-'+popup_id+'content-cohort2').hide();
+          $('.attr,.attrsurgery,.attrradiation,.attrmedical').each(function(){
+            if($(this).data("showpopup")==popup_id&&this.id.indexOf("clone")!=-1){
+              var star = document.getElementById('star');
+              this.removeChild(star);
+            }
+          });
 
         }
       }
