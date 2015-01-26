@@ -14,6 +14,74 @@
     });
   });
   </script>
+  
+
+  <?php
+
+  require_once("kaplanMeier.php");
+
+  $dictionary = json_decode(file_get_contents("dictionary.json"));
+  $db = new PDO("mysql:host=10.7.201.60;dbname=breastdata2", "breastuser", "YES");
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+  $isNotFirstQuery = isset($_POST['is_not_first_query']) ? true : false;
+
+
+  //Grab params.
+  $cohort1Params = parseParams("cohort1-");
+  $cohort2Params = parseParams("cohort2-");
+
+  
+  $cohort1 = queryData($cohort1Params, 'death_years');
+  $cohort1dx = queryData($cohort1Params, 'br_dx_date');
+
+  //$cohort2 = queryData($cohort2Params, 'death_years');
+  //$cohort2dx = queryData($cohort2Params, 'br_dx_date');
+
+  //Logrank.
+  $cohort1LogDat = kaplanMeierLogRank(10, $cohort1, 'death_years');
+  //$cohort2LogDat = kaplanMeierLogRank(10, $cohort2, 'death_years');
+
+  $logRank = logRankTest($cohort1LogDat, $cohort1LogDat, 10);
+
+
+  //Survival.
+  $cohort1Survival = kaplanMeier(365, 10, $cohort1, $cohort1dx, 'death_years', true);
+  //$cohort2Survival = kaplanMeier(365, 10, $cohort2, $cohort2dx, 'death_years', false);
+
+  $nameCohort1 = 'Cohort 1 ('.$cohort1Survival[0].' / '.count($cohort1).')';
+  //$nameCohort2 = 'Cohort 2 ('.$cohort2Survival[0].' / '.count($cohort2).')';
+  $nameCohort2 = $nameCohort1;
+
+  $dataToJoin = array($cohort1Survival[1], $cohort1Survival[1]);
+
+  $names = array('cohort 1', 'cohort 2');
+
+  $joinedData = joinKaplanData($dataToJoin, $names);
+
+  $tsv = fopen('data.tsv', 'w');
+  fwrite($tsv, "year\tclose\topen");
+  fwrite($tsv, "\n");
+  
+  foreach ($joinedData as $year => $t_data)
+  {
+    fwrite($tsv, $year."\t".$t_data['cohort 1']."\t".$t_data['cohort 2']);
+    fwrite($tsv, "\t0\n");
+  }
+
+  fclose($tsv);
+
+//for some reason, it will only be able to get read if I make a copy...
+  $file = 'data.tsv';
+  $newfile = 'data2.tsv';
+
+  if (!copy($file, $newfile)) {
+      echo "failed to copy $file...\n";
+  }
+  
+
+  ?>
 	
 	{{ HTML::style('assets/style.css') }}
 	
@@ -251,30 +319,7 @@
 
 	    });
   	</script>
-  	<style>
-
-		body {
-		  font: 10px sans-serif;
-		}
-
-		.axis path,
-		.axis line {
-		  fill: none;
-		  stroke: #000;
-		  shape-rendering: crispEdges;
-		}
-
-		.x.axis path {
-		  display: none;
-		}
-
-		.line {
-		  fill: none;
-		  stroke: steelblue;
-		  stroke-width: 1.5px;
-		}
-
-		</style>
+  
 
   	<title>Breast Cancer Outcomes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -348,8 +393,11 @@
       <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
       <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
 
-
+      <li href="#" class="queryButton">Query</li>
+      <li style = "margin-right:10px;">&nbsp;</li>
+      <li onClick="window.location.reload()" class="resetButton">Reset</li>
      </ul>
+
 
     <img src="images/help.png" alt="alternative text" title="The Cohort Filters show attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Filters will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(1);"/>
      <div class='tab-content'>
@@ -482,6 +530,7 @@
 function genInputElements()
 {
   $dictionary = json_decode(file_get_contents("dictionary.json"));
+  //global $dictionary;
   
   $count = 1;
   //Generate inputs.
@@ -491,6 +540,7 @@ function genInputElements()
       //echo '<p class = "popuptitle">Set '.$subgroup->display.' Value(s)</p>';
 
 
+    $pref = 'cohort1-';
 
     echo '<div id="overlay-'.$group.'content" style="float:left;padding-right:10px;">';
       foreach ($subgroup->elements as $element)
@@ -505,34 +555,34 @@ function genInputElements()
           {
             case 'range':
               echo '<label>Min</label>';
-              echo '<input class="form-control" name="-'.$subelement.'-min" placeholder="min" style="width:60px;" value="'.
+              echo '<input class="form-control" name="'.$pref.'-'.$subelement.'-min" placeholder="min" style="width:60px;" value="'.
                 $spec->defaultmin.'">';
               echo '<label>Max</label>';
-              echo '<input class="form-control" name="-'.$subelement.'-max" placeholder="max" style="width:60px;" value="'.
+              echo '<input class="form-control" name="'.$pref.'-'.$subelement.'-max" placeholder="max" style="width:60px;" value="'.
                $spec->defaultmax.'">';
               echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
               break;
 
             case 'select':
               echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
-                'onclick="$(\'.-'.$subelement.'1\').each(function(){this.checked=true;});"'
+                'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});"'
                   .'>Select All</a>';
               echo '<a href="#" class="btn btn-danger btn-xs" '.
-                  'onclick="$(\'.-'.$subelement.'1\').each(function(){this.checked=false;});"'
+                  'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});"'
                   .'>Select None</a>';
               echo '<div style="margin-bottom:10px;"></div>';
               echo '<div class="scrollcombo">';
                 foreach ($spec->values as $dbVal=>$value)
                 {
                   $id = $subelement.'-'.$dbVal;
-                  echo '<input type="checkbox" class="-'.$subelement.'1" name="-'.$id.'"'.'/>'.
+                  echo '<input type="checkbox" class="'.$pref.'-'.$subelement.'" name="-'.$id.'"'.'/>'.
                           ($spec->type == "aggregate" ? $value->display : $value)."<br>";
                 }
               echo '</div>';
               break;
 
             case 'toggle':
-              echo '<input type="checkbox" name="-'.$subelement.
+              echo '<input type="checkbox" name="'.$pref.'-'.$subelement.
                 '"> Included</br>';
               break;
           }
@@ -540,6 +590,7 @@ function genInputElements()
       }
       echo '</div>';
 
+      $pref = 'cohort2-';
       //re-create as hidden for 2nd cohort
       echo '<div id="overlay-'.$group.'content-cohort2" style="display:none;">';
       foreach ($subgroup->elements as $element)
@@ -554,34 +605,34 @@ function genInputElements()
           {
             case 'range':
               echo '<label>Min</label>';
-              echo '<input class="form-control" name="comparative-'.$subelement.'-min" placeholder="min" style="width:60px;" value="'.
+              echo '<input class="form-control" name="'.$pref.'-'.$subelement.'-min" placeholder="min" style="width:60px;" value="'.
                 $spec->defaultmin.'">';
               echo '<label>Max</label>';
-              echo '<input class="form-control" name="comparative-'.$subelement.'-max" placeholder="max" style="width:60px;" value="'.
+              echo '<input class="form-control" name="'.$pref.'-'.$subelement.'-max" placeholder="max" style="width:60px;" value="'.
                $spec->defaultmax.'">';
               echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
               break;
 
             case 'select':
               echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
-                'onclick="$(\'.-'.$subelement.'2\').each(function(){this.checked=true;});"'
+                'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});"'
                   .'>Select All</a>';
               echo '<a href="#" class="btn btn-danger btn-xs" '.
-                  'onclick="$(\'.-'.$subelement.'2\').each(function(){this.checked=false;});"'
+                  'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});"'
                   .'>Select None</a>';
               echo '<div style="margin-bottom:10px;"></div>';
               echo '<div class="scrollcombo">';
                 foreach ($spec->values as $dbVal=>$value)
                 {
                   $id = $subelement.'-'.$dbVal;
-                  echo '<input type="checkbox" class="-'.$subelement.'2" name="comparative-'.$id.'"'.'/>'.
+                  echo '<input type="checkbox" class="'.$pref.'-'.$subelement.'" name="comparative-'.$id.'"'.'/>'.
                           ($spec->type == "aggregate" ? $value->display : $value)."<br>";
                 }
               echo '</div>';
               break;
 
             case 'toggle':
-              echo '<input type="checkbox" name="comparative-'.$subelement.
+              echo '<input type="checkbox" name="'.$pref.'-'.$subelement.
                 '"> Included</br>';
               break;
           }
@@ -598,28 +649,31 @@ function genInputElements()
     $count++;
   }
 }
-
-genInputElements();
-
 ?>
+
+<form role="form" method="POST" action="index.php">
+<?php
+genInputElements();
+?>
+</form>
 
 <!-- end of popup windows -->
 
 <!-- start of visualizations-->
 <div class="tabbable" id="visualization" >
     <ul class="nav nav-tabs">
-        <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival Curves</a></li>
-        <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence Curves</a></li>
+        <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival</a></li>
+        <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence</a></li>
         <li><a class="ctab" href="#c_tab" data-toggle="tab">Time to Treatment</a></li>
         <li><a class="dtab" href="#d_tab" data-toggle="tab">Treatment Cost Estimation</a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="a_tab">
-            <h1>Survival Curves</h1>
+            <h1>Survival</h1>
             <acontent></acontent>
         </div>
         <div class="tab-pane" id="b_tab">
-            <h1>Recurrence Curves</h1>
+            <h1>Recurrence</h1>
             <bcontent></bcontent>
         </div>
         <div class="tab-pane" id="c_tab">
@@ -632,6 +686,13 @@ genInputElements();
         </div>
     </div>
 </div>
+
+
+<table class="table table-striped table-hover" style="width:627px; margin-left:20px;">
+  <tr><th>Year</th><?php for ($i=1; $i < 11; $i++) echo '<th>'.$i.'</th>';?><th>Pop.</th></tr>
+  <?php genCumSurvivalRow($cohort1Survival[1], $cohort1Survival[0], "Cohort 1", "#1f77b4"); ?>
+  <?php //genCumSurvivalRow($cohort2Survival[1], $cohort2Survival[0], "Cohort 2", "#ff7f0e"); ?>
+</table>
 
 <script src="http://d3js.org/d3.v3.js"></script>
 
@@ -664,6 +725,185 @@ genInputElements();
     })
 </script>
 
+<?php
+
+ function parseParams($prefCohort)
+  {
+    $dictionary = json_decode(file_get_contents("dictionary.json"));
+
+    $params = array();
+    //global $dictionary;
+    global $isNotFirstQuery;
+
+    foreach ($dictionary as $group => $subgroup)
+    {
+      foreach ($subgroup->elements as $element)
+      {
+        foreach ($element as $subelement => $spec)
+        {
+          switch ($spec->input)
+          {
+            case 'range':
+              $params[$subelement.'-min'] = isset($_POST[$prefCohort.$subelement.'-min']) ?
+                  $_POST[$prefCohort.$subelement.'-min'] : $spec->defaultmin;
+
+              $params[$subelement.'-max'] = isset($_POST[$prefCohort.$subelement.'-max']) ?
+                  $_POST[$prefCohort.$subelement.'-max'] : $spec->defaultmax;
+              break;
+
+            case 'select':
+              foreach ($spec->values as $dbVal=>$value)
+              {
+                $id = $subelement.'-'.$dbVal;
+
+                if (isset($_POST[$prefCohort.$id]))
+                  $params[$id] = 'on';
+                else
+                {
+                  if ($isNotFirstQuery == true)
+                    $params[$id] = 'off';
+                  else
+                    $params[$id] = 'on';
+                }
+              }
+              break;
+
+            case 'toggle':
+              $params[$subelement] = isset($_POST[$prefCohort.$subelement]) ? true : false;
+              break;
+          }
+        }
+      }
+    }
+
+    return $params;
+  }
+
+  function queryData($params, $orderByColumn)
+  {
+    //global $dictionary;
+    $dictionary = json_decode(file_get_contents("dictionary.json"));
+    //global $db;
+    $db = new PDO("mysql:host=10.7.201.60;dbname=breastdata2", "breastuser", "YES");
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+    $qCount = 0;
+    $query = 'SELECT id, death_years, br_dx_date FROM data WHERE ';
+    foreach ($dictionary as $group => $subgroup)
+    {
+      foreach ($subgroup->elements as $element)
+      {
+        foreach ($element as $subelement => $spec)
+        {
+          if ($qCount > 0)
+            $query.=' AND ';
+
+          switch ($spec->input)
+          {
+            case 'range':
+              //Check for toggle.
+              if (!isset($params['toggle_'.$subelement]) || $params['toggle_'.$subelement] == true)
+              {
+                if ($spec->type == "year")
+                {
+                  $query.=$subelement.' >= "'.$params[$subelement.'-min'].'-00-00" AND '.
+                    $subelement.' <= "'.$params[$subelement.'-max'].'-12-31"';
+                }
+                else
+                {
+                  $query.=$subelement.' >= '.$params[$subelement.'-min'].' AND '.
+                    $subelement.' <= '.$params[$subelement.'-max'];
+                }
+              }
+              else
+              {
+                $query.= "0 = 0"; //Keep query string from breaking mysql.
+              }
+              break;
+
+            case 'select':
+              $firstSw = true;
+              foreach ($spec->values as $dbVal=>$value)
+              {
+                $id = $subelement.'-'.$dbVal;
+
+                if ($params[$id] == 'on')
+                {
+                  if (!$firstSw)
+                    $query.=" OR ";
+                  else
+                    $query.="(";
+
+                  switch ($spec->type)
+                  {
+                    case 'string':
+                      if ($dbVal == "_empty_")
+                      {
+                        $query.=$subelement.' IS NULL OR '.$subelement.' = ""';
+                      }
+                      else
+                      {
+                        $query.=$subelement.' LIKE "'.$dbVal.'"';
+                      }
+                      break;
+
+                    case 'aggregate':
+                      $query.=$subelement.' >= '.$value->min.' AND '.$subelement.
+                        '<= '.$value->max;
+                      break;
+
+                    default:
+                      $query.=$subelement.' = '.$dbVal;
+                  }
+
+                  $firstSw = false;
+                }
+              }
+              if (!$firstSw)
+                $query.=")";
+              else
+                $query.= "0 = 0"; //Keep query string from breaking mysql.
+              break;
+
+            default:
+              $query.= "0 = 0"; //Keep query string from breaking mysql.
+          }
+
+          $qCount++;
+        }
+      }
+    }
+    $query.= " ORDER BY ".$orderByColumn." ASC";
+
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+
+    $data = $stmt->fetchAll();
+
+    //echo $query."<br><br><br>";
+
+    return $data;
+  }
+
+  function genCumSurvivalRow($survivalData, $popCount, $label, $colour)
+  {
+    //Parse the data and find final survival rate for each year.
+    $surv = array();
+
+    foreach($survivalData as $year=>$perc)
+    {
+      $dYear = intval($year) + 1;
+      $surv[$dYear] = $perc;
+    }
+
+    //Write the table.
+    echo '<tr><td style="color:'.$colour.'"><i><b>'.$label.'</b></i></td>';
+    foreach ($surv as $year => $perc)
+      echo '<td style="color:'.$colour.'">'.number_format($perc, 0).'%</td>';
+    echo '<td style="color:'.$colour.'"><b>'.$popCount.'</b></td></tr>';
+  }
+?>
 
 </body>
 </html>
