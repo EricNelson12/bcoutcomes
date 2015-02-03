@@ -12,6 +12,7 @@
 */
 
 Route::get('', array('as' => 'home', 'uses' => 'HomeController@index'));
+Route::post('', array('as' => 'home', 'uses' => 'HomeController@index'));
 Route::get('login', array('as' => 'login', 'uses' => 'UserController@login'));
 Route::post('/login', array('as' => 'login', 'uses' => 'UserController@handleLogin'));
 Route::get('/profile', array('as' => 'profile', 'uses' => 'UserController@profile'));

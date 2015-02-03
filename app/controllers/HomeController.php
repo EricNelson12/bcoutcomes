@@ -19,7 +19,7 @@ class HomeController extends BaseController {
 	{
 		if(Auth::check()){
 			$role = Auth::user()->role;
-			return View::make('hello')->with('role', $role);
+			return View::make('hello1')->with('role', $role);
 		}
 		else{
 			return View::make('users.login');
