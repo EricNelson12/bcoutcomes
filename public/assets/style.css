@@ -348,3 +348,11 @@ circle {
 .bar text {
   fill: #fff;
 }
+
+.attr .popup {
+  display: none;
+}
+
+.attr:hover .popup {
+  display: block;
+}

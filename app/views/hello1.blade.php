@@ -214,13 +214,190 @@
       }
 
       function reset_attribute_values(div){
-        //to do (possibly unneccessary)
-        var showpopup = $(div).data("showpopup").toLowerCase();
+        var popup = $(div).data('showpopup')
         
-        //this can be made to work (rename all inputs to include showpopup in name and give them default values)
-        $("input[name*='"+showpopup+"']" ).each(function(){
-            this.value=this.defaultvalue; alert(this);
-          });
+
+        //not the best way to do this but oh well
+        switch(popup){
+          case "Age":
+            $("input[name*=cohort1-age]").each(function(){
+                this.value = this.defaultValue;
+            });
+            break;
+          case "Diagnosis_Date":
+            
+            $("input[name*=cohort1-br_dx]").each(function(){
+                this.value = this.defaultValue;
+            });
+            break;
+          case "SRM_Date":
+             $("input[name*=cohort1-min_srm]").each(function(){
+                this.value = this.defaultValue;
+            });
+            break;
+          case "TNM_Staging":
+
+           
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-tnm_t")!=-1)
+                  if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+             $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-tnm_n")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+              $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-tnm_m")!=-1)
+                  if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "PGR":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-br_pgr")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Nodes":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-br_num_pos")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Meno_Status":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-meno")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Hist":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-hist")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Her2":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-br_her2")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Site":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-site")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Immuno_Stains":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-br_immuno")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Grade":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-grade")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Behaviour":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-behavior")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Radiation":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-bcca_rad")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Chemo":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-chemo")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+          case "Surgery":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-bcca_surg")!=-1)
+                   if(this.defaultValue=="on")
+                    this.checked=true;
+                  else
+                    this.checked=false;
+            });
+
+            break;
+
+          default:
+            break;
+
+        }
         
       }
 
@@ -245,11 +422,150 @@
           duplicated_id="none";
         }
       }
+      function updateTitle(div){
+        var popup = $(div).data('showpopup')
+        var title = "";
+
+        //not the best way to do this but oh well
+        switch(popup){
+          case "Age":
+            title="Min: "+ $("input[name=cohort1-age_at_diagnosis-min]").val()+" Max: "+ $("input[name=cohort1-age_at_diagnosis-max]").val();
+            break;
+          case "Diagnosis_Date":
+            title="Min: "+ $("input[name=cohort1-br_dx_date-min]").val()+" Max: "+ $("input[name=cohort1-br_dx_date-max]").val();
+            break;
+          case "SRM_Date":
+            
+            title += "Min: "+ $("input[name=cohort1-min_srm-min]").val()+ " Max: "+  $("input[name=cohort1-min_srm-max]").val();
+            break;
+          case "TNM_Staging":
+
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-tnm_t")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+             $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-tnm_n")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+              $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-tnm_m")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "PGR":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-br_pgr")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Nodes":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-br_num_pos")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Meno_Status":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-meno")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Hist":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-hist")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Her2":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-br_her2")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Site":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-site")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Immuno_Stains":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-br_immuno")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Grade":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-grade")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Behaviour":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-behavior")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Radiation":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-bcca_rad")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Chemo":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-chemo")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+          case "Surgery":
+            
+            $('input[type=checkbox]').each(function(){
+                if(this.id.indexOf("cohort1-bcca_surg")!=-1&&this.checked)
+                  title= title+ this.nextSibling.data+"\n";
+            });
+
+            break;
+
+          default:
+            title = "";
+
+        }
+        div.title = title;
+      }
       
 
 	    $(document).ready( function() {
-	     
-	      
+	       
+         //set up the mouseover for attributes
+	      $( ".attr,.attrsurgery,.attrradiation,.attrmedical" ).mouseover(function() {
+            updateTitle(this);
+        });
 
         //no rightclick context menu for attributes
         $('.attr,.attrsurgery,.attrradiation,.attrmedical,#cohort_tree').bind('contextmenu', function(e){
@@ -282,7 +598,7 @@
                   //handle if a duplicated node is removed
                   check_duplicate_on_removal(this);
                   //reset values for the removed attribute (not neccessary)
-                  //reset_attribute_values(this);
+                  reset_attribute_values(this);
                   //remove the node, decrement the nodecount
                   this.remove();
                   nodecount--;
@@ -303,7 +619,13 @@
             handle_duplicate(this);
         });
 
-        
+
+        //set all the default values for resetting purposes
+        $("form#myform :input").each(function(){
+           this.defaultValue = $(this).val();
+           //alert(this.defaultValue);
+        });
+        /*
         //select the appropriate attr group based on user type role1=radiation role2 = med and role3 = surg
         var role = <?php echo json_encode($role); ?>;
         if(role==1)
@@ -318,6 +640,7 @@
         {
           document.getElementById('ui-id-2').click();
         }
+        */
 
 	    });
   	</script>
@@ -390,14 +713,15 @@
       
      
      
-      <li class = 'active' id='alltab'> <a href="#All" data-toggle="tab">All</a></li>
+      <li class = 'active' id='alltab'> <a href="#All" data-toggle="tab">Data Attributes</a></li>
+      <!--
       <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
       <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
       <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
-
+      -->
       <li class="queryButton" onClick="document.forms['myform'].submit();">Query</li>
       <li style = "margin-right:10px;">&nbsp;</li>
-      <li onClick="window.location.reload()" class="resetButton">Reset</li>
+      <li onClick="window.location = window.location.href;" class="resetButton">Reset</li>
      </ul>
 
 
@@ -408,25 +732,29 @@
         
         <div id ="All-all">
           <div id="age"class = "attr" href="#" data-showpopup="Age">Age</div>
-          <div id="site"class = "attr" href="#" data-showpopup="Site">Site</div>
+          <div id="behaviour"class = "attr"href="#" data-showpopup="Behaviour">Behaviour</div>
           <div id="diagnosis_date"class = "attr" href="#" data-showpopup="Diagnosis_Date">Diagnosis Date</div>
           <div id="grade"class = "attr"href="#" data-showpopup="Grade">Grade</div>
-          <div id="behaviour"class = "attr"href="#" data-showpopup="Behaviour">Behaviour</div>
+          <div id="site"class = "attr" href="#" data-showpopup="Site">Site</div>          
         </div>
         <div id = "All-surgery">
-          <div id="recurrence"class = "attrsurgery" href="#" data-showpopup="SRM_Date">Recurrence</div>
+          <div id="estrogen_receptor"class = "attrsurgery"  href="#" data-showpopup="Immuno_Stains">Estrogen Receptor</div>
+          <div id="her2"class = "attrsurgery"  href="#" data-showpopup="Her2">Her2</div>
+          <div id="histology"class = "attrsurgery"  href="#" data-showpopup="Hist">Histology</div>
+          <div id="menopause"class = "attrsurgery" href="#" data-showpopup="Meno_Status">Menopause</div>
+          <div id="nodes"class = "attrsurgery"  href="#" data-showpopup="Nodes">Nodes</div>
+        
+          <div id="progesterone_receptor"class = "attrsurgery"  href="#" data-showpopup="PGR">Progesterone Receptor</div>
           <div id="tstaging"class = "attrsurgery" href="#" data-showpopup="TNM_Staging">TNM Staging</div>
-        </div>
-        <div id = "All-radiation">
-          <div id="nodes"class = "attrradiation"  href="#" data-showpopup="Nodes">Nodes</div>
-          <div id="histology"class = "attrradiation"  href="#" data-showpopup="Hist">Histology</div>
-          <div id="progesterone_receptor"class = "attrradiation"  href="#" data-showpopup="PGR">Progesterone Receptor</div>
+          
+
         </div>
         <div id = "All-medical">
-          <div id="menopause"class = "attrmedical" href="#" data-showpopup="Meno_Status">Menopause</div>
-          <div id="estrogen_receptor"class = "attrmedical"  href="#" data-showpopup="Immuno_Stains">Estrogen Receptor</div>
-          <div id="her2"class = "attrmedical"  href="#" data-showpopup="Her2">Her2</div>
+         
+          <div id="radiation"class = "attrmedical" href="#" data-showpopup="Radiation">Radiation</div>
           <div id="chemo"class = "attrmedical"  href="#" data-showpopup="Chemo">Chemo</div>
+           <div id="recurrence"class = "attrmedical" href="#" data-showpopup="SRM_Date">Recurrence</div>
+          <div id="surgery"class = "attrmedical" href="#" data-showpopup="Surgery">Surgery</div>
         </div>
 
       </div>
@@ -442,6 +770,8 @@
         <div id = "All-surgery">
           <div id="recurrence"class = "attrsurgery" href="#" data-showpopup="SRM_Date">Recurrence</div>
           <div id="tstaging"class = "attrsurgery" href="#" data-showpopup="TNM_Staging">TNM Staging</div>
+          <div id="surgery"class = "attrsurgery" href="#" data-showpopup="Surgery">Surgery</div>
+
         </div>
       </div>
 
@@ -458,6 +788,8 @@
           <div id="nodes"class = "attrradiation"  href="#" data-showpopup="Nodes">Nodes</div>
           <div id="histology"class = "attrradiation"  href="#" data-showpopup="Hist">Histology</div>
           <div id="progesterone_receptor"class = "attrradiation"  href="#" data-showpopup="PGR">Progesterone Receptor</div>
+          <div id="radiation"class = "attrradiation" href="#" data-showpopup="Radiation">Radiation</div>
+
         </div>
         
       </div>
@@ -573,11 +905,11 @@ function genInputElements($cohort)
                   'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});"'
                   .'>Select None</a>';
               echo '<div style="margin-bottom:10px;"></div>';
-              echo '<div class="scrollcombo">';
+              echo '<div class="scrollcombo" id = "scrollcombo-'.$subelement.'"">';
                 foreach ($spec->values as $dbVal=>$value)
                 {
                   $id = $subelement.'-'.$dbVal;
-                  echo '<input type="checkbox" class="'.$pref.'-'.$subelement.'" name="'.$pref.'-'.$id.'" '.($cohort[$id] == "on" ? 'checked' :  "").'/>'.
+                  echo '<input type="checkbox" id ="'.$pref.'-'.$id.'" class="'.$pref.'-'.$subelement.'" name="'.$pref.'-'.$id.'" '.($cohort[$id] == "on" ? 'checked' :  "").'/>'.
                           ($spec->type == "aggregate" ? $value->display : $value)."<br>";
                 }
               echo '</div>';
@@ -624,7 +956,7 @@ function genInputElements($cohort)
                   'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});"'
                   .'>Select None</a>';
               echo '<div style="margin-bottom:10px;"></div>';
-              echo '<div class="scrollcombo">';
+              echo '<div class="scrollcombo" id = "scrollcombo2-'.$subelement.'"">';
                 foreach ($spec->values as $dbVal=>$value)
                 {
                   $id = $subelement.'-'.$dbVal;
@@ -668,13 +1000,14 @@ genInputElements($cohort1Params);
 <div class="tabbable" id="visualization" >
     <ul class="nav nav-tabs">
         <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival</a></li>
-        <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence</a></li>
+       
         <li><a class="ctab" href="#c_tab" data-toggle="tab">Time to Treatment</a></li>
+        <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence</a></li>
         <li><a class="dtab" href="#d_tab" data-toggle="tab">Treatment Cost Estimation</a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="a_tab">
-            <h1>Survival</h1>
+            <h1>Kaplan-Meier Survival Estimator</h1>
             <acontent></acontent>
         </div>
         <div class="tab-pane" id="b_tab">
