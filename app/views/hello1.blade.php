@@ -38,25 +38,25 @@
   $cohort1 = queryData($cohort1Params, 'death_years');
   $cohort1dx = queryData($cohort1Params, 'br_dx_date');
 
-  //$cohort2 = queryData($cohort2Params, 'death_years');
-  //$cohort2dx = queryData($cohort2Params, 'br_dx_date');
+  $cohort2 = queryData($cohort2Params, 'death_years');
+  $cohort2dx = queryData($cohort2Params, 'br_dx_date');
 
   //Logrank.
   $cohort1LogDat = kaplanMeierLogRank(10, $cohort1, 'death_years');
-  //$cohort2LogDat = kaplanMeierLogRank(10, $cohort2, 'death_years');
+  $cohort2LogDat = kaplanMeierLogRank(10, $cohort2, 'death_years');
 
   $logRank = logRankTest($cohort1LogDat, $cohort1LogDat, 10);
 
 
   //Survival.
   $cohort1Survival = kaplanMeier(365, 10, $cohort1, $cohort1dx, 'death_years', true);
-  //$cohort2Survival = kaplanMeier(365, 10, $cohort2, $cohort2dx, 'death_years', false);
+  $cohort2Survival = kaplanMeier(365, 10, $cohort2, $cohort2dx, 'death_years', false);
 
   $nameCohort1 = 'Cohort 1 ('.$cohort1Survival[0].' / '.count($cohort1).')';
-  //$nameCohort2 = 'Cohort 2 ('.$cohort2Survival[0].' / '.count($cohort2).')';
-  $nameCohort2 = $nameCohort1;
+  $nameCohort2 = 'Cohort 2 ('.$cohort2Survival[0].' / '.count($cohort2).')';
+  //$nameCohort2 = $nameCohort1;
 
-  $dataToJoin = array($cohort1Survival[1], $cohort1Survival[1]);
+  $dataToJoin = array($cohort1Survival[1], $cohort2Survival[1]);
 
   $names = array('cohort 1', 'cohort 2');
 
@@ -165,7 +165,7 @@
         //if nothing is duplicated, duplicate and hide all duplicate buttons
         if(duplicated_id=="none"){
           duplicated_id=div.id;
-
+          //alert('duplicated id: '+duplicated_id);
           //hide the duplicate buttons
           var duplicate_btns = document.getElementsByClassName('duplicate-btn'), i;
 
@@ -401,6 +401,39 @@
         
       }
 
+      function repopulate_filters(){
+        var list = $("input[name='filter_list']").val();
+        var arr = list.split(',');
+        
+        $(arr).each(function() { 
+          var id = this.replace("-clone","");
+
+          var div = document.getElementById(id);
+          
+          add_node(div);
+        });
+
+        //repopulate handle duplicate as well
+        var did = $("input[name='duplicated_id']").val();
+        handle_duplicate(document.getElementById(did));
+        
+         
+      }
+
+      function mySubmit(){
+        var filter_list = ""
+        $("[id$='-clone']").each(function() {
+
+          filter_list+=this.id+",";
+        });
+        filter_list=filter_list.substring(0,filter_list.length-1);
+        $("input[name='filter_list']").val(filter_list);
+        $("input[name='duplicated_id']").val(duplicated_id);
+        
+        
+        document.forms['myform'].submit();
+      }
+
       function check_duplicate_on_removal(div){
         var removed_div = div.id.substring(0,div.id.indexOf("-clone")).toLowerCase();
         var duplicated_div = duplicated_id.substring(0,duplicated_id.indexOf("-duplicate")).toLowerCase();
@@ -614,6 +647,22 @@
   	        $('.overlay-bg, .overlay-content').hide(); // hide the overlay
   	    });
 
+        //when cohort 1's value is changed, change cohort 2's value as well
+        $("input[name^='cohort1']").change(function(event) {
+            var name = this.name;
+            name = name.replace("cohort1", "cohort2");
+           // alert(name);
+            $("input[name="+name+"]").val(this.value);
+            
+            if($(this).attr('checked')){
+              $("input[name="+name+"]").prop('checked', true);
+              }
+            else{
+              $("input[name="+name+"]").prop('checked', false);
+            }
+
+        });
+
         //handle when the duplicate button is pressed
         $('.duplicate-btn, .un-duplicate-btn').click(function(){
             handle_duplicate(this);
@@ -625,6 +674,10 @@
            this.defaultValue = $(this).val();
            //alert(this.defaultValue);
         });
+
+        //repopulate duplicates
+       
+
         /*
         //select the appropriate attr group based on user type role1=radiation role2 = med and role3 = surg
         var role = <?php echo json_encode($role); ?>;
@@ -643,6 +696,10 @@
         */
 
 	    });
+      $(window).load(function() {
+       // executes when complete page is fully loaded, including all frames, objects and images
+        repopulate_filters(); 
+      });
   	</script>
   
 
@@ -719,7 +776,7 @@
       <li id='radiationtab'><a href="#Radiation" data-toggle="tab">Radiation Oncology</a></li>
       <li id='medicaltab'><a href="#Medical" data-toggle="tab">Medical Oncology</a></li>
       -->
-      <li class="queryButton" onClick="document.forms['myform'].submit();">Query</li>
+      <li class="queryButton" onClick="mySubmit();">Query</li>
       <li style = "margin-right:10px;">&nbsp;</li>
       <li onClick="window.location = window.location.href;" class="resetButton">Reset</li>
      </ul>
@@ -749,16 +806,18 @@
           
 
         </div>
+        
         <div id = "All-medical">
          
           <div id="radiation"class = "attrmedical" href="#" data-showpopup="Radiation">Radiation</div>
           <div id="chemo"class = "attrmedical"  href="#" data-showpopup="Chemo">Chemo</div>
+           <div id="surgery"class = "attrmedical" href="#" data-showpopup="Surgery">Surgery</div>
            <div id="recurrence"class = "attrmedical" href="#" data-showpopup="SRM_Date">Recurrence</div>
-          <div id="surgery"class = "attrmedical" href="#" data-showpopup="Surgery">Surgery</div>
+         
         </div>
 
       </div>
-
+<!--
       <div class="tab-pane"  id="Surgical" collapsible=true>
         <div id ="All-all">
           <div id="age"class = "attr" href="#" data-showpopup="Age">Age</div>
@@ -809,6 +868,7 @@
           <div id="chemo"class = "attrmedical"  href="#" data-showpopup="Chemo">Chemo</div>
         </div>
       </div>
+    -->
      
 
      </div>
@@ -825,7 +885,7 @@
   -->
    
     <div id="cohort_tree">
-      <p style="display:inline-block;">Cohort Filters</p>
+      <p style="display:inline-block;">Filtered Attributes</p>
     <img src="images/help.png" alt="alternative text" title="The Cohort Filters show attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Filters will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(2);"/>
 
     </div>
@@ -934,7 +994,7 @@ function genInputElements($cohort)
         {
           $subCheckName ='gsublabel-'.$subelement.'-display';
           echo '<label id="-gsublabel-'.$subelement.'" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px;'.
-          ($subgroup->display != "none" ? " margin-left:15px;" : "").'">..Comparison</label><br>';
+          ($subgroup->display != "none" ? " margin-left:15px;" : "").'">Comparison</label><br>';
          
           switch ($spec->input)
           {
@@ -988,10 +1048,23 @@ function genInputElements($cohort)
 ?>
 
 <form role="form" id = "myform" method="POST" action="index.php">
-<?php
-genInputElements($cohort1Params);
-?>
- <input type="checkbox" name="is_not_first_query" style="display: none" checked/>
+  <?php
+  genInputElements($cohort1Params);
+  ?>
+  <input type="checkbox" name="is_not_first_query" style="display: none" checked/>
+  <?php 
+  $filter_list = "";
+  if (isset($_POST['filter_list'])) {
+    $filter_list=$_POST['filter_list'];
+  }
+  echo '<input type = "text" name="filter_list" style="display: none" value = "'.$filter_list.'"/>';
+
+  $duplicated_id = "";
+  if (isset($_POST['duplicated_id'])) {
+    $duplicated_id=$_POST['duplicated_id'];
+  }
+  echo '<input type = "text" name="duplicated_id" style="display: none" value = "'.$duplicated_id.'"/>';
+  ?>
 </form>
 
 <!-- end of popup windows -->
@@ -1029,7 +1102,7 @@ genInputElements($cohort1Params);
 <table class="table table-striped table-hover" style="width:627px; margin-left:20px;">
   <tr><th>Year</th><?php for ($i=1; $i < 11; $i++) echo '<th>'.$i.'</th>';?><th>Pop.</th></tr>
   <?php genCumSurvivalRow($cohort1Survival[1], $cohort1Survival[0], "Cohort 1", "#1f77b4"); ?>
-  <?php //genCumSurvivalRow($cohort2Survival[1], $cohort2Survival[0], "Cohort 2", "#ff7f0e"); ?>
+  <?php genCumSurvivalRow($cohort2Survival[1], $cohort2Survival[0], "Cohort 2", "#ff7f0e"); ?>
 </table>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LogRank Chi Square: <b><?php echo number_format($logRank, 5); ?></b> &nbsp;&nbsp; 
           P-value: <b><?php $pv = cdf_2tail($logRank); if ($pv < 0.0001) echo '<0.0001'; else echo number_format($pv, 5); ?></b>
@@ -1077,6 +1150,7 @@ genInputElements($cohort1Params);
 
     foreach ($dictionary as $group => $subgroup)
     {
+
       foreach ($subgroup->elements as $element)
       {
         foreach ($element as $subelement => $spec)
@@ -1248,8 +1322,8 @@ genInputElements($cohort1Params);
 ?>
 <table>
 <?php 
-
 /*
+
     foreach ($_POST as $key => $value) {
         echo "<tr>";
         echo "<td>";
@@ -1261,8 +1335,8 @@ genInputElements($cohort1Params);
         echo "</tr>";
 
     }
-    */
-
+    
+*/
 
 ?>
 </table>

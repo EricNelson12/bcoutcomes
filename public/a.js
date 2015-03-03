@@ -23,8 +23,12 @@ var yAxis = d3.svg.axis()
     .orient("left");
 
 var line = d3.svg.line()
+    .interpolate("step-after")
     .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.close); });
+var line2 = d3.svg.line()
+    .x(function(d) { return x(d.year); })
+    .y(function(d) { return y(d.open); });
 
 var svg = d3.select("acontent").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -36,6 +40,7 @@ d3.tsv("data2.tsv", function(error, data) {
   data.forEach(function(d) {
     d.year = +d.year;
     d.close = +d.close;
+    d.open = +d.open; 
   });
 
  
@@ -64,6 +69,10 @@ d3.tsv("data2.tsv", function(error, data) {
       .datum(data)
       .attr("class", "line")
       .attr("d", line);
+  svg.append("path")      // Add the valueline2 path.
+      .attr("class", "line")
+      .style("stroke","#ff7f0e")
+      .attr("d", line2(data));
 
  var stat = svg.selectAll(".stat")
     .data(stats)
