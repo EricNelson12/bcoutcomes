@@ -303,7 +303,7 @@ function add_node(div){
 
     //repopulate handle duplicate as well
     var did = $("input[name='duplicated_id']").val();
-    //handle_duplicate(document.getElementById(did));
+    handle_duplicate(document.getElementById(did));
     
      
   }

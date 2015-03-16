@@ -531,6 +531,7 @@ function genInputElements($cohort)
           </div>
       </div>
     </td>
+    <!--
     <td style = "width:700px;">
       <h3>Key Factor</h3>
       <table>
@@ -552,7 +553,7 @@ function genInputElements($cohort)
         </tr>
       </table>
 
-    </td>
+    </td> -->
   </tr>
 </table>
 
