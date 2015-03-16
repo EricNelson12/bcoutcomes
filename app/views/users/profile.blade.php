@@ -3,8 +3,10 @@
 <div class="container">
     <div>
         @if(Auth::check())
-            <h2>Welcome to your profile page, <b>{{Auth::user()->username}}</b></h2>
+            <h2>Registered email: <b>{{Auth::user()->email}}</b></h2>
         @endif
     </div>
     <a href="password/reset">Reset Password</a>
+
+    <p>Eventually a list of your most recent queries will appear here</p>
 </div>

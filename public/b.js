@@ -36,7 +36,7 @@ var svg = d3.select("bcontent").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.tsv("data2.tsv", function(error, data) {
+d3.tsv("data3.tsv", function(error, data) {
   data.forEach(function(d) {
     d.year = +d.year;
     d.close = +d.close;
@@ -47,7 +47,7 @@ d3.tsv("data2.tsv", function(error, data) {
   x.domain(d3.extent(data, function(d) { return d.year; }));
   //y.domain(d3.extent(data, function(d) { return d.close; }));
   y.domain([0, d3.max(data, function(d) {
-    return Math.max(d.close); })]); 
+    return Math.max(d.close)+10; })]); 
 
 
   svg.append("g")
@@ -63,7 +63,7 @@ d3.tsv("data2.tsv", function(error, data) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Survival (%)");
+      .text("Recurrence (%)");
 
   svg.append("path")
       .datum(data)

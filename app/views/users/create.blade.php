@@ -9,10 +9,6 @@
         <li>{{$message}}</li>
         @endforeach
         <div class="form-group">
-            {{Form::label('username','Username')}}
-            {{Form::text('username', null,array('class' => 'form-control'))}}
-        </div>
-        <div class="form-group">
             {{Form::label('email','Email')}}
             {{Form::text('email', null,array('class' => 'form-control'))}}
         </div>
@@ -32,5 +28,7 @@
         {{Form::submit('Register', array('class' => 'btn btn-primary'))}}
         {{ Form::close() }}
     </div>
+    <a href="password/reset" style="color:black;">Forgot Password?</a>
 </div>
+
 @stop

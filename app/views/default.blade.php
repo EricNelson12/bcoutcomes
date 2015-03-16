@@ -30,7 +30,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         @if (Auth::check())
                         <li><a href="logout">Log Out</a></li>
-                        <li><a href="profile">{{ Auth::user()->username }}</a></li>
+                        <li><a href="profile">{{ Auth::user()->email }}</a></li>
                         @else
                         <li><a href="/laravel/outcomes/public/login">Login</a></li>
                         <li><a href="/laravel/outcomes/public/user/create">Register</a></li>

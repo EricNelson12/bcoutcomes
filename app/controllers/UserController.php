@@ -10,11 +10,11 @@ class UserController extends BaseController {
        return View::make('users.login');
     }
     public function handleLogin(){
-    	$data = Input::only(['username', 'password']);
+    	$data = Input::only(['email', 'password']);
     	$validator = Validator::make(
             $data,
             [
-                'username' => 'required|min:3',
+                'email' => 'required|email|min:5',
                 'password' => 'required',
             ]
         );
@@ -24,7 +24,7 @@ class UserController extends BaseController {
             return Redirect::route('login')->withErrors($validator)->withInput();
         }
 
-        if(Auth::attempt(['username' => $data['username'], 'password' => $data['password']], $remember)){
+        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $remember)){
             return Redirect::to('/');
         }
         $errors = 'Login Failed';
@@ -48,13 +48,13 @@ class UserController extends BaseController {
     }
 
     public function store(){
-    	$data = Input::only(['username','email','password','password_confirmation','user_type']);
+    	$data = Input::only(['email','password','password_confirmation','user_type']);
 
     	$validator = Validator::make(
             $data,
             [
-                'username' => 'required|min:3|unique:users',
-                'email' => 'required|email|min:5',
+               
+                'email' => 'required|email|min:5|unique:users',
                 'password' => 'required|min:5|confirmed',
                 'password_confirmation'=> 'required|min:5',
                 'user_type'=>'not_in:0',
@@ -67,13 +67,18 @@ class UserController extends BaseController {
         else{
 
 	        $user = new User;
-		    $user->username = Input::get('username');
 		    $user->email = Input::get('email');
 		    $user->password = Hash::make(Input::get('password'));
 		    $user->role = Input::get('user_type');
 		    $user->save();
+
+            // log the user in then redirect
+
+            Auth::login($user);
+
+            return Redirect::to('')->with('message', 'Thanks for registering!');
 	 
-	    	return Redirect::to('login')->with('message', 'Thanks for registering!');
+	    	//return Redirect::to('login')->with('message', 'Thanks for registering!');
 	    }
     }
 
