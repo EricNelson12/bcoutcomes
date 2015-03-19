@@ -351,12 +351,13 @@
 
 
 //Modified from code provided by Stephen Smithbower
-function genInputElements($cohort)
+function genInputElements($cohort1, $cohort2)
 {
   $dictionary = json_decode(file_get_contents("dictionary.json"));
   //global $dictionary;
   
   $count = 1;
+  $cohort = $cohort1;
   //Generate inputs.
   foreach ($dictionary as $group => $subgroup)
   {
@@ -365,7 +366,7 @@ function genInputElements($cohort)
 
 
     $pref = 'cohort1';
-
+    $cohort = $cohort1;
     echo '<div id="overlay-'.$group.'content" style="float:left;padding-right:10px;">';
       foreach ($subgroup->elements as $element)
       {
@@ -416,6 +417,7 @@ function genInputElements($cohort)
       echo '</div>';
 
       $pref = 'cohort2';
+      $cohort = $cohort2;
       //re-create as hidden for 2nd cohort
       echo '<div id="overlay-'.$group.'content-cohort2" style="display:none;">';
       foreach ($subgroup->elements as $element)
@@ -450,7 +452,7 @@ function genInputElements($cohort)
                 foreach ($spec->values as $dbVal=>$value)
                 {
                   $id = $subelement.'-'.$dbVal;
-                  echo '<input type="checkbox" class="'.$pref.'-'.$subelement.'" name="'.$pref.'-'.$id.'" '.($cohort[$id] == "on" ? 'checked' :  "").'/>'.
+                  echo '<input type="checkbox" id ="'.$pref.'-'.$id.'"  class="'.$pref.'-'.$subelement.'" name="'.$pref.'-'.$id.'" '.($cohort[$id] == "on" ? 'checked' :  "").'/>'.
                           ($spec->type == "aggregate" ? $value->display : $value)."<br>";
                 }
               echo '</div>';
@@ -479,7 +481,7 @@ function genInputElements($cohort)
 
 <form role="form" id = "myform" method="POST" action="index.php">
   <?php
-  genInputElements($cohort1Params);
+  genInputElements($cohort1Params,$cohort2Params);
   ?>
   <input type="checkbox" name="is_not_first_query" style="display: none" checked/>
   <?php 
@@ -500,9 +502,8 @@ function genInputElements($cohort)
 <!-- end of popup windows -->
 
 <!-- start of visualizations-->
-<table>
-  <tr>
-    <td>
+<div class = "row">
+   <div class="col-md-6">
       <div class="tabbable" id="visualization" style = "width:700px;">
           <ul class="nav nav-tabs">
               <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival</a></li>
@@ -530,10 +531,9 @@ function genInputElements($cohort)
               </div>
           </div>
       </div>
-    </td>
-    <!--
-    <td style = "width:700px;">
-      <h3>Key Factor</h3>
+    </div>
+     <div class="col-md-6">
+      <h3>Cohort Difference</h3>
       <table>
         <tr>
           <td style = "width:200px;">
@@ -543,19 +543,21 @@ function genInputElements($cohort)
             <p style = "color:#ff7f0e;"> Cohort 2 </p>
           </td>
         </tr>
-          <td id = "keyfactor1" style = "width:200px;">
+          <td>
+            <div id = "keyfactor1" style = "max-width:300px;max-height: 300px;overflow: auto;">
+            </div>
             
           </td>
-           <td id = "keyfactor2" style = "width:200px;">
+           <td >
+            <div id = "keyfactor2" style = "max-width:300px;max-height: 300px;overflow: auto;">
+            </div>
             
           </td>
         <tr>
         </tr>
       </table>
-
-    </td> -->
-  </tr>
-</table>
+    </div>
+</div>
 
 
 <table class="table table-striped table-hover" style="width:627px; margin-left:20px;">
@@ -781,7 +783,7 @@ function genInputElements($cohort)
 ?>
 <table>
 <?php 
-
+/*
 
     foreach ($_POST as $key => $value) {
         echo "<tr>";
@@ -796,7 +798,7 @@ function genInputElements($cohort)
     }
     
 
-
+*/
 ?>
 </table>
 

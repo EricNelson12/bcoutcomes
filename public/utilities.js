@@ -347,6 +347,7 @@ function add_node(div){
     var popup = $(div).data('showpopup')
     var title = "";
 
+
     //not the best way to do this but oh well
     switch(popup){
       case "Age":
@@ -481,131 +482,133 @@ function add_node(div){
   }
   
   function get_keyfactor(div, cohort){
-    var popup = $(div).data('showpopup')
+    var popup = div;
+
     var title = "";
 
     //not the best way to do this but oh well
     switch(popup){
       case "Age":
-        title="Min: "+ $("input[name="+cohort+"-age_at_diagnosis-min]").val()+" Max: "+ $("input[name="+cohort+"-age_at_diagnosis-max]").val();
+
+        title="<b>Age</b><br/>Min: "+ $("input[name="+cohort+"-age_at_diagnosis-min]").val()+" Max: "+ $("input[name="+cohort+"-age_at_diagnosis-max]").val();
         break;
       case "Diagnosis_Date":
-        title="Min: "+ $("input[name="+cohort+"-br_dx_date-min]").val()+" Max: "+ $("input[name="+cohort+"-br_dx_date-max]").val();
+        title="<b>Diagnosis Date</b><br/>Min: "+ $("input[name="+cohort+"-br_dx_date-min]").val()+" Max: "+ $("input[name="+cohort+"-br_dx_date-max]").val();
         break;
       case "SRM_Date":
         
-        title += "Min: "+ $("input[name="+cohort+"-min_srm-min]").val()+ " Max: "+  $("input[name="+cohort+"-min_srm-max]").val();
+        title += "<b>Recurrence</b><br/>Min: "+ $("input[name="+cohort+"-min_srm-min]").val()+ " Max: "+  $("input[name="+cohort+"-min_srm-max]").val();
         break;
       case "TNM_Staging":
 
-        
+        title+="<b>TNM Staging</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-tnm_t")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
          $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-tnm_n")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
           $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-tnm_m")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "PGR":
-        
+        title+="<b>Progesterone Receptor</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-br_pgr")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Nodes":
-        
+        title+="<b>Nodes</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-br_num_pos")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Meno_Status":
-        
+        title+="<b>Menopause</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-meno")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Hist":
-        
+        title+="<b>Histology</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-hist")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Her2":
-        
+        title+="<b>Her2</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-br_her2")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Site":
-        
+        title+="<b>Site</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-site")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Immuno_Stains":
-        
+        title+="<b>Estrogen Receptor</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-br_immuno")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Grade":
-        
+        title+="<b>Grade</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-grade")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Behaviour":
-        
+        title+="<b>Behaviour</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-behavior")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Radiation":
-        
+        title+="<b>Radiation</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-bcca_rad")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Chemo":
-        
+        title+="<b>Chemo</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-chemo")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
       case "Surgery":
-        
+        title+="<b>Surgery</b><br/>";
         $('input[type=checkbox]').each(function(){
             if(this.id.indexOf(""+cohort+"-bcca_surg")!=-1&&this.checked)
-              title= title+ this.nextSibling.data+"\n";
+              title= title+ this.nextSibling.data+"<br/>";
         });
 
         break;
@@ -621,9 +624,11 @@ function add_node(div){
   {
     
     var did = $("input[name='duplicated_id']").val().replace("-duplicate","");
-    var keyfactor1 = get_keyfactor($(did),"cohort1");
-    var keyfactor2 = get_keyfactor($(did),"cohort2");
-    //alert(did+keyfactor1+"\n 2) "+keyfactor2);
+    var keyfactor1 = get_keyfactor(did,"cohort1");
+    var keyfactor2 = get_keyfactor(did,"cohort2");
+    //alert(did+keyfactor2);
+    $("#keyfactor1").html(keyfactor1);
+    $("#keyfactor2").html(keyfactor2);
   }
 
   $(document).ready( function() {
