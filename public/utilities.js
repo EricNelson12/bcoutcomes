@@ -631,6 +631,8 @@ function add_node(div){
     $("#keyfactor2").html(keyfactor2);
   }
 
+  
+
   $(document).ready( function() {
      
      //set up the mouseover for attributes

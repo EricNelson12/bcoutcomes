@@ -37,6 +37,7 @@ Route::post('password/reset/{token}', array(
   'as' => 'password.update'
 ));
 
-
+Route::get('/history', array('as' => 'history', 'uses' => 'HomeController@history'));
+Route::get('/getquery', array('as' => 'getquery', 'uses' => 'HomeController@getQuery'));
 
 

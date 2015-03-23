@@ -22,8 +22,17 @@
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-  $isNotFirstQuery = isset($_POST['is_not_first_query']) ? true : false;
 
+  $isNotFirstQuery = isset($_POST['is_not_first_query']) ? true : false;
+  if(isset($mypost))
+    $_POST = $mypost;
+  else
+   {
+   if($isNotFirstQuery==true)
+    {
+      storeQuery();
+    }
+  }
 
   //Grab params.
   $cohort1Params = parseParams("cohort1-");
@@ -159,6 +168,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         @if (Auth::check())
+                        <li><a href="history">History</a></li>
                         <li><a href="logout">Log Out</a></li>
                         <li><a href="profile">{{ Auth::user()->email }}</a></li>
                         @else
@@ -472,6 +482,7 @@ function genInputElements($cohort1, $cohort2)
       echo '<div style = "clear:both;">'; //div for buttons
       echo '<div class="close-btn" style = "margin-top:10px;margin-right:10px;" onClick = "">Close</div>';
       echo '<div id ="'.$group.'-duplicate" class="duplicate-btn" style = "margin-top:10px;margin-right:10px;">Duplicate</div>';
+     
       echo '</div>'; //div for buttons
     echo '</div>';
     $count++;
@@ -601,13 +612,41 @@ function genInputElements($cohort1, $cohort2)
 
 <?php
 
+  function storeQuery()
+  {
+
+    $dbquery = new PDO("mysql:host=10.7.201.49;dbname=outcomes", "breastuser1", "YES");
+    $dbquery->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+    $c1params = "";
+    $c2params = "";
+    foreach ($_POST as $key => $value) 
+    {
+       
+      if (strpos($key,'cohort2') !== false) 
+      {
+        $c2params.=$key."=".$value."&";
+      }
+      else
+      {
+        $c1params.=$key."=".$value."&";
+      }
+    }
+
+    $query = "INSERT INTO queries (user_id,cohort1params,cohort2params,date_of_query) VALUES (".Auth::user()->id.",'".$c1params."','".$c2params."','".date("Y-m-d H:i:s")."');";
+    $stmt = $dbquery->prepare($query);
+    $stmt->execute();
+
+  }
+
  function parseParams($prefCohort)
   {
     $dictionary = json_decode(file_get_contents("dictionary.json"));
     $params = array();
     //global $dictionary;
     $isNotFirstQuery = isset($_POST['is_not_first_query']) ? true : false;
-
+ 
 
     foreach ($dictionary as $group => $subgroup)
     {
@@ -783,8 +822,8 @@ function genInputElements($cohort1, $cohort2)
 ?>
 <table>
 <?php 
-/*
 
+/*
     foreach ($_POST as $key => $value) {
         echo "<tr>";
         echo "<td>";
@@ -797,9 +836,10 @@ function genInputElements($cohort1, $cohort2)
 
     }
     
-
 */
+
 ?>
+
 </table>
 
 </body>

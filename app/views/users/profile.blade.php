@@ -8,5 +8,5 @@
     </div>
     <a href="password/reset">Reset Password</a>
 
-    <p>Eventually a list of your most recent queries will appear here</p>
+   
 </div>
