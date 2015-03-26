@@ -690,6 +690,7 @@ function add_node(div){
     //when cohort 1's value is changed, change cohort 2's value as well (if it's not been duplicated)
     $("input[name^='cohort1']").change(function(event) {
       //get the parentnode
+
       var pnode = this.parentNode;
       while(pnode.id.indexOf("overlay-")==-1){
         pnode = pnode.parentNode;
@@ -700,7 +701,7 @@ function add_node(div){
         var name = this.name;
         name = name.replace("cohort1", "cohort2");
        // alert(name);
-        $("input[name="+name+"]").val(this.value);
+        $("input[name="+name+"]").click();
         
         if($(this).attr('checked')){
           $("input[name="+name+"]").prop('checked', true);
@@ -744,6 +745,11 @@ function add_node(div){
       document.getElementById('ui-id-2').click();
     }
     */
+    $('lix').click(function() {
+//   $('li.dropdown').not(this).find('ul').hide();
+        var c = $(this).attr('class');
+        $('.'+c).find('ul').toggle();
+    });
 
 });
 $(window).load(function() {
@@ -759,3 +765,74 @@ $(function() {
   });
 
 });
+
+
+
+$(function() {
+
+  $('input[type="checkbox"]').change(checkboxChanged);
+
+  function checkboxChanged() {
+    var $this = $(this),
+        checked = $this.prop("checked"),
+        container = $this.parent(),
+        siblings = container.siblings();
+
+    container.find('input[type="checkbox"]')
+    .prop({
+        indeterminate: false,
+        checked: checked
+    })
+    .siblings('label')
+    .removeClass('custom-checked custom-unchecked custom-indeterminate')
+    .addClass(checked ? 'custom-checked' : 'custom-unchecked');
+
+    checkSiblings(container, checked);
+  }
+
+  function checkSiblings($el, checked) {
+    var parent = $el.parent().parent(),
+        all = true,
+        indeterminate = false;
+
+    $el.siblings().each(function() {
+      return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+    });
+
+    if (all && checked) {
+      parent.children('input[type="checkbox"]')
+      .prop({
+          indeterminate: false,
+          checked: checked
+      })
+      .siblings('label')
+      .removeClass('custom-checked custom-unchecked custom-indeterminate')
+      .addClass(checked ? 'custom-checked' : 'custom-unchecked');
+
+      checkSiblings(parent, checked);
+    } 
+    else if (all && !checked) {
+      indeterminate = parent.find('input[type="checkbox"]:checked').length > 0;
+
+      parent.children('input[type="checkbox"]')
+      .prop("checked", checked)
+      .prop("indeterminate", indeterminate)
+      .siblings('label')
+      .removeClass('custom-checked custom-unchecked custom-indeterminate')
+      .addClass(indeterminate ? 'custom-indeterminate' : (checked ? 'custom-checked' : 'custom-unchecked'));
+
+      checkSiblings(parent, checked);
+    } 
+    else {
+      $el.parents("li").children('input[type="checkbox"]')
+      .prop({
+          indeterminate: true,
+          checked: false
+      })
+      .siblings('label')
+      .removeClass('custom-checked custom-unchecked custom-indeterminate')
+      .addClass('custom-indeterminate');
+    }
+  }
+});
+

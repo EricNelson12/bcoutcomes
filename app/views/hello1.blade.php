@@ -241,9 +241,14 @@
           <div id="nodes"class = "attrsurgery"  href="#" data-showpopup="Nodes">Nodes</div>
         
           <div id="progesterone_receptor"class = "attrsurgery"  href="#" data-showpopup="PGR">Progesterone Receptor</div>
-          <div id="tstaging"class = "attrsurgery" href="#" data-showpopup="TNM_Staging">TNM Staging</div>
           
 
+        </div>
+        <div>
+          <div id="tstaging"class = "attrsurgery" href="#" data-showpopup="T_Staging">T Staging</div>
+          <div id="mstaging"class = "attrsurgery" href="#" data-showpopup="N_Staging">N Staging</div>
+          <div id="nstaging"class = "attrsurgery" href="#" data-showpopup="M_Staging">M Staging</div>
+          
         </div>
         
         <div id = "All-medical">
@@ -359,6 +364,667 @@
 
 <?php
 
+//do the listview stuff for tnm here
+function getTNMhtml()
+{
+echo '<div id="overlay-TNM_Staging" class="overlay-content popupT_Staging" style="display: none; top: 20px;"><div id="overlay-T_Stagingcontent" style="float:left;padding-right:10px;">';
+echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">T Staging</label>';
+echo  '<ul class="treeview">
+        <li>
+          <input type="checkbox" name="cohort1-tnm_t-_empty_" id="cohort1-tnm_t-_empty_" checked value="on">
+          Missing
+        </li>
+        <li>
+          <input type="checkbox" name="cohort1-tnm_t-X" id="cohort1-tnm_t-X" checked value="on">
+          Tx: primary tumour cannot be assessed
+        </li>
+        <li>
+          <input type="checkbox" name="cohort1-tnm_t-0" id="cohort1-tnm_t-0" checked value="on">
+          T0: No evidence of primary
+        </li>
+        <lix class = "cohort1-tnm_t-1" style = "position:absolute;">+</lix>
+        
+        <li class = "cohort1-tnm_t-1">
+          <input type="checkbox" name="cohort1-tnm_t-1" id="cohort1-tnm_t-1" checked value="on">
+          T1: <= 2cm
+
+            <ul>
+                 <li>
+                     <input type="checkbox" name="cohort1-tnm_t-1A" id="cohort1-tnm_t-1A" checked value="on">
+                     T1a: >0.1cm <= 0.5cm
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort1-tnm_t-1B" id="cohort1-tnm_t-1B" checked value="on">
+                     T1b: >0.5cm <= 1cm
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort1-tnm_t-1C" id="cohort1-tnm_t-1C" checked value="on">
+                     T1c: >1cm <= 2cm
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort1-tnm_t-1M" id="cohort1-tnm_t-1M" checked value="on">
+                     T1m: microinvasion <= 0.1cm
+                 </li>
+                
+            </ul>
+        </li>
+        <li>
+          <input type="checkbox" name="cohort1-tnm_t-2" id="cohort1-tnm_t-2" checked value="on">
+          T2: >2cm <= 5cm
+        </li>
+        <li>
+          <input type="checkbox" name="cohort1-tnm_t-3" id="cohort1-tnm_t-3" checked value="on">
+          T3: >5cm
+        </li>
+         
+        <lix class = "cohort1-tnm_t-4" style = "position:absolute;">+</lix>
+    <li class = "cohort1-tnm_t-4">
+
+          <input type="checkbox" name="cohort1-tnm_t-4" id="cohort1-tnm_t-4" checked value="on">
+          T4: any size + chest or skin extension
+
+            <ul>
+                 <li>
+                     <input type="checkbox" name="cohort1-tnm_t-4A" id="cohort1-tnm_t-4A" checked value="on">
+                     T4a: chest wall extension
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort1-tnm_t-4B" id="cohort1-tnm_t-4B" checked value="on">
+                     T4b: skin extension
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort1-tnm_t-4C" id="cohort1-tnm_t-4C" checked value="on">
+                     T4c: both T4a and T4b
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort1-tnm_t-4D" id="cohort1-tnm_t-4D" checked value="on">
+                     T4d: inflammatory carcinoma
+                 </li>
+                
+            </ul>
+        </li>
+        <li>
+          <input type="checkbox" name="cohort1-tnm_t-IS" id="cohort1-tnm_t-IS" checked value="on">
+          Tis: cacrinoma in situ
+        </li>
+       
+       
+    </ul>
+    </div>
+
+    <div id="overlay-T_Stagingcontent-cohort2" style="float:left;padding-right:10px; display:none;">';
+echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">Comparison</label>';
+echo  '<ul class="treeview">
+        <li>
+          <input type="checkbox" name="cohort2-tnm_t-_empty_" id="cohort2-tnm_t-_empty_" checked value="on">
+          Missing
+        </li>
+        <li>
+          <input type="checkbox" name="cohort2-tnm_t-X" id="cohort2-tnm_t-X" checked value="on">
+          Tx: primary tumour cannot be assessed
+        </li>
+        <li>
+          <input type="checkbox" name="cohort2-tnm_t-0" id="cohort2-tnm_t-0" checked value="on">
+          T0: No evidence of primary
+        </li>
+        <lix class = "cohort2-tnm_t-1" style = "position:absolute;">+</lix>
+        
+        <li class = "cohort2-tnm_t-1">
+          <input type="checkbox" name="cohort2-tnm_t-1" id="cohort2-tnm_t-1" checked value="on">
+          T1: <= 2cm
+
+            <ul>
+                 <li>
+                     <input type="checkbox" name="cohort2-tnm_t-1A" id="cohort2-tnm_t-1A" checked value="on">
+                     T1a: >0.1cm <= 0.5cm
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort2-tnm_t-1B" id="cohort2-tnm_t-1B" checked value="on">
+                     T1b: >0.5cm <= 1cm
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort2-tnm_t-1C" id="cohort2-tnm_t-1C" checked value="on">
+                     T1c: >1cm <= 2cm
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort2-tnm_t-1M" id="cohort2-tnm_t-1M" checked value="on">
+                     T1m: microinvasion <= 0.1cm
+                 </li>
+                
+            </ul>
+        </li>
+        <li>
+          <input type="checkbox" name="cohort2-tnm_t-2" id="cohort2-tnm_t-2" checked value="on">
+          T2: >2cm <= 5cm
+        </li>
+        <li>
+          <input type="checkbox" name="cohort2-tnm_t-3" id="cohort2-tnm_t-3" checked value="on">
+          T3: >5cm
+        </li>
+         
+        <lix class = "cohort2-tnm_t-4" style = "position:absolute;">+</lix>
+    <li class = "cohort2-tnm_t-4">
+
+          <input type="checkbox" name="cohort2-tnm_t-4" id="cohort2-tnm_t-4" checked value="on">
+          T4: any size + chest or skin extension
+
+            <ul>
+                 <li>
+                     <input type="checkbox" name="cohort2-tnm_t-4A" id="cohort2-tnm_t-4A" checked value="on">
+                     T4a: chest wall extension
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort2-tnm_t-4B" id="cohort2-tnm_t-4B" checked value="on">
+                     T4b: skin extension
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort2-tnm_t-4C" id="cohort2-tnm_t-4C" checked value="on">
+                     T4c: both T4a and T4b
+                 </li>
+                 <li>
+                     <input type="checkbox" name="cohort2-tnm_t-4D" id="cohort2-tnm_t-4D" checked value="on">
+                     T4d: inflammatory carcinoma
+                 </li>
+                
+            </ul>
+        </li>
+        <li>
+          <input type="checkbox" name="cohort2-tnm_t-IS" id="cohort2-tnm_t-IS" checked value="on">
+          Tis: cacrinoma in situ
+        </li>
+       
+       
+    </ul>
+   
+
+    <div id ="T_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</div>
+     </div>
+    <div class="close-btn" style="margin-top:10px;margin-right:10px;" onclick="">Close</div>
+    <div id="T_Staging-duplicate" class="duplicate-btn" style="margin-top:10px;margin-right:10px;">Duplicate</div>
+    </div>';
+
+echo '<div id="overlay-N_Staging" class="overlay-content popupN_Staging" style="display: none; top: 20px;"><div id="overlay-N_Stagingcontent" style="float:left;padding-right:10px;">';
+echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">N Staging</label>';
+
+echo '<ul class="treeview">
+    <li>
+      <input type="checkbox" name="cohort1-tnm_n-_empty_" id="cohort1-tnm_n-_empty_" checked value="on">
+      Missing
+    </li>
+    <li>
+      <input type="checkbox" name="cohort1-tnm_n-X" id="cohort1-tnm_n-X" checked value="on">
+      Nx
+    </li>
+
+    <lix class = "cohort1-tnm_n-0" style = "position:absolute;">+</lix>
+    <li class = "cohort1-tnm_n-0">
+      <input type="checkbox" name="cohort1-tnm_n-0" id="cohort1-tnm_n-0" checked value="on">
+      N0
+
+       <ul>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-0NI" id="cohort1-tnm_t-0NI" checked value="on">
+                 N0(i-)
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_t-0PI" id="cohort1-tnm_t-0PI" checked value="on">
+                 N0(i+)
+             </li>
+            
+            
+        </ul>
+    </li>
+    <lix class = "cohort1-tnm_n-1" style = "position:absolute;">+</lix>
+    <li class = "cohort1-tnm_n-1">
+      <input type="checkbox" name="cohort1-tnm_n-1" id="cohort1-tnm_n-1" checked value="on">
+      N1
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-1A" id="cohort1-tnm_n-1A" checked value="on">
+                 N1a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-1B" id="cohort1-tnm_n-1B" checked value="on">
+                 N1b
+
+                   <ul>
+                       <li>
+                           <input type="checkbox" name="cohort1-tnm_n-1B1" id="cohort1-tnm_n-1B1" checked value="on">
+                           N1b1
+                       </li>
+                       <li>
+                           <input type="checkbox" name="cohort1-tnm_n-1B2" id="cohort1-tnm_n-1B2" checked value="on">
+                           N1b2
+                       </li>
+                       <li>
+                           <input type="checkbox" name="cohort1-tnm_n-1B3" id="cohort1-tnm_n-1B3" checked value="on">
+                           N1b3
+                       </li>
+                       <li>
+                           <input type="checkbox" name="cohort1-tnm_n-1B4" id="cohort1-tnm_n-1B4" checked value="on">
+                            N1b4
+                       </li>
+                      
+                  </ul>
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-1C" id="cohort1-tnm_n-1C" checked value="on">
+                 N1c
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-1M" id="cohort1-tnm_n-1M" checked value="on">
+                  N1m
+             </li>
+            
+        </ul>
+    </li>
+    <lix class = "cohort1-tnm_n-2" style = "position:absolute;">+</lix>
+     <li class = "cohort1-tnm_n-2">
+      <input type="checkbox" name="cohort1-tnm_n-2" id="cohort1-tnm_n-2" checked value="on">
+      N2
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-2A" id="cohort1-tnm_n-2A" checked value="on">
+                 N2a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-2B" id="cohort1-tnm_n-2B" checked value="on">
+                 N2b
+             </li>
+            
+            
+        </ul>
+    </li>
+
+    <lix class = "cohort1-tnm_n-3" style = "position:absolute;">+</lix>
+     <li class = "cohort1-tnm_n-3" >
+      <input type="checkbox" name="cohort1-tnm_n-3" id="cohort1-tnm_n-3" checked value="on">
+      N3
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-3A" id="cohort1-tnm_n-3A" checked value="on">
+                 N3a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-3B" id="cohort1-tnm_n-3B" checked value="on">
+                 N3b
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-3C" id="cohort1-tnm_n-3C" checked value="on">
+                 N3c
+             </li>
+            
+            
+        </ul>
+    </li>
+
+    <lix class = "cohort1-tnm_n-4" style = "position:absolute;">+</lix>
+    <li class = "cohort1-tnm_n-4" >
+      <input type="checkbox" name="cohort1-tnm_n-4" id="cohort1-tnm_n-4" checked value="on">
+      N4
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-4A" id="cohort1-tnm_n-4A" checked value="on">
+                 N4a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-4B" id="cohort1-tnm_n-4B" checked value="on">
+                 N4b
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-4C" id="cohort1-tnm_n-4C" checked value="on">
+                 N4c
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_n-4D" id="cohort1-tnm_n-4D" checked value="on">
+                 N4d
+             </li>
+            
+            
+        </ul>
+    </li>   
+    <li>
+      <input type="checkbox" name="cohort1-tnm_n-IS" id="cohort1-tnm_n-IS" checked value="on">
+      Nis
+    </li>   
+   
+  </ul>
+  </div>
+
+  <div id="overlay-N_Stagingcontent-cohort2" style="float:left;padding-right:10px;display:none;">';
+echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">Comparison</label>';
+
+echo '<ul class="treeview">
+    <li>
+      <input type="checkbox" name="cohort2-tnm_n-_empty_" id="cohort2-tnm_n-_empty_" checked value="on">
+      Missing
+    </li>
+    <li>
+      <input type="checkbox" name="cohort2-tnm_n-X" id="cohort2-tnm_n-X" checked value="on">
+      Nx
+    </li>
+
+    <lix class = "cohort2-tnm_n-0" style = "position:absolute;">+</lix>
+    <li class = "cohort2-tnm_n-0">
+      <input type="checkbox" name="cohort2-tnm_n-0" id="cohort2-tnm_n-0" checked value="on">
+      N0
+
+       <ul>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-0NI" id="cohort2-tnm_t-0NI" checked value="on">
+                 N0(i-)
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_t-0PI" id="cohort2-tnm_t-0PI" checked value="on">
+                 N0(i+)
+             </li>
+            
+            
+        </ul>
+    </li>
+    <lix class = "cohort2-tnm_n-1" style = "position:absolute;">+</lix>
+    <li class = "cohort2-tnm_n-1">
+      <input type="checkbox" name="cohort2-tnm_n-1" id="cohort2-tnm_n-1" checked value="on">
+      N1
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-1A" id="cohort2-tnm_n-1A" checked value="on">
+                 N1a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-1B" id="cohort2-tnm_n-1B" checked value="on">
+                 N1b
+
+                   <ul>
+                       <li>
+                           <input type="checkbox" name="cohort2-tnm_n-1B1" id="cohort2-tnm_n-1B1" checked value="on">
+                           N1b1
+                       </li>
+                       <li>
+                           <input type="checkbox" name="cohort2-tnm_n-1B2" id="cohort2-tnm_n-1B2" checked value="on">
+                           N1b2
+                       </li>
+                       <li>
+                           <input type="checkbox" name="cohort2-tnm_n-1B3" id="cohort2-tnm_n-1B3" checked value="on">
+                           N1b3
+                       </li>
+                       <li>
+                           <input type="checkbox" name="cohort2-tnm_n-1B4" id="cohort2-tnm_n-1B4" checked value="on">
+                            N1b4
+                       </li>
+                      
+                  </ul>
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-1C" id="cohort2-tnm_n-1C" checked value="on">
+                 N1c
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-1M" id="cohort2-tnm_n-1M" checked value="on">
+                  N1m
+             </li>
+            
+        </ul>
+    </li>
+    <lix class = "cohort2-tnm_n-2" style = "position:absolute;">+</lix>
+     <li class = "cohort2-tnm_n-2">
+      <input type="checkbox" name="cohort2-tnm_n-2" id="cohort2-tnm_n-2" checked value="on">
+      N2
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-2A" id="cohort2-tnm_n-2A" checked value="on">
+                 N2a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-2B" id="cohort2-tnm_n-2B" checked value="on">
+                 N2b
+             </li>
+            
+            
+        </ul>
+    </li>
+
+    <lix class = "cohort2-tnm_n-3" style = "position:absolute;">+</lix>
+     <li class = "cohort2-tnm_n-3" >
+      <input type="checkbox" name="cohort2-tnm_n-3" id="cohort2-tnm_n-3" checked value="on">
+      N3
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-3A" id="cohort2-tnm_n-3A" checked value="on">
+                 N3a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-3B" id="cohort2-tnm_n-3B" checked value="on">
+                 N3b
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-3C" id="cohort2-tnm_n-3C" checked value="on">
+                 N3c
+             </li>
+            
+            
+        </ul>
+    </li>
+
+    <lix class = "cohort2-tnm_n-4" style = "position:absolute;">+</lix>
+    <li class = "cohort2-tnm_n-4" >
+      <input type="checkbox" name="cohort2-tnm_n-4" id="cohort2-tnm_n-4" checked value="on">
+      N4
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-4A" id="cohort2-tnm_n-4A" checked value="on">
+                 N4a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-4B" id="cohort2-tnm_n-4B" checked value="on">
+                 N4b
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-4C" id="cohort2-tnm_n-4C" checked value="on">
+                 N4c
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_n-4D" id="cohort2-tnm_n-4D" checked value="on">
+                 N4d
+             </li>
+            
+            
+        </ul>
+    </li>   
+    <li>
+      <input type="checkbox" name="cohort2-tnm_n-IS" id="cohort2-tnm_n-IS" checked value="on">
+      Nis
+    </li>   
+   
+  </ul>
+   <div id ="N_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</div>
+  </div>
+
+
+  <div class="close-btn" style="margin-top:10px;margin-right:10px;" onclick="">Close</div>
+  <div id="N_Staging-duplicate" class="duplicate-btn" style="margin-top:10px;margin-right:10px;">Duplicate</div>
+  </div>';
+//m staging
+  echo '<div id="overlay-M_Staging" class="overlay-content popupM_Staging" style="display: none; top: 20px;"><div id="overlay-M_Stagingcontent" style="float:left;padding-right:10px;">';
+  echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">M Staging</label>';
+
+  echo '<ul class="treeview">
+    <li>
+      <input type="checkbox" name="cohort1-tnm_m-_empty_" id="cohort1-tnm_m-_empty_" checked value="on">
+      Missing
+    </li>
+    <li>
+      <input type="checkbox" name="cohort1-tnm_m-X" id="cohort1-tnm_m-X" checked value="on">
+      Mx
+    </li>
+    <li>
+      <input type="checkbox" name="cohort1-tnm_m-0" id="cohort1-tnm_m-0" checked value="on">
+      M0
+    </li>
+    <lix class = "cohort1-tnm_m-1" style = "position:absolute;">+</lix>
+    <li class = "cohort1-tnm_m-1">
+      <input type="checkbox" name="cohort1-tnm_m-1" id="cohort1-tnm_m-1" checked value="on">
+      M1
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_m-1A" id="cohort1-tnm_m-1A" checked value="on">
+                 M1a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_m-1B" id="cohort1-tnm_m-1B" checked value="on">
+                 M1b
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_m-1C" id="cohort1-tnm_m-1C" checked value="on">
+                 M1c
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_m-1M" id="cohort1-tnm_m-1M" checked value="on">
+                  M1m
+             </li>
+            
+        </ul>
+    </li>
+     <li>
+      <input type="checkbox" name="cohort1-tnm_m-2" id="cohort1-tnm_m-2" checked value="on">
+      M2
+    </li>
+     <li>
+      <input type="checkbox" name="cohort1-tnm_m-3" id="cohort1-tnm_m-3" checked value="on">
+      M3
+    </li>
+    <lix class = "cohort1-tnm_m-4" style = "position:absolute;">+</lix>
+    <li class = "cohort1-tnm_m-4">
+      <input type="checkbox" name="cohort1-tnm_m-4" id="cohort1-tnm_m-4" checked value="on">
+      M4
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_m-4A" id="cohort1-tnm_m-4A" checked value="on">
+                 M4a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_m-4B" id="cohort1-tnm_m-4B" checked value="on">
+                 M4b
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_m-4C" id="cohort1-tnm_m-4C" checked value="on">
+                 M4c
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort1-tnm_m-4D" id="cohort1-tnm_m-4D" checked value="on">
+                 M4d
+             </li>
+            
+            
+        </ul>
+    </li>   
+    <li>
+      <input type="checkbox" name="cohort1-tnm_m-IS" id="cohort1-tnm_m-IS" checked value="on">
+      Mis
+    </li>   
+   
+  </ul>
+  </div>
+
+  <div id="overlay-M_Stagingcontent-cohort2" style="float:left;padding-right:10px;display:none;">';
+  echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">Comparison</label>';
+
+  echo '<ul class="treeview">
+    <li>
+      <input type="checkbox" name="cohort2-tnm_m-_empty_" id="cohort2-tnm_m-_empty_" checked value="on">
+      Missing
+    </li>
+    <li>
+      <input type="checkbox" name="cohort2-tnm_m-X" id="cohort2-tnm_m-X" checked value="on">
+      Mx
+    </li>
+    <li>
+      <input type="checkbox" name="cohort2-tnm_m-0" id="cohort2-tnm_m-0" checked value="on">
+      M0
+    </li>
+    <lix class = "cohort2-tnm_m-1" style = "position:absolute;">+</lix>
+    <li class = "cohort2-tnm_m-1">
+      <input type="checkbox" name="cohort2-tnm_m-1" id="cohort2-tnm_m-1" checked value="on">
+      M1
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_m-1A" id="cohort2-tnm_m-1A" checked value="on">
+                 M1a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_m-1B" id="cohort2-tnm_m-1B" checked value="on">
+                 M1b
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_m-1C" id="cohort2-tnm_m-1C" checked value="on">
+                 M1c
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_m-1M" id="cohort2-tnm_m-1M" checked value="on">
+                  M1m
+             </li>
+            
+        </ul>
+    </li>
+     <li>
+      <input type="checkbox" name="cohort2-tnm_m-2" id="cohort2-tnm_m-2" checked value="on">
+      M2
+    </li>
+     <li>
+      <input type="checkbox" name="cohort2-tnm_m-3" id="cohort2-tnm_m-3" checked value="on">
+      M3
+    </li>
+    <lix class = "cohort2-tnm_m-4" style = "position:absolute;">+</lix>
+    <li class = "cohort2-tnm_m-4">
+      <input type="checkbox" name="cohort2-tnm_m-4" id="cohort2-tnm_m-4" checked value="on">
+      M4
+
+        <ul>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_m-4A" id="cohort2-tnm_m-4A" checked value="on">
+                 M4a
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_m-4B" id="cohort2-tnm_m-4B" checked value="on">
+                 M4b
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_m-4C" id="cohort2-tnm_m-4C" checked value="on">
+                 M4c
+             </li>
+             <li>
+                 <input type="checkbox" name="cohort2-tnm_m-4D" id="cohort2-tnm_m-4D" checked value="on">
+                 M4d
+             </li>
+            
+            
+        </ul>
+    </li>   
+    <li>
+      <input type="checkbox" name="cohort2-tnm_m-IS" id="cohort2-tnm_m-IS" checked value="on">
+      Mis
+    </li>   
+   
+  </ul>
+   <div id ="M_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</div>
+  </div>
+
+  <div class="close-btn" style="margin-top:10px;margin-right:10px;" onclick="">Close</div>
+  <div id="M_Staging-duplicate" class="duplicate-btn" style="margin-top:10px;margin-right:10px;">Duplicate</div>
+
+  </div>';
+}
 
 //Modified from code provided by Stephen Smithbower
 function genInputElements($cohort1, $cohort2)
@@ -371,121 +1037,128 @@ function genInputElements($cohort1, $cohort2)
   //Generate inputs.
   foreach ($dictionary as $group => $subgroup)
   {
-    echo '<div id="overlay-'.$group.'" class= "overlay-content popup'.$group.'">';
+   
+    if($group == 'TNM_Staging')
+    {
+      getTNMhtml();
+    }
+    else
+    {
+       echo '<div id="overlay-'.$group.'" class= "overlay-content popup'.$group.'">';
       //echo '<p class = "popuptitle">Set '.$subgroup->display.' Value(s)</p>';
 
-
-    $pref = 'cohort1';
-    $cohort = $cohort1;
-    echo '<div id="overlay-'.$group.'content" style="float:left;padding-right:10px;">';
-      foreach ($subgroup->elements as $element)
-      {
-        foreach ($element as $subelement => $spec)
+      $pref = 'cohort1';
+      $cohort = $cohort1;
+      echo '<div id="overlay-'.$group.'content" style="float:left;padding-right:10px;">';
+        foreach ($subgroup->elements as $element)
         {
-          $subCheckName ='gsublabel-'.$subelement.'-display';
-          echo '<label id="-gsublabel-'.$subelement.'" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px;'.
-          ($subgroup->display != "none" ? " margin-left:15px;" : "").'">'.$spec->display.'</label><br>';
-
-          switch ($spec->input)
+          foreach ($element as $subelement => $spec)
           {
-            case 'range':
-              echo '<label>Min</label>';
-              echo '<input type="number" class="form-control" name="'.$pref.'-'.$subelement.'-min" placeholder="min" style="width:100px;" value="'.
-                $cohort[$subelement.'-min'].'">';
-              echo '<label>Max</label>';
-              echo '<input type="number" class="form-control" name="'.$pref.'-'.$subelement.'-max" placeholder="max" style="width:100px;" value="'.
-               $cohort[$subelement.'-max'].'">';
-              echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
-              break;
-              
-              case 'select':
-              echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
-                'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});"'
-                  .'>Select All</a>';
-              echo '<a href="#" class="btn btn-danger btn-xs" '.
-                  'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});"'
-                  .'>Select None</a>';
-              echo '<div style="margin-bottom:10px;"></div>';
-              echo '<div class="scrollcombo" id = "scrollcombo-'.$subelement.'"">';
-                foreach ($spec->values as $dbVal=>$value)
-                {
-                  $id = $subelement.'-'.$dbVal;
-                  echo '<input type="checkbox" id ="'.$pref.'-'.$id.'" class="'.$pref.'-'.$subelement.'" name="'.$pref.'-'.$id.'" '.($cohort[$id] == "on" ? 'checked' :  "").'/>'.
-                          ($spec->type == "aggregate" ? $value->display : $value)."<br>";
-                }
-              echo '</div>';
-              break;
+            $subCheckName ='gsublabel-'.$subelement.'-display';
+            echo '<label id="-gsublabel-'.$subelement.'" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px;'.
+            ($subgroup->display != "none" ? " margin-left:15px;" : "").'">'.$spec->display.'</label><br>';
 
-            case 'toggle':
-              echo '<input type="checkbox" name="'.$pref.'-'.$subelement.
-                '" '.(isset($cohort[$subelement]) && $cohort[$subelement] == true ?
-                'checked' : '').'> Included</br>';
-              break;
+            switch ($spec->input)
+            {
+              case 'range':
+                echo '<label>Min</label>';
+                echo '<input type="number" class="form-control" name="'.$pref.'-'.$subelement.'-min" placeholder="min" style="width:100px;" value="'.
+                  $cohort[$subelement.'-min'].'">';
+                echo '<label>Max</label>';
+                echo '<input type="number" class="form-control" name="'.$pref.'-'.$subelement.'-max" placeholder="max" style="width:100px;" value="'.
+                 $cohort[$subelement.'-max'].'">';
+                echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
+                break;
+                
+                case 'select':
+                echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                  'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});"'
+                    .'>Select All</a>';
+                echo '<a href="#" class="btn btn-danger btn-xs" '.
+                    'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});"'
+                    .'>Select None</a>';
+                echo '<div style="margin-bottom:10px;"></div>';
+                echo '<div class="scrollcombo" id = "scrollcombo-'.$subelement.'"">';
+                  foreach ($spec->values as $dbVal=>$value)
+                  {
+                    $id = $subelement.'-'.$dbVal;
+                    echo '<input type="checkbox" id ="'.$pref.'-'.$id.'" class="'.$pref.'-'.$subelement.'" name="'.$pref.'-'.$id.'" '.($cohort[$id] == "on" ? 'checked' :  "").'/>'.
+                            ($spec->type == "aggregate" ? $value->display : $value)."<br>";
+                  }
+                echo '</div>';
+                break;
+
+              case 'toggle':
+                echo '<input type="checkbox" name="'.$pref.'-'.$subelement.
+                  '" '.(isset($cohort[$subelement]) && $cohort[$subelement] == true ?
+                  'checked' : '').'> Included</br>';
+                break;
+            }
           }
         }
-      }
-      echo '</div>';
+        echo '</div>';
 
-      $pref = 'cohort2';
-      $cohort = $cohort2;
-      //re-create as hidden for 2nd cohort
-      echo '<div id="overlay-'.$group.'content-cohort2" style="display:none;">';
-      foreach ($subgroup->elements as $element)
-      {
-        foreach ($element as $subelement => $spec)
+        $pref = 'cohort2';
+        $cohort = $cohort2;
+        //re-create as hidden for 2nd cohort
+        echo '<div id="overlay-'.$group.'content-cohort2" style="display:none;">';
+        foreach ($subgroup->elements as $element)
         {
-          $subCheckName ='gsublabel-'.$subelement.'-display';
-          echo '<label id="-gsublabel-'.$subelement.'" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px;'.
-          ($subgroup->display != "none" ? " margin-left:15px;" : "").'">Comparison</label><br>';
-         
-          switch ($spec->input)
+          foreach ($element as $subelement => $spec)
           {
-            case 'range':
-              echo '<label>Min</label>';
-              echo '<input type="number" class="form-control" name="'.$pref.'-'.$subelement.'-min" placeholder="min" style="width:100px;" value="'.
-                $cohort[$subelement.'-min'].'">';
-              echo '<label>Max</label>';
-              echo '<input type="number" class="form-control" name="'.$pref.'-'.$subelement.'-max" placeholder="max" style="width:100px;" value="'.
-               $cohort[$subelement.'-max'].'">';
-              echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
-              break;
-              
-              case 'select':
-              echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
-                'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});"'
-                  .'>Select All</a>';
-              echo '<a href="#" class="btn btn-danger btn-xs" '.
-                  'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});"'
-                  .'>Select None</a>';
-              echo '<div style="margin-bottom:10px;"></div>';
-              echo '<div class="scrollcombo" id = "scrollcombo2-'.$subelement.'"">';
-                foreach ($spec->values as $dbVal=>$value)
-                {
-                  $id = $subelement.'-'.$dbVal;
-                  echo '<input type="checkbox" id ="'.$pref.'-'.$id.'"  class="'.$pref.'-'.$subelement.'" name="'.$pref.'-'.$id.'" '.($cohort[$id] == "on" ? 'checked' :  "").'/>'.
-                          ($spec->type == "aggregate" ? $value->display : $value)."<br>";
-                }
-              echo '</div>';
-              break;
+            $subCheckName ='gsublabel-'.$subelement.'-display';
+            echo '<label id="-gsublabel-'.$subelement.'" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px;'.
+            ($subgroup->display != "none" ? " margin-left:15px;" : "").'">Comparison</label><br>';
+           
+            switch ($spec->input)
+            {
+              case 'range':
+                echo '<label>Min</label>';
+                echo '<input type="number" class="form-control" name="'.$pref.'-'.$subelement.'-min" placeholder="min" style="width:100px;" value="'.
+                  $cohort[$subelement.'-min'].'">';
+                echo '<label>Max</label>';
+                echo '<input type="number" class="form-control" name="'.$pref.'-'.$subelement.'-max" placeholder="max" style="width:100px;" value="'.
+                 $cohort[$subelement.'-max'].'">';
+                echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
+                break;
+                
+                case 'select':
+                echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                  'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});"'
+                    .'>Select All</a>';
+                echo '<a href="#" class="btn btn-danger btn-xs" '.
+                    'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});"'
+                    .'>Select None</a>';
+                echo '<div style="margin-bottom:10px;"></div>';
+                echo '<div class="scrollcombo" id = "scrollcombo2-'.$subelement.'"">';
+                  foreach ($spec->values as $dbVal=>$value)
+                  {
+                    $id = $subelement.'-'.$dbVal;
+                    echo '<input type="checkbox" id ="'.$pref.'-'.$id.'"  class="'.$pref.'-'.$subelement.'" name="'.$pref.'-'.$id.'" '.($cohort[$id] == "on" ? 'checked' :  "").'/>'.
+                            ($spec->type == "aggregate" ? $value->display : $value)."<br>";
+                  }
+                echo '</div>';
+                break;
 
-            case 'toggle':
-              echo '<input type="checkbox" name="'.$pref.'-'.$subelement.
-                '" '.(isset($cohort[$subelement]) && $cohort[$subelement] == true ?
-                'checked' : '').'> Included</br>';
-              break;
+              case 'toggle':
+                echo '<input type="checkbox" name="'.$pref.'-'.$subelement.
+                  '" '.(isset($cohort[$subelement]) && $cohort[$subelement] == true ?
+                  'checked' : '').'> Included</br>';
+                break;
+            }
           }
         }
-      }
-      echo '<div id ="'.$group.'-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</div>';
+        echo '<div id ="'.$group.'-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</div>';
 
+        echo '</div>';
+        echo '<div style = "clear:both;">'; //div for buttons
+        echo '<div class="close-btn" style = "margin-top:10px;margin-right:10px;" onClick = "">Close</div>';
+        echo '<div id ="'.$group.'-duplicate" class="duplicate-btn" style = "margin-top:10px;margin-right:10px;">Duplicate</div>';
+       
+        echo '</div>'; //div for buttons
       echo '</div>';
-      echo '<div style = "clear:both;">'; //div for buttons
-      echo '<div class="close-btn" style = "margin-top:10px;margin-right:10px;" onClick = "">Close</div>';
-      echo '<div id ="'.$group.'-duplicate" class="duplicate-btn" style = "margin-top:10px;margin-right:10px;">Duplicate</div>';
-     
-      echo '</div>'; //div for buttons
-    echo '</div>';
-    $count++;
+      $count++;
+    }
   }
 }
 ?>

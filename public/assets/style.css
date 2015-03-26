@@ -356,3 +356,15 @@ circle {
 .attr:hover .popup {
   display: block;
 }
+
+ul { 
+  list-style: none;
+}
+
+.treeview li{
+    padding-left: 15px;
+}
+
+.treeview ul{
+    display:none;
+}
