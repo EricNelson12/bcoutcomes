@@ -369,6 +369,13 @@ function getTNMhtml()
 {
 echo '<div id="overlay-TNM_Staging" class="overlay-content popupT_Staging" style="display: none; top: 20px;"><div id="overlay-T_Stagingcontent" style="float:left;padding-right:10px;">';
 echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">T Staging</label>';
+echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                  'onclick="selectallT1(true);"'
+                    .'>Select All</a>';
+                echo '<a href="#" class="btn btn-danger btn-xs" '.
+                    'onclick="selectallT1(false);"'
+                    .'>Select None</a>';
+                echo '<div style="margin-bottom:10px;"></div>';
 echo  '<ul class="treeview">
         <li>
           <input type="checkbox" name="cohort1-tnm_t-_empty_" id="cohort1-tnm_t-_empty_" checked value="on">
@@ -454,6 +461,13 @@ echo  '<ul class="treeview">
 
     <div id="overlay-T_Stagingcontent-cohort2" style="float:left;padding-right:10px; display:none;">';
 echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">Comparison</label>';
+echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                  'onclick="selectallT2(true);"'
+                    .'>Select All</a>';
+                echo '<a href="#" class="btn btn-danger btn-xs" '.
+                    'onclick="selectallT2(false);"'
+                    .'>Select None</a>';
+                echo '<div style="margin-bottom:10px;"></div>';
 echo  '<ul class="treeview">
         <li>
           <input type="checkbox" name="cohort2-tnm_t-_empty_" id="cohort2-tnm_t-_empty_" checked value="on">
@@ -537,15 +551,22 @@ echo  '<ul class="treeview">
     </ul>
    
 
-    <div id ="T_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</div>
+    <div id ="T_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-Compare</div>
      </div>
     <div class="close-btn" style="margin-top:10px;margin-right:10px;" onclick="">Close</div>
-    <div id="T_Staging-duplicate" class="duplicate-btn" style="margin-top:10px;margin-right:10px;">Duplicate</div>
+    <div id="T_Staging-duplicate" class="duplicate-btn" style="margin-top:10px;margin-right:10px;">Compare</div>
     </div>';
 
 echo '<div id="overlay-N_Staging" class="overlay-content popupN_Staging" style="display: none; top: 20px;"><div id="overlay-N_Stagingcontent" style="float:left;padding-right:10px;">';
-echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">N Staging</label>';
 
+echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">N Staging</label>';
+echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                  'onclick="selectallN1(true);"'
+                    .'>Select All</a>';
+                echo '<a href="#" class="btn btn-danger btn-xs" '.
+                    'onclick="selectallN1(false);"'
+                    .'>Select None</a>';
+                echo '<div style="margin-bottom:10px;"></div>';
 echo '<ul class="treeview">
     <li>
       <input type="checkbox" name="cohort1-tnm_n-_empty_" id="cohort1-tnm_n-_empty_" checked value="on">
@@ -563,11 +584,11 @@ echo '<ul class="treeview">
 
        <ul>
              <li>
-                 <input type="checkbox" name="cohort1-tnm_n-0NI" id="cohort1-tnm_t-0NI" checked value="on">
+                 <input type="checkbox" name="cohort1-tnm_n-0NI" id="cohort1-tnm_n-0NI" checked value="on">
                  N0(i-)
              </li>
              <li>
-                 <input type="checkbox" name="cohort1-tnm_t-0PI" id="cohort1-tnm_t-0PI" checked value="on">
+                 <input type="checkbox" name="cohort1-tnm_n-0PI" id="cohort1-tnm_n-0PI" checked value="on">
                  N0(i+)
              </li>
             
@@ -697,6 +718,13 @@ echo '<ul class="treeview">
 
   <div id="overlay-N_Stagingcontent-cohort2" style="float:left;padding-right:10px;display:none;">';
 echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">Comparison</label>';
+echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                  'onclick="selectallN2(true);"'
+                    .'>Select All</a>';
+                echo '<a href="#" class="btn btn-danger btn-xs" '.
+                    'onclick="selectallN2(false);"'
+                    .'>Select None</a>';
+                echo '<div style="margin-bottom:10px;"></div>';
 
 echo '<ul class="treeview">
     <li>
@@ -845,17 +873,24 @@ echo '<ul class="treeview">
     </li>   
    
   </ul>
-   <div id ="N_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</div>
+   <div id ="N_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-Compare</div>
   </div>
 
 
   <div class="close-btn" style="margin-top:10px;margin-right:10px;" onclick="">Close</div>
-  <div id="N_Staging-duplicate" class="duplicate-btn" style="margin-top:10px;margin-right:10px;">Duplicate</div>
+  <div id="N_Staging-duplicate" class="duplicate-btn" style="margin-top:10px;margin-right:10px;">Compare</div>
   </div>';
 //m staging
   echo '<div id="overlay-M_Staging" class="overlay-content popupM_Staging" style="display: none; top: 20px;"><div id="overlay-M_Stagingcontent" style="float:left;padding-right:10px;">';
+ 
   echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">M Staging</label>';
-
+   echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                  'onclick="selectallM1(true);"'
+                    .'>Select All</a>';
+                echo '<a href="#" class="btn btn-danger btn-xs" '.
+                    'onclick="selectallM1(false);"'
+                    .'>Select None</a>';
+                echo '<div style="margin-bottom:10px;"></div>';
   echo '<ul class="treeview">
     <li>
       <input type="checkbox" name="cohort1-tnm_m-_empty_" id="cohort1-tnm_m-_empty_" checked value="on">
@@ -938,7 +973,13 @@ echo '<ul class="treeview">
 
   <div id="overlay-M_Stagingcontent-cohort2" style="float:left;padding-right:10px;display:none;">';
   echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">Comparison</label>';
-
+  echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
+                  'onclick="selectallM2(true);"'
+                    .'>Select All</a>';
+                echo '<a href="#" class="btn btn-danger btn-xs" '.
+                    'onclick="selectallM2(false);"'
+                    .'>Select None</a>';
+                echo '<div style="margin-bottom:10px;"></div>';
   echo '<ul class="treeview">
     <li>
       <input type="checkbox" name="cohort2-tnm_m-_empty_" id="cohort2-tnm_m-_empty_" checked value="on">
@@ -1017,11 +1058,11 @@ echo '<ul class="treeview">
     </li>   
    
   </ul>
-   <div id ="M_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</div>
+   <div id ="M_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-Compare</div>
   </div>
 
   <div class="close-btn" style="margin-top:10px;margin-right:10px;" onclick="">Close</div>
-  <div id="M_Staging-duplicate" class="duplicate-btn" style="margin-top:10px;margin-right:10px;">Duplicate</div>
+  <div id="M_Staging-duplicate" class="duplicate-btn" style="margin-top:10px;margin-right:10px;">Compare</div>
 
   </div>';
 }
@@ -1072,10 +1113,12 @@ function genInputElements($cohort1, $cohort2)
                 
                 case 'select':
                 echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
-                  'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});"'
+                  'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});
+                  $(\'.cohort2-'.$subelement.'\').each(function(){this.checked=true;});"'
                     .'>Select All</a>';
                 echo '<a href="#" class="btn btn-danger btn-xs" '.
-                    'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});"'
+                    'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=false;});
+                    $(\'.cohort2-'.$subelement.'\').each(function(){this.checked=false;});"'
                     .'>Select None</a>';
                 echo '<div style="margin-bottom:10px;"></div>';
                 echo '<div class="scrollcombo" id = "scrollcombo-'.$subelement.'"">';
@@ -1148,12 +1191,12 @@ function genInputElements($cohort1, $cohort2)
             }
           }
         }
-        echo '<div id ="'.$group.'-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-duplicate</div>';
+        echo '<div id ="'.$group.'-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-compare</div>';
 
         echo '</div>';
         echo '<div style = "clear:both;">'; //div for buttons
         echo '<div class="close-btn" style = "margin-top:10px;margin-right:10px;" onClick = "">Close</div>';
-        echo '<div id ="'.$group.'-duplicate" class="duplicate-btn" style = "margin-top:10px;margin-right:10px;">Duplicate</div>';
+        echo '<div id ="'.$group.'-duplicate" class="duplicate-btn" style = "margin-top:10px;margin-right:10px;">Compare</div>';
        
         echo '</div>'; //div for buttons
       echo '</div>';

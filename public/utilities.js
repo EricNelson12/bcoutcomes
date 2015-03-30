@@ -709,6 +709,8 @@ function add_node(div){
         else{
           $("input[name="+name+"]").prop('checked', false);
         }
+        $("input[name="+name+"]").val($(this).val());
+        //alert(this);
       }        
       
 
@@ -770,7 +772,7 @@ $(function() {
 
 $(function() {
 
-  $('input[type="checkbox"]').change(checkboxChanged);
+  $('input[id*="-tnm_"]').change(checkboxChanged);
 
   function checkboxChanged() {
     var $this = $(this),
@@ -836,3 +838,24 @@ $(function() {
   }
 });
 
+function selectallT1(bool){
+$('input[id*="cohort1-tnm_t"]').each(function(){this.checked=bool;});
+selectallT2(bool);
+}
+function selectallT2(bool){
+  $('input[id*="cohort2-tnm_t"]').each(function(){this.checked=bool;});
+}
+function selectallN1(bool){
+  $('input[id^="cohort1-tnm_n"]').each(function(){this.checked=bool;});
+  selectallN2(bool);
+}
+function selectallN2(bool){
+  $('input[id^="cohort2-tnm_n"]').each(function(){this.checked=bool;});
+}
+function selectallM1(bool){
+  $('input[id*="cohort1-tnm_m"]').each(function(){this.checked=bool;});
+  selectallM2(bool);
+}
+function selectallM2(bool){
+  $('input[id*="cohort2-tnm_m"]').each(function(){this.checked=bool;});
+}
