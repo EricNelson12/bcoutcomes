@@ -30,9 +30,10 @@ class HomeController extends BaseController {
 	{
 		if(Auth::check()){
 			$id = Auth::user()->id;
-			$test =Query::where('user_id', $id)->orderBy('date_of_query', 'desc')->get();
+			$test =Query::where('user_id', $id)->where('query_name','=','none')->orderBy('date_of_query', 'desc')->get();
+			$test1 =Query::where('user_id', $id)->where('query_name','!=','none')->orderBy('date_of_query', 'desc')->get();
 			//$test = DB::getQueryLog();
-			return View::make('history.history')->with('test', $test);
+			return View::make('history.history')->with(array('test'=> $test,'test1'=>$test1));
 		}
 		else{
 			return View::make('users.login');

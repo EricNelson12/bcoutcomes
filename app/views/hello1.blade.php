@@ -201,6 +201,7 @@
   Begin Attribute Collection tabbed panel, an implementation of the JQuery Easy Tabs plugin (open source)
 -->  
 
+<form role="form" id = "myform" method="POST" action="index.php">
 <!-- start of visualizations-->
   <div id = "cohort_builder">
     <div id="tabs" class='tabbable'>
@@ -218,6 +219,7 @@
       <li class="queryButton" onClick="mySubmit();">Query</li>
       <li style = "margin-right:10px;">&nbsp;</li>
       <li onClick="window.location = window.location.href;" class="resetButton">Reset</li>
+      <li><input type="text" name = "query_name" id = "query_name" maxlength="65" placeholder="Query Name" style ="margin-left:10px;"></li>
      </ul>
 
 
@@ -347,8 +349,8 @@
 </div>
 
 <div class="overlay-content popuptooltip1">
-    <p>Patient attributes are grouped into collections based on the user's field of oncology.</p>
-    <p>To add an attribute to the Cohort Tree, which will be used to filter patient cohorts, simply click it. This will open a window which will allow you to select that filter's value(s).</p>
+    <p>Patient attributes are grouped into collections based on the users field of oncology.</p>
+    <p>To add an attribute to the Cohort Tree, which will be used to filter patient cohorts, simply click it. This will open a window which will allow you to select that filters value(s).</p>
     <button class="close-btn">Close</button>
 </div>
 
@@ -357,7 +359,7 @@
     <p>Clicking a Filtered Attribute will allow you to change it's value(s).</p>
     <p>Any attributes not present in the Filtered Attributes will not be used to filter patient cohorts.</p>
     <p>To remove an attribute filter, right click it.</p>
-    <p>To duplicate an attribute filter, which is only allowed once, click the "Duplicate" button of the attribute you wish to duplicate. This is the key attribute used when comparing two cohorts.</p>
+    <p>To define a second cohort using an attribute, click the "Compare" button of the attribute you wish to use. This is the key attribute used when comparing two cohorts.</p>
    
     <button class="close-btn">Close</button>
 </div>
@@ -1206,7 +1208,6 @@ function genInputElements($cohort1, $cohort2)
 }
 ?>
 
-<form role="form" id = "myform" method="POST" action="index.php">
   <?php
   genInputElements($cohort1Params,$cohort2Params);
   ?>
@@ -1334,6 +1335,12 @@ function genInputElements($cohort1, $cohort2)
     $dbquery = new PDO("mysql:host=10.7.201.49;dbname=outcomes", "breastuser1", "YES");
     $dbquery->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    $qname = "none";
+    if(isset($_POST['query_name']))
+    {
+      if($_POST['query_name']!="")
+        $qname = $_POST['query_name'];
+    }
 
     $c1params = "";
     $c2params = "";
@@ -1350,7 +1357,7 @@ function genInputElements($cohort1, $cohort2)
       }
     }
 
-    $query = "INSERT INTO queries (user_id,cohort1params,cohort2params,date_of_query) VALUES (".Auth::user()->id.",'".$c1params."','".$c2params."','".date("Y-m-d H:i:s")."');";
+    $query = "INSERT INTO queries (user_id,cohort1params,cohort2params,date_of_query,query_name) VALUES (".Auth::user()->id.",'".$c1params."','".$c2params."','".date("Y-m-d H:i:s")."','".$qname."');";
     $stmt = $dbquery->prepare($query);
     $stmt->execute();
 
