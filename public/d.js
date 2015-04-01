@@ -1,85 +1,106 @@
-!(function (d3) {
+    google.load('visualization', '1.1', {packages: ['line', 'corechart']});
+    google.setOnLoadCallback(drawChart);
 
-$("dcontent").empty();
-var margin = {top: 20, right: 45, bottom: 30, left: 60},
-width = 1000 - margin.left - margin.right,
-height = 300 - margin.top - margin.bottom;
+    function drawChart() {
 
+      var survivalChart;
+      var recurrenceChart;
+      var button = document.getElementById('change-chart');
+      //var materialDiv = document.getElementById('dcontent');
+      var recurrenceDiv = document.getElementById('bcontent');
+      var survivalDiv = document.getElementById('acontent');
 
-var parseDate = d3.time.format("%d-%b-%y").parse;
+     
+/*
+      var materialOptions = {
+        chart: {
+          title: 'Average Temperatures and Daylight in Iceland Throughout the Year'
+        },
+        width: 900,
+        height: 500,
+        series: {
+          // Gives each series an axis name that matches the Y-axis below.
+          0: {axis: 'Temps'},
+          1: {axis: 'Daylight'}
+        },
+        explorer: {
+      maxZoomOut:2,
+      keepInBounds: true
+    },
+        axes: {
+          // Adds labels to each axis; they don't have to match the axis names.
+          y: {
+            Temps: {label: 'Temps (Celsius)'},
+            Daylight: {label: 'Daylight'}
+          }
+        }
+      };
+*/
+      var recurrenceOptions = {
+        title: 'Kaplan-Meier Recurrence Estimator',
+        width: 900,
+        height: 500,
+        // Gives each series an axis that matches the vAxes number below.
+        series: {
+          0: {targetAxisIndex: 0},
+         
+        },
+        vAxes: {
+          // Adds titles to each axis.
+          0: {title: 'Recurrence (%)'}
+          
+        },
+        hAxis: {
+          ticks: [0,1,2,3,4,5,6,7,8,9,10
+                 ]
+        },
+        explorer: {
+          maxZoomOut:2,
+          keepInBounds: true
+        },
+        vAxis: {
+          viewWindow: {
+            max: 30
+          }
+        }
+      };
 
-var x = d3.scale.linear()
-.range([0, width - 300]);
+       var survivalOptions = {
+        title: 'Kaplan-Meier Survival Estimator',
+        width: 900,
+        height: 500,
+        // Gives each series an axis that matches the vAxes number below.
+        series: {
+          0: {targetAxisIndex: 0},
+         
+        },
+        vAxes: {
+          // Adds titles to each axis.
+          0: {title: 'Survival (%)'}
+          
+        },
+        hAxis: {
+          ticks: [0,1,2,3,4,5,6,7,8,9,10
+                 ]
+        },
+        explorer: {
+          maxZoomOut:2,
+          keepInBounds: true
+        },
+        vAxis: {
+          viewWindow: {
+            max: 100
+          }
+        }
+      };
 
-var y = d3.scale.linear()
-    .range([height, 0]);
+      //materialChart = new google.charts.Line(materialDiv);
+     recurrenceChart = new google.visualization.LineChart(recurrenceDiv);
+     survivalChart = new google.visualization.LineChart(survivalDiv);
 
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
+      recurrenceChart.draw(data2, recurrenceOptions);
+      survivalChart.draw(data1, survivalOptions);
+      //materialChart.draw(data, materialOptions);
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
-
-var line = d3.svg.line()
-    .x(function(d) { return x(d.year); })
-    .y(function(d) { return y(d.close); });
-
-var svg = d3.select("dcontent").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-d3.tsv("data2.tsv", function(error, data) {
-  data.forEach(function(d) {
-    d.year = +d.year;
-    d.close = +d.close;
-  });
-
- 
-  x.domain(d3.extent(data, function(d) { return d.year; }));
-  //y.domain(d3.extent(data, function(d) { return d.close; }));
-  y.domain([0, d3.max(data, function(d) {
-    return Math.max(d.close); })]); 
-
-
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Survival (%)");
-
-  svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line);
-
- var stat = svg.selectAll(".stat")
-    .data(stats)
-  .enter().append("g")
-    .attr("class", "stat");
-
-  stat.append("path")
-      .attr("class", "line")
-      .attr("d", function(d) { return line(d.values); })
-      .style("stroke", function(d) {return color(d.name); });
-
-  stat.append("text")
-      .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-      .attr("transform", function(d) { return "translate(" + x(d.value.year) + "," + y(d.value.value) + ")"; })
-      .attr("x", 3)
-      .attr("dy", "0.35em")
-      .text(function(d) { return d.name; });
-});
-})(d3);
+    
+    }

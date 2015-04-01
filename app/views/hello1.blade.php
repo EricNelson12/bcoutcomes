@@ -2,11 +2,15 @@
 
 <head>
   	
+
+<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['line', 'corechart']}]}"></script>
  	<script src="jquery/jquery-1.8.3.js"></script>
   <script src="jquery/ui/jquery.ui.core.js"></script>
   <script src="jquery/ui/jquery.ui.widget.js"></script>
   <script src="jquery/ui/jquery.ui.tabs.js"></script>
   <script src="utilities.js"></script>
+  <script src="d.js"></script>
+
 
   <link rel="stylesheet" href="jquery/demos.css">
   
@@ -67,13 +71,12 @@
   $joinedData = joinKaplanData($dataToJoin, $names);
 
   $tsv = fopen('data.tsv', 'w');
-  fwrite($tsv, "year\tclose\topen");
-  fwrite($tsv, "\n");
+  
   
   foreach ($joinedData as $year => $t_data)
   {
-    fwrite($tsv, $year."\t".$t_data['cohort 1']."\t".$t_data['cohort 2']);
-    fwrite($tsv, "\t0\n");
+    fwrite($tsv, $year.", ".$t_data['cohort 1'].", ".$t_data['cohort 2']);
+    fwrite($tsv, "\n");
   }
 
   fclose($tsv);
@@ -115,13 +118,13 @@
   $joinedData = joinKaplanData($dataToJoinrec, $names);
 
   $tsv = fopen('data.tsv', 'w');
-  fwrite($tsv, "year\tclose\topen");
-  fwrite($tsv, "\n");
+  //fwrite($tsv, "year\tclose\topen");
+  //fwrite($tsv, "\n");
   
   foreach ($joinedData as $year => $t_data)
   {
-    fwrite($tsv, $year."\t".(100-$t_data['cohort 1'])."\t".(100-$t_data['cohort 2']));
-    fwrite($tsv, "\t0\n");
+    fwrite($tsv, $year.", ".(100-$t_data['cohort 1']).", ".(100-$t_data['cohort 2']));
+    fwrite($tsv, "\n");
   }
 
   fclose($tsv);
@@ -132,6 +135,57 @@
 
   if (!copy($file, $newfile)) {
       echo "failed to copy $file...\n";
+  }
+
+
+  getData();
+
+  function getData()
+  {
+    echo ' 
+    <script>
+    var data2 = new google.visualization.DataTable();
+      data2.addColumn(\'number\', \'Year\');
+      data2.addColumn(\'number\', "Cohort 1");
+      data2.addColumn(\'number\', "Cohort 2");
+
+      data2.addRows([';
+
+        $handle = fopen("data3.tsv", "r");
+          if ($handle) {
+              while (($line = fgets($handle)) !== false) {
+                  echo '['.$line.'],';
+              }
+
+              fclose($handle);
+          } else {
+              // error opening the file.
+          } 
+          
+        
+      echo ']);
+
+      var data1 = new google.visualization.DataTable();
+          data1.addColumn(\'number\', \'Year\');
+          data1.addColumn(\'number\', "Cohort 1");
+          data1.addColumn(\'number\', "Cohort 2");
+
+          data1.addRows([';
+
+        $handle = fopen("data2.tsv", "r");
+          if ($handle) {
+              while (($line = fgets($handle)) !== false) {
+                  echo '['.$line.'],';
+              }
+
+              fclose($handle);
+          } else {
+              // error opening the file.
+          } 
+          
+        
+      echo ']);
+      </script>';
   }
 
   ?>
@@ -1236,18 +1290,19 @@ function genInputElements($cohort1, $cohort2)
           <ul class="nav nav-tabs">
               <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival</a></li>
              
-              <li><a class="ctab" href="#c_tab" data-toggle="tab">Time to Treatment</a></li>
+              
               <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence</a></li>
-              <li><a class="dtab" href="#d_tab" data-toggle="tab">Treatment Cost Estimation</a></li>
+              <li disabled="true"><a class="ctab" href="#c_tab" data-toggle="tab" >Time to Treatment</a></li>
+              <li disabled="true"><a class="dtab" href="#d_tab" data-toggle="tab">Treatment Cost Estimation</a></li>
           </ul>
           <div class="tab-content">
               <div class="tab-pane active" id="a_tab">
                   <h1>Kaplan-Meier Survival Estimation</h1>
-                  <acontent></acontent>
+                  <acontent id = "acontent"></acontent>
               </div>
               <div class="tab-pane" id="b_tab">
                   <h1>Kaplan-Meier Recurrence Estimation</h1>
-                  <bcontent></bcontent>
+                  <bcontent id = "bcontent"></bcontent>
               </div>
               <div class="tab-pane" id="c_tab">
                   <h1>Time to Treatment Estimation</h1>
@@ -1255,7 +1310,7 @@ function genInputElements($cohort1, $cohort2)
               </div>
                <div class="tab-pane" id="d_tab">
                   <h1>Treatment Cost Estimation</h1>
-                  <dcontent></dcontent>
+                  <dcontent id = "dcontent"></dcontent>
               </div>
           </div>
       </div>
@@ -1306,14 +1361,14 @@ function genInputElements($cohort1, $cohort2)
         cache: false
     });
 
-    $.getScript("a.js");
+    //$.getScript("a.js");
     $(".atab").click(function() {
-        $.getScript("a.js");
+        //$.getScript("a.js");
     })
 </script>
 <script>
     $(".btab").click(function() {
-        $.getScript("b.js");
+        //$.getScript("b.js");
     })
 </script>
 <script>
