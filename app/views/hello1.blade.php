@@ -414,7 +414,7 @@
     <p>Clicking a Filtered Attribute will allow you to change it's value(s).</p>
     <p>Any attributes not present in the Filtered Attributes will not be used to filter patient cohorts.</p>
     <p>To remove an attribute filter, right click it.</p>
-    <p>To define a second cohort using an attribute, click the "Compare" button of the attribute you wish to use. This is the key attribute used when comparing two cohorts.</p>
+    <p>To define a second cohort using an attribute, click the "Compare" button of the attribute you wish to use. This is the key attribute used when comparing two cohorts.</p> 
    
     
 </div>
