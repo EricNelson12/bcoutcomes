@@ -60,7 +60,7 @@
         },
         vAxis: {
           viewWindow: {
-            max: 30
+            max: 100
           }
         }
       };

@@ -76,7 +76,7 @@ class UserController extends BaseController {
 
             Auth::login($user);
 
-            return Redirect::to('')->with('message', 'Thanks for registering!');
+            return Redirect::to('')->with('message', 'Thanks for registering! Refer to the tutorial link at the top if needed.');
 	 
 	    	//return Redirect::to('login')->with('message', 'Thanks for registering!');
 	    }
