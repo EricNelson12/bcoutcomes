@@ -1,7 +1,7 @@
 <!Doctype HTML>
 
 <head>
-  	
+
 
 <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['line', 'corechart']}]}"></script>
  	<script src="jquery/jquery-1.8.3.js"></script>
@@ -13,16 +13,15 @@
 
 
   <link rel="stylesheet" href="jquery/demos.css">
-  
+
 
   <?php
 
   //to do: Hovering over attribute filter shows it's summary
-
   require_once("kaplanMeier.php");
-
+  $ip = gethostbyname('gpuresearchwin7.phsabc.ehcnet.ca');
   $dictionary = json_decode(file_get_contents("dictionary.json"));
-  $db = new PDO("mysql:host=10.7.201.60;dbname=breastdata2", "breastuser", "YES");
+  $db = new PDO("mysql:host=".$ip.";dbname=breastdata2", "breastuser", "YES");
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
@@ -42,7 +41,7 @@
   $cohort1Params = parseParams("cohort1-");
   $cohort2Params = parseParams("cohort2-");
 
-  
+
   $cohort1 = queryData($cohort1Params, 'death_years');
   $cohort1dx = queryData($cohort1Params, 'br_dx_date');
 
@@ -71,8 +70,8 @@
   $joinedData = joinKaplanData($dataToJoin, $names);
 
   $tsv = fopen('data.tsv', 'w');
-  
-  
+
+
   foreach ($joinedData as $year => $t_data)
   {
     fwrite($tsv, sprintf('%0.2f', $year).", ".sprintf('%0.2f', $t_data['cohort 1']).", ".sprintf('%0.2f', $t_data['cohort 2']));
@@ -120,7 +119,7 @@
   $tsv = fopen('data.tsv', 'w');
   //fwrite($tsv, "year\tclose\topen");
   //fwrite($tsv, "\n");
-  
+
   foreach ($joinedData as $year => $t_data)
   {
     fwrite($tsv, sprintf('%0.2f', $year).", ".sprintf('%0.2f', (100-$t_data['cohort 1'])).", ".sprintf('%0.2f', (100-$t_data['cohort 2'])));
@@ -142,7 +141,7 @@
 
   function getData()
   {
-    echo ' 
+    echo '
     <script>
     var data2 = new google.visualization.DataTable();
       data2.addColumn(\'number\', "Year");
@@ -160,9 +159,9 @@
               fclose($handle);
           } else {
               // error opening the file.
-          } 
-          
-        
+          }
+
+
       echo ']);
 
       var data1 = new google.visualization.DataTable();
@@ -181,19 +180,19 @@
               fclose($handle);
           } else {
               // error opening the file.
-          } 
-          
-        
+          }
+
+
       echo ']);
       </script>';
   }
 
   ?>
-	
-	{{ HTML::style('assets/style.css') }}
-	
 
-  
+	{{ HTML::style('assets/style.css') }}
+
+
+
 
   	<title>Breast Cancer Outcomes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -216,7 +215,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/laravel/outcomes/public/">Breast Cancer Outcomes</a>
+                    <a class="navbar-brand" href="">Breast Cancer Outcomes</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -227,8 +226,8 @@
                         <li><a href="logout">Log Out</a></li>
                         <li><a href="profile">{{ Auth::user()->email }}</a></li>
                         @else
-                        <li><a href="/laravel/outcomes/public/login">Login</a></li>
-                        <li><a href="/laravel/outcomes/public/user/create">Register</a></li>
+                        <li><a href="login">Login</a></li>
+                        <li><a href="create">Register</a></li>
                         @endif
                     </ul>
 
@@ -252,9 +251,9 @@
 
 {{HTML::script('http://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')}}
 @show
-<!--  
+<!--
   Begin Attribute Collection tabbed panel, an implementation of the JQuery Easy Tabs plugin (open source)
--->  
+-->
 
 <form role="form" id = "myform" method="POST" action="index.php">
 <!-- start of visualizations-->
@@ -262,9 +261,9 @@
     <div id="tabs" class='tabbable'>
      <ul class='nav nav-tabs'>
       <!-- This will choose the correct attribute tree based on user oncology -->
-      
-     
-     
+
+
+
       <li class = 'active' id='alltab'> <a href="#All" data-toggle="tab">Data Attributes</a></li>
       <!--
       <li id='surgerytab'><a href="#Surgical" data-toggle="tab">Surgical Oncology</a></li>
@@ -282,13 +281,13 @@
      <div class='tab-content'>
 
       <div class="tab-pane active" id="All">
-        
+
         <div id ="All-all">
           <div id="age"class = "attr" href="#" data-showpopup="Age">Age</div>
           <div id="behaviour"class = "attr"href="#" data-showpopup="Behaviour">Behaviour</div>
           <div id="diagnosis_date"class = "attr" href="#" data-showpopup="Diagnosis_Date">Diagnosis Date</div>
           <div id="grade"class = "attr"href="#" data-showpopup="Grade">Grade</div>
-          <div id="site"class = "attr" href="#" data-showpopup="Site">Site</div>          
+          <div id="site"class = "attr" href="#" data-showpopup="Site">Site</div>
         </div>
         <div id = "All-surgery">
           <div id="estrogen_receptor"class = "attrsurgery"  href="#" data-showpopup="Immuno_Stains">Estrogen Receptor</div>
@@ -296,25 +295,25 @@
           <div id="histology"class = "attrsurgery"  href="#" data-showpopup="Hist">Histology</div>
           <div id="menopause"class = "attrsurgery" href="#" data-showpopup="Meno_Status">Menopause</div>
           <div id="nodes"class = "attrsurgery"  href="#" data-showpopup="Nodes">Nodes</div>
-        
+
           <div id="progesterone_receptor"class = "attrsurgery"  href="#" data-showpopup="PGR">Progesterone Receptor</div>
-          
+
 
         </div>
         <div>
           <div id="tstaging"class = "attrsurgery" href="#" data-showpopup="T_Staging">T Staging</div>
           <div id="mstaging"class = "attrsurgery" href="#" data-showpopup="N_Staging">N Staging</div>
           <div id="nstaging"class = "attrsurgery" href="#" data-showpopup="M_Staging">M Staging</div>
-          
+
         </div>
-        
+
         <div id = "All-medical">
-         
+
           <div id="radiation"class = "attrmedical" href="#" data-showpopup="Radiation">Radiation</div>
           <div id="chemo"class = "attrmedical"  href="#" data-showpopup="Chemo">Chemo</div>
            <div id="surgery"class = "attrmedical" href="#" data-showpopup="Surgery">Surgery</div>
            <div id="recurrence"class = "attrmedical" href="#" data-showpopup="SRM_Date">Recurrence</div>
-         
+
         </div>
 
       </div>
@@ -343,7 +342,7 @@
           <div id="grade"class = "attr"href="#" data-showpopup="Grade">Grade</div>
           <div id="behaviour"class = "attr"href="#" data-showpopup="Behaviour">Behaviour</div>
         </div>
-       
+
         <div id = "All-radiation">
           <div id="nodes"class = "attrradiation"  href="#" data-showpopup="Nodes">Nodes</div>
           <div id="histology"class = "attrradiation"  href="#" data-showpopup="Hist">Histology</div>
@@ -351,7 +350,7 @@
           <div id="radiation"class = "attrradiation" href="#" data-showpopup="Radiation">Radiation</div>
 
         </div>
-        
+
       </div>
 
       <div class="tab-pane" id="Medical">
@@ -370,21 +369,21 @@
         </div>
       </div>
     -->
-     
+
 
      </div>
     </div>
 
-   
 
-  <!-- 
+
+  <!--
     End Attribute Collection tabbed panel
   -->
 
-  <!-- 
+  <!--
     Begin Cohort Builder Tree
   -->
-   
+
     <div id="cohort_tree">
       <p style="display:inline-block;">Filtered Attributes</p>
     <img src="images/help.png" alt="alternative text" title="The Cohort Filters show attributes you've set values for and filtered your cohort's with. Any attribute not in the Cohort Filters will not be used to filter your cohorts." style = "width:10px;height:10px;cursor:pointer;" onclick="show_tooltip(2);"/>
@@ -393,20 +392,20 @@
 
   </div>
 
-  <!-- 
+  <!--
   End Cohort Builder Tree
 -->
 
-  
+
 
 <!-- Start of popup windows -->
 <div class="overlay-bg">
 </div>
 
 <div class="overlay-content popuptooltip1">
-   
+
     <p>To add a Cohort Filter, simply click it. This will open a window which will allow you to select that filters value(s).</p>
-    
+
 </div>
 
 <div class="overlay-content popuptooltip2">
@@ -414,9 +413,9 @@
     <p>Clicking a Filtered Attribute will allow you to change it's value(s).</p>
     <p>Any attributes not present in the Filtered Attributes will not be used to filter patient cohorts.</p>
     <p>To remove an attribute filter, right click it.</p>
-    <p>To define a second cohort using an attribute, click the "Compare" button of the attribute you wish to use. This is the key attribute used when comparing two cohorts.</p> 
-   
-    
+    <p>To define a second cohort using an attribute, click the "Compare" button of the attribute you wish to use. This is the key attribute used when comparing two cohorts.</p>
+
+
 </div>
 
 <div class="overlay-content popuptooltip3">
@@ -436,7 +435,7 @@
   genInputElements($cohort1Params,$cohort2Params);
   ?>
   <input type="checkbox" name="is_not_first_query" style="display: none" checked/>
-  <?php 
+  <?php
   $filter_list = "";
   if (isset($_POST['filter_list'])) {
     $filter_list=$_POST['filter_list'];
@@ -459,8 +458,8 @@
       <div class="tabbable" id="visualization" style = "width:700px;">
           <ul class="nav nav-tabs">
               <li class="active"><a class="atab" href="#a_tab" data-toggle="tab">Survival</a></li>
-             
-              
+
+
               <li><a class="btab" href="#b_tab" data-toggle="tab">Recurrence</a></li>
               <li disabled="true"><a class="ctab" href="#c_tab" data-toggle="tab" >Time to Treatment</a></li>
               <li disabled="true"><a class="dtab" href="#d_tab" data-toggle="tab">Treatment Cost Estimation</a></li>
@@ -470,7 +469,7 @@
                   <h1>Kaplan-Meier Survival Estimation</h1>
                   <acontent id = "acontent"></acontent>
                   <div id = "logranksurvival">
- LogRank Chi Square: <b><?php echo number_format($logRank, 5); ?></b> &nbsp;&nbsp; 
+ LogRank Chi Square: <b><?php echo number_format($logRank, 5); ?></b> &nbsp;&nbsp;
           P-value: <b><?php $pv = cdf_2tail($logRank); if ($pv < 0.0001) echo '<0.0001'; else echo number_format($pv, 5); ?></b>
  </div>
               </div>
@@ -478,7 +477,7 @@
                   <h1>Kaplan-Meier Recurrence Estimation</h1>
                   <bcontent id = "bcontent"></bcontent>
                   <div id = "logranksurvival">
-LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&nbsp; 
+LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&nbsp;
           P-value: <b><?php $pv = cdf_2tail($logRankrec); if ($pv < 0.0001) echo '<0.0001'; else echo number_format($pv, 5); ?></b>
  </div>
               </div>
@@ -507,12 +506,12 @@ LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&n
           <td>
             <div id = "keyfactor1" style = "max-width:300px;max-height: 300px;overflow: auto;">
             </div>
-            
+
           </td>
            <td >
             <div id = "keyfactor2" style = "max-width:300px;max-height: 300px;overflow: auto;">
             </div>
-            
+
           </td>
         <tr>
         </tr>
@@ -527,7 +526,7 @@ LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&n
   <?php genCumSurvivalRow($cohort1Survival[1], $cohort1Survival[0], "Cohort 1", "#1f77b4"); ?>
   <?php genCumSurvivalRow($cohort2Survival[1], $cohort2Survival[0], "Cohort 2", "#ff7f0e"); ?>
 </table>
- 
+
 
 <script src="http://d3js.org/d3.v3.js"></script>
 
@@ -551,10 +550,10 @@ LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&n
 
     $c1params = "";
     $c2params = "";
-    foreach ($_POST as $key => $value) 
+    foreach ($_POST as $key => $value)
     {
-       
-      if (strpos($key,'cohort2') !== false) 
+
+      if (strpos($key,'cohort2') !== false)
       {
         $c2params.=$key."=".$value."&";
       }
@@ -576,7 +575,7 @@ LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&n
     $params = array();
     //global $dictionary;
     $isNotFirstQuery = isset($_POST['is_not_first_query']) ? true : false;
- 
+
 
     foreach ($dictionary as $group => $subgroup)
     {
@@ -628,7 +627,8 @@ LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&n
     //global $dictionary;
     $dictionary = json_decode(file_get_contents("dictionary.json"));
     //global $db;
-    $db = new PDO("mysql:host=10.7.201.60;dbname=breastdata2", "breastuser", "YES");
+    $ip = gethostbyname('gpuresearchwin7.phsabc.ehcnet.ca');
+    $db = new PDO("mysql:host=".$ip.";dbname=breastdata2", "breastuser", "YES");
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
@@ -649,7 +649,7 @@ LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&n
               //Check for toggle.
               if (!isset($params['toggle_'.$subelement]) || $params['toggle_'.$subelement] == true)
               {
-                
+
                 if ($spec->type == "year")
                 {
                   $query.=$subelement.' >= "'.$params[$subelement.'-min'].'-00-00" AND '.
@@ -751,7 +751,7 @@ LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&n
   }
 ?>
 <table>
-<?php 
+<?php
 
 /*
     foreach ($_POST as $key => $value) {
@@ -765,7 +765,7 @@ LogRank Chi Square: <b><?php echo number_format($logRankrec, 5); ?></b> &nbsp;&n
         echo "</tr>";
 
     }
-    
+
 */
 
 ?>
@@ -798,7 +798,7 @@ echo  '<ul class="treeview">
           T0: No evidence of primary
         </li>
         <lix class = "cohort1-tnm_t-1" style = "position:absolute;">+</lix>
-        
+
         <li class = "cohort1-tnm_t-1">
           <input type="checkbox" name="cohort1-tnm_t-1" id="cohort1-tnm_t-1" '.($cohort1['tnm_t-1'] == "on" ? 'checked' :  "").'>
           T1: <= 2cm
@@ -820,7 +820,7 @@ echo  '<ul class="treeview">
                      <input type="checkbox" name="cohort1-tnm_t-1M" id="cohort1-tnm_t-1M" '.($cohort1['tnm_t-1M'] == "on" ? 'checked' :  "").'>
                      T1micro: microinvasion <= 0.1cm
                  </li>
-                
+
             </ul>
         </li>
         <li>
@@ -831,7 +831,7 @@ echo  '<ul class="treeview">
           <input type="checkbox" name="cohort1-tnm_t-3" id="cohort1-tnm_t-3" '.($cohort1['tnm_t-3'] == "on" ? 'checked' :  "").'>
           T3: >5cm
         </li>
-         
+
         <lix class = "cohort1-tnm_t-4" style = "position:absolute;">+</lix>
     <li class = "cohort1-tnm_t-4">
 
@@ -855,15 +855,15 @@ echo  '<ul class="treeview">
                      <input type="checkbox" name="cohort1-tnm_t-4D" id="cohort1-tnm_t-4D" '.($cohort1['tnm_t-4D'] == "on" ? 'checked' :  "").'>
                      T4d: inflammatory carcinoma
                  </li>
-                
+
             </ul>
         </li>
         <li>
           <input type="checkbox" name="cohort1-tnm_t-IS" id="cohort1-tnm_t-IS" '.($cohort1['tnm_t-IS'] == "on" ? 'checked' :  "").'>
           Tis: cacrinoma in situ
         </li>
-       
-       
+
+
     </ul>
     </div>
 
@@ -890,7 +890,7 @@ echo  '<ul class="treeview">
           T0: No evidence of primary
         </li>
         <lix class = "cohort2-tnm_t-1" style = "position:absolute;">+</lix>
-        
+
         <li class = "cohort2-tnm_t-1">
           <input type="checkbox" name="cohort2-tnm_t-1" id="cohort2-tnm_t-1" '.($cohort2['tnm_t-1'] == "on" ? 'checked' :  "").'>
           T1: <= 2cm
@@ -912,7 +912,7 @@ echo  '<ul class="treeview">
                      <input type="checkbox" name="cohort2-tnm_t-1M" id="cohort2-tnm_t-1M" '.($cohort2['tnm_t-1M'] == "on" ? 'checked' :  "").'>
                      T1micro: microinvasion <= 0.1cm
                  </li>
-                
+
             </ul>
         </li>
         <li>
@@ -923,7 +923,7 @@ echo  '<ul class="treeview">
           <input type="checkbox" name="cohort2-tnm_t-3" id="cohort2-tnm_t-3" '.($cohort2['tnm_t-3'] == "on" ? 'checked' :  "").'>
           T3: >5cm
         </li>
-         
+
         <lix class = "cohort2-tnm_t-4" style = "position:absolute;">+</lix>
     <li class = "cohort2-tnm_t-4">
 
@@ -947,17 +947,17 @@ echo  '<ul class="treeview">
                      <input type="checkbox" name="cohort2-tnm_t-4D" id="cohort2-tnm_t-4D" '.($cohort2['tnm_t-4D'] == "on" ? 'checked' :  "").'>
                      T4d: inflammatory carcinoma
                  </li>
-                
+
             </ul>
         </li>
         <li>
           <input type="checkbox" name="cohort2-tnm_t-IS" id="cohort2-tnm_t-IS" '.($cohort2['tnm_t-IS'] == "on" ? 'checked' :  "").'>
           Tis: cacrinoma in situ
         </li>
-       
-       
+
+
     </ul>
-   
+
 
     <div id ="T_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-Compare</div>
      </div>
@@ -999,8 +999,8 @@ echo '<ul class="treeview">
                  <input type="checkbox" name="cohort1-tnm_n-0PI" id="cohort1-tnm_n-0PI" '.($cohort1['tnm_n-0PI'] == "on" ? 'checked' :  "").'>
                  N0(i+)
              </li>
-            
-            
+
+
         </ul>
     </li>
     <lix class = "cohort1-tnm_n-1" style = "position:absolute;">+</lix>
@@ -1034,7 +1034,7 @@ echo '<ul class="treeview">
                            <input type="checkbox" name="cohort1-tnm_n-1B4" id="cohort1-tnm_n-1B4" '.($cohort1['tnm_n-1B4'] == "on" ? 'checked' :  "").'>
                             N1b4
                        </li>
-                      
+
                   </ul>
              </li>
              <li>
@@ -1045,7 +1045,7 @@ echo '<ul class="treeview">
                  <input type="checkbox" name="cohort1-tnm_n-1M" id="cohort1-tnm_n-1M" '.($cohort1['tnm_n-1M'] == "on" ? 'checked' :  "").'>
                   N1micro
              </li>
-            
+
         </ul>
     </li>
     <lix class = "cohort1-tnm_n-2" style = "position:absolute;">+</lix>
@@ -1062,8 +1062,8 @@ echo '<ul class="treeview">
                  <input type="checkbox" name="cohort1-tnm_n-2B" id="cohort1-tnm_n-2B" '.($cohort1['tnm_n-2B'] == "on" ? 'checked' :  "").'>
                  N2b
              </li>
-            
-            
+
+
         </ul>
     </li>
 
@@ -1085,8 +1085,8 @@ echo '<ul class="treeview">
                  <input type="checkbox" name="cohort1-tnm_n-3C" id="cohort1-tnm_n-3C" '.($cohort1['tnm_n-3C'] == "on" ? 'checked' :  "").'>
                  N3c
              </li>
-            
-            
+
+
         </ul>
     </li>
 
@@ -1112,15 +1112,15 @@ echo '<ul class="treeview">
                  <input type="checkbox" name="cohort1-tnm_n-4D" id="cohort1-tnm_n-4D" '.($cohort1['tnm_n-4D'] == "on" ? 'checked' :  "").'>
                  N4d
              </li>
-            
-            
+
+
         </ul>
-    </li>   
+    </li>
     <li>
       <input type="checkbox" name="cohort1-tnm_n-IS" id="cohort1-tnm_n-IS" '.($cohort1['tnm_n-IS'] == "on" ? 'checked' :  "").'>
       Nis
-    </li>   
-   
+    </li>
+
   </ul>
   </div>
 
@@ -1158,8 +1158,8 @@ echo'<ul class="treeview">
                  <input type="checkbox" name="cohort2-tnm_n-0PI" id="cohort2-tnm_n-0PI" '.($cohort2['tnm_n-0PI'] == "on" ? 'checked' :  "").'>
                  N0(i+)
              </li>
-            
-            
+
+
         </ul>
     </li>
     <lix class = "cohort2-tnm_n-1" style = "position:absolute;">+</lix>
@@ -1193,7 +1193,7 @@ echo'<ul class="treeview">
                            <input type="checkbox" name="cohort2-tnm_n-1B4" id="cohort2-tnm_n-1B4" '.($cohort2['tnm_n-1B4'] == "on" ? 'checked' :  "").'>
                             N1b4
                        </li>
-                      
+
                   </ul>
              </li>
              <li>
@@ -1204,7 +1204,7 @@ echo'<ul class="treeview">
                  <input type="checkbox" name="cohort2-tnm_n-1M" id="cohort2-tnm_n-1M" '.($cohort2['tnm_n-1M'] == "on" ? 'checked' :  "").'>
                   N1micro
              </li>
-            
+
         </ul>
     </li>
     <lix class = "cohort2-tnm_n-2" style = "position:absolute;">+</lix>
@@ -1221,8 +1221,8 @@ echo'<ul class="treeview">
                  <input type="checkbox" name="cohort2-tnm_n-2B" id="cohort2-tnm_n-2B" '.($cohort2['tnm_n-2B'] == "on" ? 'checked' :  "").'>
                  N2b
              </li>
-            
-            
+
+
         </ul>
     </li>
 
@@ -1244,8 +1244,8 @@ echo'<ul class="treeview">
                  <input type="checkbox" name="cohort2-tnm_n-3C" id="cohort2-tnm_n-3C" '.($cohort2['tnm_n-3C'] == "on" ? 'checked' :  "").'>
                  N3c
              </li>
-            
-            
+
+
         </ul>
     </li>
 
@@ -1271,15 +1271,15 @@ echo'<ul class="treeview">
                  <input type="checkbox" name="cohort2-tnm_n-4D" id="cohort2-tnm_n-4D" '.($cohort2['tnm_n-4D'] == "on" ? 'checked' :  "").'>
                  N4d
              </li>
-            
-            
+
+
         </ul>
-    </li>   
+    </li>
     <li>
       <input type="checkbox" name="cohort2-tnm_n-IS" id="cohort2-tnm_n-IS" '.($cohort2['tnm_n-IS'] == "on" ? 'checked' :  "").'>
       Nis
-    </li>   
-   
+    </li>
+
   </ul>
    <div id ="N_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-Compare</div>
   </div>
@@ -1290,7 +1290,7 @@ echo'<ul class="treeview">
   </div>';
 //m staging
   echo '<div id="overlay-M_Staging" class="overlay-content popupM_Staging" style="display: none; top: 20px;"><div id="overlay-M_Stagingcontent" style="float:left;padding-right:10px;">';
- 
+
   echo '<label id="-gsublabel-tnm_t" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px; margin-left:15px;">M Staging</label>';
    echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
                   'onclick="selectallM1(true);"'
@@ -1334,7 +1334,7 @@ echo'<ul class="treeview">
                  <input type="checkbox" name="cohort1-tnm_m-1M" id="cohort1-tnm_m-1M" '.($cohort1['tnm_m-1M'] == "on" ? 'checked' :  "").'>
                   M1micro
              </li>
-            
+
         </ul>
     </li>
      <li>
@@ -1367,15 +1367,15 @@ echo'<ul class="treeview">
                  <input type="checkbox" name="cohort1-tnm_m-4D" id="cohort1-tnm_m-4D" '.($cohort1['tnm_m-4D'] == "on" ? 'checked' :  "").'>
                  M4d
              </li>
-            
-            
+
+
         </ul>
-    </li>   
+    </li>
     <li>
       <input type="checkbox" name="cohort1-tnm_m-IS" id="cohort1-tnm_m-IS" '.($cohort1['tnm_m-IS'] == "on" ? 'checked' :  "").'>
       Mis
-    </li>   
-   
+    </li>
+
   </ul>
   </div>
 
@@ -1423,7 +1423,7 @@ echo'<ul class="treeview">
                  <input type="checkbox" name="cohort2-tnm_m-1M" id="cohort2-tnm_m-1M" '.($cohort2['tnm_m-1M'] == "on" ? 'checked' :  "").'>
                   M1micro
              </li>
-            
+
         </ul>
     </li>
      <li>
@@ -1456,15 +1456,15 @@ echo'<ul class="treeview">
                  <input type="checkbox" name="cohort2-tnm_m-4D" id="cohort2-tnm_m-4D" '.($cohort2['tnm_m-4D'] == "on" ? 'checked' :  "").'>
                  M4d
              </li>
-            
-            
+
+
         </ul>
-    </li>   
+    </li>
     <li>
       <input type="checkbox" name="cohort2-tnm_m-IS" id="cohort2-tnm_m-IS" '.($cohort2['tnm_m-IS'] == "on" ? 'checked' :  "").'>
       Mis
-    </li>   
-   
+    </li>
+
   </ul>
    <div id ="M_Staging-duplicate" class="un-duplicate-btn" style = "margin-top:10px;margin-right:10px;">Un-Compare</div>
   </div>
@@ -1480,13 +1480,13 @@ function genInputElements($cohort1, $cohort2)
 {
   $dictionary = json_decode(file_get_contents("dictionary.json"));
   //global $dictionary;
-  
+
   $count = 1;
   $cohort = $cohort1;
   //Generate inputs.
   foreach ($dictionary as $group => $subgroup)
   {
-   
+
     if($group == 'TNM_Staging')
     {
       getTNMhtml($cohort1, $cohort2);
@@ -1518,7 +1518,7 @@ function genInputElements($cohort1, $cohort2)
                  $cohort[$subelement.'-max'].'">';
                 echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
                 break;
-                
+
                 case 'select':
                 echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
                   'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});
@@ -1560,7 +1560,7 @@ function genInputElements($cohort1, $cohort2)
             $subCheckName ='gsublabel-'.$subelement.'-display';
             echo '<label id="-gsublabel-'.$subelement.'" style="cursor: pointer; cursor: hand; font-size:1.3em; margin-top:5px;'.
             ($subgroup->display != "none" ? " margin-left:15px;" : "").'">Comparison</label><br>';
-           
+
             switch ($spec->input)
             {
               case 'range':
@@ -1572,7 +1572,7 @@ function genInputElements($cohort1, $cohort2)
                  $cohort[$subelement.'-max'].'">';
                 echo '<div style="clear:both; margin-bottom:-22px;">&nbsp;</div>';
                 break;
-                
+
                 case 'select':
                 echo '<a href="#" class="btn btn-success btn-xs" style="margin-right:40px;"'.
                   'onclick="$(\'.'.$pref.'-'.$subelement.'\').each(function(){this.checked=true;});"'
@@ -1605,7 +1605,7 @@ function genInputElements($cohort1, $cohort2)
         echo '<div style = "clear:both;">'; //div for buttons
         echo '<div class="close-btn" style = "margin-top:10px;margin-right:10px;" onClick = "">Close</div>';
         echo '<div id ="'.$group.'-duplicate" class="duplicate-btn" style = "margin-top:10px;margin-right:10px;">Compare</div>';
-       
+
         echo '</div>'; //div for buttons
       echo '</div>';
       $count++;

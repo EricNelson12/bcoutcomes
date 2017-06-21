@@ -3,7 +3,7 @@
 <head>
     <title>Breast Cancer Outcomes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     {{HTML::style('http://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')}}
     <style>
         body{
@@ -23,7 +23,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/laravel/outcomes/public/">Breast Cancer Outcomes</a>
+                    <a class="navbar-brand" href="/">Breast Cancer Outcomes</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -32,8 +32,8 @@
                         <li><a href="logout">Log Out</a></li>
                         <li><a href="profile">{{ Auth::user()->email }}</a></li>
                         @else
-                        <li><a href="/laravel/outcomes/public/login">Login</a></li>
-                        <li><a href="/laravel/outcomes/public/user/create">Register</a></li>
+                        <li><a href="login">Login</a></li>
+                        <li><a href="create">Register</a></li>
                         @endif
                     </ul>
 

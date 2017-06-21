@@ -15,9 +15,11 @@ Route::get('', array('as' => 'home', 'uses' => 'HomeController@index'));
 Route::post('', array('as' => 'home', 'uses' => 'HomeController@index'));
 Route::get('login', array('as' => 'login', 'uses' => 'UserController@login'));
 Route::post('/login', array('as' => 'login', 'uses' => 'UserController@handleLogin'));
+Route::get('user/login', array('as' => 'login', 'uses' => 'UserController@login'));
+Route::post('/user/login', array('as' => 'login', 'uses' => 'UserController@handleLogin'));
 Route::get('/profile', array('as' => 'profile', 'uses' => 'UserController@profile'));
 Route::get('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'));
-Route::resource('user', 'UserController'); 
+Route::resource('user', 'UserController');
 Route::get('/admin', array('as' => 'admin', 'uses' => 'UserController@admin'));
 
 Route::get('password/reset', array(
@@ -40,4 +42,7 @@ Route::post('password/reset/{token}', array(
 Route::get('/history', array('as' => 'history', 'uses' => 'HomeController@history'));
 Route::get('/getquery', array('as' => 'getquery', 'uses' => 'HomeController@getQuery'));
 
-
+Route::get('/create', function()
+  {
+      return View::make('users/create');
+  });
